@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white shadow px-4 py-3 flex justify-between items-center">
+  <nav class="top-nav bg-white shadow px-4 py-3 flex justify-between items-center">
     <router-link to="/" class="font-bold text-lg">Link Wallet</router-link>
     <div class="space-x-4">
       <router-link to="/add">Add</router-link>

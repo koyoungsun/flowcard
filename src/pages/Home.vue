@@ -1,19 +1,9 @@
 <template>
     <section class="p-4 space-y-6">
       <!-- 상단 상태 표시 + 설정 버튼 -->
-      <div class="flex justify-between items-center mb-2">
-        <h2 class="text-xl font-bold">
-          현재 {{ viewMode === 'card' ? '카드형' : '리스트형' }}
-          <span class="text-sm text-gray-500">({{ cards.length }}개)</span>
-        </h2>
-        <button
-          class="text-sm px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+      <button class="text-sm px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
           @click="showSettings = !showSettings"
-        >
-          설정 열기
-        </button>
-      </div>
-  
+        >Setting</button>
       <!-- 보기 모드 설정 UI -->
       <div v-if="showSettings" class="border p-4 rounded-md bg-gray-50">
         <h3 class="text-sm font-medium mb-2">기본 보기 모드 설정</h3>
@@ -52,7 +42,10 @@
           </button>
         </div>
       </div>
-  
+      <h2 class="text-xl font-bold">
+          현재 {{ viewMode === 'card' ? '카드형' : '리스트형' }}
+          <span class="text-sm text-gray-500">({{ cards.length }}개)</span>
+        </h2>
       <!-- 카드 없음 -->
       <EmptyCard v-if="cards.length === 0" />
   
