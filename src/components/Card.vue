@@ -17,7 +17,7 @@
       <p v-if="data.summary" class="text-sm text-gray-600">
         {{ data.summary }}
       </p>
-  
+   
       <!-- 버튼 -->
       <div class="flex gap-2 mt-2">
         <button
