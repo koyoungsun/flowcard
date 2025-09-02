@@ -1,5 +1,34 @@
-# Vue 3 + TypeScript + Vite
+# 📱 FlowCard — 하루를 카드로 여는 데일리 런처
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+**FlowCard**는 알람처럼 하루를 시작하며, 카드 형태로 날씨·뉴스·링크 등을 한눈에 확인하고 실행할 수 있는 **개인화 데일리 뷰어**입니다.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Vue 3 + TypeScript + Vite 기반으로 개발되며, 심플하고 빠른 사용성을 추구합니다.
+
+---
+
+## 🔥 주요 기능 (1차 버전)
+
+- [x] 카드형 / 리스트형 보기 모드 전환
+- [x] 카드 추가 / 편집 / 삭제
+- [x] 로컬 스토리지 기반 카드 저장
+- [x] 기본 보기 모드 설정 (카드 or 리스트)
+
+---
+
+## 🚀 앞으로 추가될 기능 (예정)
+
+- [ ] 날씨 / 뉴스 / 코인 시세 등 기본 카드 추가
+- [ ] 자주 가는 앱/사이트 런처 카드
+- [ ] 카드 순서 Drag & Drop 정렬
+- [ ] 매일 기분/할일 작성용 카드
+- [ ] 다크모드 지원
+
+---
+
+## 🛠️ 설치 및 실행
+
+```bash
+git clone https://github.com/your-username/flowcard.git
+cd flowcard
+npm install
+npm run dev
