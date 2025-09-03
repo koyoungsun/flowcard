@@ -12,6 +12,6 @@
   const router = useRouter();
   
   const goToAddPage = () => {
-    router.push("/add");
+    router.push({ name: 'AddCard', params: { groupIndex: 0 } });
   };
   </script>

@@ -9,14 +9,27 @@ import CardList from "@/pages/CardList.vue";
 
 
 const routes = [
-  { path: "/", component: Home },
-  { path: "/add", component: AddCard },
-  { path: "/edit", component: EditCard },
-  { path: "/edit/:index", component: EditCard },
+  { path: '/', name: 'Home', component: Home },
   { path: "/login", component: Login },
   { path: "/me", component: Me },
   { path: "/list", component: CardList },
+  {
+    path: '/add/:groupIndex',
+    name: 'AddCard',
+    component: AddCard
+  },
+  {
+    path: '/edit/:groupIndex/:cardIndex',
+    name: 'EditCard',
+    component: () => import('@/views/EditCard.vue')
+  },
+  {
+    path: '/group-settings',
+    name: 'GroupSettings',
+    component: () => import('@/pages/GroupSettings.vue')
+  }
 ];
+
 
 const router = createRouter({
   history: createWebHistory(),
