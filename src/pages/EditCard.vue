@@ -66,6 +66,11 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
+const props = defineProps<{
+  groupIndex: number
+  cardIndex: number
+}>()
+
 type LinkCard = {
   title: string
   url: string
@@ -81,10 +86,8 @@ type LinkGroup = {
 }
 
 const router = useRouter()
-const route = useRoute()
-
-const groupIndex = parseInt(route.params.groupIndex as string)
-const cardIndex = parseInt(route.params.cardIndex as string)
+const groupIndex = props.groupIndex
+const cardIndex = props.cardIndex
 
 const form = ref({
   title: '',

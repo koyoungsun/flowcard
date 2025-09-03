@@ -1,23 +1,24 @@
 <template>
   <section class="p-4 space-y-6">
     <!-- 설정 버튼 -->
-    <button class="text-sm px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-            @click="showSettings = !showSettings">Setting</button>
+    <button class="top-setting" @click="showSettings = !showSettings">Setting</button>
 
     <!-- 보기 설정 -->
-    <div v-if="showSettings" class="border p-4 rounded-md bg-gray-50">
-      <h3 class="text-sm font-medium mb-2">기본 보기 모드 설정</h3>
-      <div class="flex gap-4 mb-4">
-        <label><input type="radio" value="card" v-model="defaultView" class="mr-1" />카드형</label>
-        <label><input type="radio" value="list" v-model="defaultView" class="mr-1" />리스트형</label>
+    <div v-if="showSettings" class="setting-area">
+      <div class="sel-tit">
+        <h3 class="tit">Default Mode Set</h3>
+        <div class="sel-chk">
+          <label><input type="radio" value="card" v-model="defaultView" class="mr-1" />Card Type</label>
+          <label><input type="radio" value="list" v-model="defaultView" class="mr-1" />List type</label>
+        </div>
       </div>
-      <div class="flex gap-2">
+      <div class="sel-btn">
         <button class="px-4 py-1 bg-indigo-500 text-white text-sm rounded" @click="applyDefaultView">확인</button>
         <button class="px-4 py-1 bg-gray-300 text-sm rounded" @click="showSettings = false">닫기</button>
       </div>
     </div>
 
-    <!-- 정렬 옵션 (리스트형일 때만 표시) -->
+    <!-- 정렬 옵션 -->
     <div v-if="viewMode === 'list'" class="flex justify-end items-center gap-2 text-sm">
       <label for="sortMode">정렬:</label>
       <select v-model="sortMode" class="border rounded px-2 py-1" id="sortMode">
@@ -28,19 +29,36 @@
     </div>
 
     <!-- 상태 -->
-    <h2 class="text-xl font-bold">
-      현재 {{ viewMode === 'card' ? '카드형' : '리스트형' }}
-      <span class="text-sm text-gray-500">({{ totalCardCount }}개)</span>
+    <h2 class="now-posi">
+      <strong>Type {{ viewMode === 'card' ? 'Card' : 'List' }}</strong>
+      <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
     </h2>
 
-    <!-- 그룹 카드 출력 -->
+    <!-- 그룹 리스트 -->
     <div v-if="groups.length === 0">
       <EmptyCard :groupIndex="0" />
     </div>
 
     <div v-else>
       <div v-for="(group, gIdx) in sortedGroups" :key="gIdx" class="mb-8">
-        <h3 class="text-lg font-semibold mb-3">{{ group.groupName }}</h3>
+        <!-- 그룹 헤더 -->
+        <div class="group-header-tit">
+          <h3 class="text-lg font-semibold">
+            <em>#</em><strong>{{ group.groupName }}</strong>
+            <span v-if="group.cards.length > 0" class="text-sm text-gray-500">({{ group.cards.length }}개)</span>
+          </h3>
+
+          <!-- 그룹 옵션 메뉴 -->
+          <div class="relative">
+            <button @click="toggleGroupMenu(gIdx)" class="text-gray-500 hover:text-black px-2 py-1 text-xl">⋮</button>
+            <div v-if="activeGroupMenuIndex === gIdx" class="absolute right-0 mt-2 w-36 bg-white border rounded shadow z-10">
+              <ul class="text-sm">
+                <li><button @click="renameGroup(gIdx)" class="w-full px-4 py-2 text-left hover:bg-gray-100">이름 수정</button></li>
+                <li><button @click="deleteGroup(gIdx)" class="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100">그룹 삭제</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         <!-- 리스트형 -->
         <div v-if="viewMode === 'list'" class="space-y-2">
@@ -66,10 +84,10 @@
         </div>
 
         <!-- 카드형 -->
-        <div v-else>
-          <Swiper :slides-per-view="1.2" :space-between="16" centeredSlides>
+        <div class="card-wrap" v-else>
+          <Swiper :slides-per-view="2.2" :space-between="16" centeredSlides>
             <SwiperSlide v-for="(card, index) in group.cards" :key="`card-${index}`">
-              <Card :data="card" :index="index" />
+              <Card :card="card" :groupIndex="gIdx" :cardIndex="index" />
             </SwiperSlide>
             <SwiperSlide key="add-card">
               <AddCardSlide :groupIndex="gIdx" />
@@ -78,16 +96,15 @@
         </div>
       </div>
     </div>
-    <!-- 항상 보여주는 새 그룹 만들기 버튼 -->
+
+    <!-- 새 그룹 만들기 -->
     <div class="text-center mt-10">
-      <button
-        class="bg-green-500 text-white px-6 py-2 rounded-full shadow"
-        @click="createGroup"
-      >
+      <button class="bg-green-500 text-white px-6 py-2 rounded-full shadow" @click="createGroup">
         + 새 그룹 만들기
       </button>
     </div>
-    <!-- 하단 보기 전환 버튼 -->
+
+    <!-- 보기 전환 버튼 -->
     <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
       <button @click="toggleView" class="bg-indigo-500 text-white px-6 py-2 rounded-full text-sm font-medium shadow">
         {{ viewMode === 'card' ? '리스트형 보기' : '카드형 보기' }}
@@ -123,29 +140,26 @@ type LinkGroup = {
 
 const router = useRouter()
 const groups = ref<LinkGroup[]>([])
-
-const defaultView = ref<'card' | 'list'>(
-  (localStorage.getItem('defaultViewMode') as 'card' | 'list') || 'card'
-)
+const defaultView = ref<'card' | 'list'>((localStorage.getItem('defaultViewMode') as 'card' | 'list') || 'card')
 const viewMode = ref<'card' | 'list'>(defaultView.value)
 const showSettings = ref(false)
-
 const sortMode = ref<'default' | 'title' | 'recent'>('default')
+const activeGroupMenuIndex = ref<number | null>(null)
 
 const totalCardCount = computed(() =>
   groups.value.reduce((sum, group) => sum + group.cards.length, 0)
 )
 
-function applyDefaultView() {
-  localStorage.setItem('defaultViewMode', defaultView.value)
-  viewMode.value = defaultView.value
-  showSettings.value = false
-}
-
 function toggleView() {
   viewMode.value = viewMode.value === 'card' ? 'list' : 'card'
   localStorage.setItem('defaultViewMode', viewMode.value)
   defaultView.value = viewMode.value
+}
+
+function applyDefaultView() {
+  localStorage.setItem('defaultViewMode', defaultView.value)
+  viewMode.value = defaultView.value
+  showSettings.value = false
 }
 
 function openLink(url: string) {
@@ -171,20 +185,55 @@ function loadGroups() {
   }
 }
 
-// 그룹 데이터 불러오기 (초기 mount + 다시 진입 시)
+function createGroup() {
+  const name = prompt('그룹 이름을 입력하세요')
+  if (!name) return
+
+  const newGroup: LinkGroup = {
+    groupName: name.trim(),
+    cards: []
+  }
+
+  groups.value.push(newGroup)
+  saveGroups()
+}
+
+function renameGroup(index: number) {
+  const newName = prompt('새 그룹명을 입력하세요', groups.value[index].groupName)
+  if (newName && newName.trim()) {
+    groups.value[index].groupName = newName.trim()
+    saveGroups()
+    activeGroupMenuIndex.value = null
+  }
+}
+
+function deleteGroup(index: number) {
+  if (confirm('정말 이 그룹을 삭제하시겠습니까?\n삭제된 그룹은 복구할 수 없습니다.')) {
+    groups.value.splice(index, 1)
+    saveGroups()
+    activeGroupMenuIndex.value = null
+  }
+}
+
+function toggleGroupMenu(index: number) {
+  activeGroupMenuIndex.value = activeGroupMenuIndex.value === index ? null : index
+}
+
+function saveGroups() {
+  localStorage.setItem('groups', JSON.stringify(groups.value))
+}
+
 onMounted(loadGroups)
 onActivated(loadGroups)
 
-// 그룹이 변경되면 localStorage에 저장
 watch(
   groups,
   (newVal) => {
-    localStorage.setItem('groups', JSON.stringify(newVal))
+    saveGroups()
   },
   { deep: true }
 )
 
-// 정렬된 그룹 반환
 const sortedGroups = computed(() => {
   if (viewMode.value !== 'list') return groups.value
 
@@ -198,17 +247,4 @@ const sortedGroups = computed(() => {
     return { ...group, cards: sortedCards }
   })
 })
-
-function createGroup() {
-  const name = prompt('그룹 이름을 입력하세요')
-  if (!name) return
-
-  const newGroup: LinkGroup = {
-    groupName: name.trim(),
-    cards: []
-  }
-
-  groups.value.push(newGroup)
-  localStorage.setItem('groups', JSON.stringify(groups.value))
-}
 </script>

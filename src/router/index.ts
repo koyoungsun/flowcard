@@ -21,7 +21,11 @@ const routes = [
   {
     path: '/edit/:groupIndex/:cardIndex',
     name: 'EditCard',
-    component: () => import('@/views/EditCard.vue')
+    component: EditCard,
+    props: route => ({
+      groupIndex: Number(route.params.groupIndex),
+      cardIndex: Number(route.params.cardIndex)
+    })
   },
   {
     path: '/group-settings',

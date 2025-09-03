@@ -1,23 +1,24 @@
 <template>
+  <article>
     <div class="border p-4 rounded shadow space-y-2">
-    <!-- 카드 제목 -->
-    <em>{{ index + 1 }}</em>  
-    <h3 class="text-lg font-bold">{{ data.title }}</h3>
-  
+      <!-- 카드 제목 -->
+      <em>{{ cardIndex + 1 }}</em>  
+      <h3 class="text-lg font-bold">{{ card.title }}</h3>
+
       <!-- 링크 주소 -->
       <a
         class="text-blue-500 underline text-sm break-all"
-        :href="data.url"
+        :href="card.url"
         target="_blank"
       >
-        {{ data.url }}
+        {{ card.url }}
       </a>
-  
+
       <!-- summary 있을 때만 노출 -->
-      <p v-if="data.summary" class="text-sm text-gray-600">
-        {{ data.summary }}
+      <p v-if="card.summary" class="text-sm text-gray-600">
+        {{ card.summary }}
       </p>
-   
+
       <!-- 버튼 -->
       <div class="flex gap-2 mt-2">
         <button
@@ -34,35 +35,38 @@
         </button>
       </div>
     </div>
-  </template>
-  
-  <script setup lang="ts">
+</article>
+</template>
+
+<script setup lang="ts">
+defineOptions({ inheritAttrs: false })
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
-
-// props 정의 (정적 타입 방식)
 const props = defineProps<{
-  data: {
+  card: {
     title: string
     url: string
     summary?: string
-  },
-  index: number
+    tags?: string[]
+    updatedAt?: number
+  }
+  groupIndex: number
+  cardIndex: number
 }>()
 
+const router = useRouter()
+
 const openLink = () => {
-  window.open(props.data.url, "_blank")
+  window.open(props.card.url, "_blank")
 }
 
 const editCard = () => {
-  const allCards = JSON.parse(localStorage.getItem("cards") || "[]")
-  const index = allCards.findIndex(
-    (c) => c.title === props.data.title && c.url === props.data.url
-  )
-  if (index !== -1) {
-    router.push(`/edit/${index}`)
-  }
+  router.push({
+    name: 'EditCard',
+    params: {
+      groupIndex: props.groupIndex,
+      cardIndex: props.cardIndex,
+    }
+  })
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <h2 class="text-xl font-bold mb-4">새 링크카드 추가</h2>
+    <h2 class=" mb-4">새 링크카드 추가</h2>
 
     <form @submit.prevent="handleAddCard" class="space-y-4">
       <div>
