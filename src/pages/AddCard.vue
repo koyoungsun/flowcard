@@ -1,10 +1,10 @@
 <template>
-  <div class="p-4">
-    <h2 class=" mb-4">새 링크카드 추가</h2>
+  <div class="linkcard-add-wrap">
+    <h2 class="tit">링크카드 추가</h2>
 
     <form @submit.prevent="handleAddCard" class="space-y-4">
-      <div>
-        <label class="block mb-1 text-sm font-medium">카드 제목</label>
+      <div class="body-tit">
+        <label class="block mb-1 text-sm font-medium"><em>*</em>카드 제목</label>
         <input
           v-model="form.title"
           type="text"
@@ -14,8 +14,8 @@
         />
       </div>
 
-      <div>
-        <label class="block mb-1 text-sm font-medium">링크 URL</label>
+      <div class="body-link">
+        <label class="block mb-1 text-sm font-medium"><em>*</em>링크 경로(URL)</label>
         <input
           v-model="form.url"
           type="url"
@@ -25,8 +25,8 @@
         />
       </div>
 
-      <div>
-        <label class="block mb-1 text-sm font-medium">간단한 설명 (선택)</label>
+      <div class="body-summary">
+        <label class="block mb-1 text-sm font-medium"><em>*</em>간단한 설명</label>
         <textarea
           v-model="form.summary"
           class="w-full border rounded px-3 py-2"
@@ -35,21 +35,22 @@
         ></textarea>
       </div>
 
-      <div>
-        <label class="block mb-1 text-sm font-medium">태그 (쉼표 구분)</label>
+      <div class="body-hash">
+        <label class="block mb-1 text-sm font-medium">태그</label>
         <input
           v-model="form.tagsInput"
           type="text"
           class="w-full border rounded px-3 py-2"
           placeholder="예: 클라우드,구글"
         />
+        <p>쉼표를 사용하여 추가할 수 있습니다.</p>
       </div>
 
       <button
         type="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded w-full font-medium"
+        class="btn-create"
       >
-        저장하고 홈으로
+        저장
       </button>
     </form>
   </div>

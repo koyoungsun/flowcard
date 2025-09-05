@@ -9,7 +9,7 @@
         <h3 class="tit">Default Mode Set</h3>
         <div class="sel-chk">
           <label><input type="radio" value="card" v-model="defaultView" class="mr-1" />Card Type</label>
-          <label><input type="radio" value="list" v-model="defaultView" class="mr-1" />List type</label>
+          <label><input type="radio" value="list" v-model="defaultView" class="mr-1" />List Type</label>
         </div>
       </div>
       <div class="sel-btn">
@@ -34,13 +34,14 @@
       <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
     </h2>
 
-    <!-- 그룹 리스트 -->
+    <!-- 그룹이 없는 경우 -->
     <div v-if="groups.length === 0">
       <EmptyCard :groupIndex="0" />
     </div>
 
+    <!-- 그룹 목록 -->
     <div v-else>
-      <div v-for="(group, gIdx) in sortedGroups" :key="gIdx" class="mb-8">
+      <div v-for="(group, gIdx) in groups" :key="gIdx" class="mb-8">
         <!-- 그룹 헤더 -->
         <div class="group-header-tit">
           <h3 class="text-lg font-semibold">
@@ -61,20 +62,29 @@
         </div>
 
         <!-- 리스트형 -->
-        <div v-if="viewMode === 'list'" class="space-y-2">
-          <draggable v-model="group.cards" item-key="title" animation="200" handle=".drag-handle">
+        <div v-if="viewMode === 'list'" class="list">
+          <draggable v-model="group.cards" :item-key="(_, i) => i" animation="200" handle=".drag-handle" class="list-area">
             <template #item="{ element, index }">
-              <div class="border p-4 rounded-md shadow bg-white flex justify-between items-start">
+              <div class="list-detail">
                 <div class="flex-1">
-                  <em class="block text-xs text-gray-400 mb-1">#{{ index + 1 }}</em>
-                  <h3 class="text-lg font-semibold mb-1">{{ element.title }}</h3>
-                  <p v-if="element.summary" class="text-gray-500 text-sm mb-2">{{ element.summary }}</p>
-                  <div class="flex gap-2">
-                    <button class="bg-blue-500 text-white text-sm px-3 py-1 rounded" @click="openLink(element.url)">바로가기</button>
-                    <button class="bg-gray-300 text-sm px-3 py-1 rounded" @click="editCard(gIdx, index)">편집</button>
+                  <h3>
+                    <em v-if="group.cards.length > 0">#{{ index + 1 }}</em>{{ element.title }}
+                  </h3>
+                  <p v-if="element.summary" class="tit-summary">{{ element.summary }}</p>
+                  <div v-if="element.tags?.length" class="tag">
+                    <span v-for="(tag, tagIdx) in element.tags" :key="tagIdx" class="bg-gray-100 px-2 py-1 rounded-full mr-1 text-sm">
+                      #{{ tag }}
+                    </span>
                   </div>
                 </div>
-                <div class="drag-handle cursor-move text-gray-400 ml-3">☰</div>
+                <div class="btn-box-wrap">
+                  <div class="btn-box">
+                    <button class="btn-go" @click="openLink(element.url)">바로가기</button>
+                    <button class="btn-setting" @click="editCard(gIdx, index)">편집</button>
+                    <button class="btn-copy" @click="copyLink(element.url)">복사</button>
+                  </div>
+                  <div class="drag-handle cursor-move text-gray-400 ml-3">Drag</div>
+                </div>
               </div>
             </template>
           </draggable>
@@ -98,16 +108,14 @@
     </div>
 
     <!-- 새 그룹 만들기 -->
-    <div class="text-center mt-10">
-      <button class="bg-green-500 text-white px-6 py-2 rounded-full shadow" @click="createGroup">
-        + 새 그룹 만들기
-      </button>
+    <div class="btn-create-group">
+      <button @click="createGroup">+ 새 그룹 만들기</button>
     </div>
 
     <!-- 보기 전환 버튼 -->
-    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
-      <button @click="toggleView" class="bg-indigo-500 text-white px-6 py-2 rounded-full text-sm font-medium shadow">
-        {{ viewMode === 'card' ? '리스트형 보기' : '카드형 보기' }}
+    <div class="btn-toggle">
+      <button @click="toggleView" class="btn-chk">
+        {{ viewMode === 'card' ? 'List Type' : 'Card Type' }}
       </button>
     </div>
   </section>
@@ -170,6 +178,14 @@ function editCard(groupIndex: number, cardIndex: number) {
   router.push({ name: 'EditCard', params: { groupIndex, cardIndex } })
 }
 
+function copyLink(url: string) {
+  navigator.clipboard.writeText(url).then(() => {
+    alert('링크가 복사되었습니다!')
+  }).catch(() => {
+    alert('복사에 실패했습니다. 브라우저가 클립보드를 지원하지 않을 수 있어요.')
+  })
+}
+
 function loadGroups() {
   try {
     const saved = localStorage.getItem('groups')
@@ -188,12 +204,10 @@ function loadGroups() {
 function createGroup() {
   const name = prompt('그룹 이름을 입력하세요')
   if (!name) return
-
   const newGroup: LinkGroup = {
     groupName: name.trim(),
     cards: []
   }
-
   groups.value.push(newGroup)
   saveGroups()
 }
@@ -228,23 +242,9 @@ onActivated(loadGroups)
 
 watch(
   groups,
-  (newVal) => {
+  () => {
     saveGroups()
   },
   { deep: true }
 )
-
-const sortedGroups = computed(() => {
-  if (viewMode.value !== 'list') return groups.value
-
-  return groups.value.map(group => {
-    const sortedCards = [...group.cards]
-    if (sortMode.value === 'title') {
-      sortedCards.sort((a, b) => a.title.localeCompare(b.title))
-    } else if (sortMode.value === 'recent') {
-      sortedCards.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
-    }
-    return { ...group, cards: sortedCards }
-  })
-})
 </script>

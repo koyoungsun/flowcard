@@ -1,13 +1,14 @@
 *{margin:0; padding:0;}
-.top-nav{height:50px; border-bottom:1px solid #eee; text-align:center; position:relative;
+#app{padding:50px 0 0;}
+.top-nav{height:50px; border-bottom:1px solid #9a9a9a; text-align:center; position:relative; position:fixed; top:0; left:0; right:0; background-color:#fff; z-index:10; filter: drop-shadow(0 3px 3px #999);
     a{text-decoration:none; color:#2272ed; letter-spacing:-.4px;
         h1{line-height:50px; letter-spacing: -.7px; color:#000;}
     }
     .login{display:inline-block; position:absolute; top:15px; right:10px;}
 }
 
-.top-setting{position:absolute; top:0; left:0; background-color:#fff; border:0; padding:15px;}
-.setting-area{height:50px; background-color:#eee; padding:8px 15px; display:flex; justify-content:space-between;
+.top-setting{position:fixed; top:0; left:0; background-color:#fff; border:0; padding:15px; z-index:10;}
+.setting-area{height:50px; background-color:#eee; padding:8px 15px; display:flex; justify-content:space-between; position:fixed; top:50px; left:0; right:0; z-index:10; filter: drop-shadow(0 3px 3px #999);
     .sel-tit{
         h3{font-size:16px; color:#333;}
         .sel-chk{margin-top:6px;
@@ -27,7 +28,7 @@ h2.now-posi{margin:20px 16px; text-align:right;
     strong{font-size:18px;}
     span{font-size:14px; margin-left:4px;}
 }
-.group-header-tit{padding:0; display:flex; justify-content: space-between; border-bottom:1px solid #eaeaea; margin:20px 16px 8px;
+.group-header-tit{padding:0 0 8px; display:flex; justify-content: space-between; border-bottom:3px solid #eaeaea; margin:20px 16px 8px;
     h3{font-weight:normal; color:#666;
         em{margin-right:6px; font-size:16px; font-style:normal; position:relative; top:-2px; color:#666;}
         strong{font-size:20px;}
@@ -35,6 +36,53 @@ h2.now-posi{margin:20px 16px; text-align:right;
     }
 }
 .card-wrap{
-    .swiper-slide{border:1px solid #666; padding:12px; border-radius: 8px; height:120px;}
+    .swiper-slide{background-color:#fff; border:1px solid #eee; filter: drop-shadow(0 3px 3px #999); padding:12px; border-radius: 8px; height:120px; margin:10px 0;}
     .swiper-slide-active{background-color:#eaeaea;}
+}
+.list{ padding:10px 16px 30px;
+    .list-area{margin-bottom:10px;}
+    .list-detail{border-bottom:1px solid #eee; display:flex; justify-content: space-between; padding:10px 0;
+        &:nth-child(2n){background-color:#eee;}
+        .flex-1{
+            h3{font-size:16px; color:#111;
+                em{display:inline-block; font-weight:normal; font-style: normal; margin-right:8px;}
+            }
+            p{font-size:13px; padding:4px 0 1px; color:#666;} 
+            .tag{color:#2272ed; font-size:12px;
+                span{margin-right:4px;}
+            }  
+        }
+        .btn-box-wrap{
+            .btn-box{
+                button{font-size:13px; font-weight:bold; padding:4px 8px; margin-left:2px; background-color:#eee; color:#666; border:1px solid #aeaeae; border-radius:2px;
+                    &:first-child{background-color:#2272ed; color:#fff; border:1px solid #2272ed;}
+                }
+                
+            }
+            .drag-handle{font-size:13px; text-align:right; padding:5px 6px; border:1px solid #aeaeae; margin:2px 0 0 0; border-radius:2px; background-color:#fff;}
+        }
+    }
+}
+// 새 그룹 만들기
+.btn-create-group{padding:50px 16px 10px;
+    button{width:100%; height:50px; line-height:50px; border:0; color:#fff; background-color:#2272ed; border-radius:8px;}
+}
+
+// Toggle Button
+.btn-toggle{position:fixed; bottom:10px; right:10px; z-index:100;
+    button{width:80px; height:80px; border-radius:50%; background-color: rgba($color: #fff, $alpha: .6); border:1px solid #eaeaea; filter: drop-shadow(0 3px 3px #999);}
+}
+
+// link Card Add
+.link-card-add{ text-align:center; padding:10px 0; font-size:14px; border:1px solid #999; color:#999; border-radius:4px;}
+
+.linkcard-add-wrap{padding:30px 16px;
+    h2{font-size:20px; border-bottom:1px solid #aeaeae; margin-bottom:10px;}
+    label{width:100px; display:inline-block; font-size:13px; float:left; line-height:34px;
+        em{color:#f00; margin-right:5px; position:relative; top:3px;}
+    }
+    input{width:calc(100% - 112px); float:right; height:32px; line-height: 32px; text-indent:10px; font-size:13px;}
+    textarea{width:calc(100% - 130px); float:right;padding:10px;}
+    div{clear:both; padding:5px 0;}
+    .btn-create{border:1px solid #2272ed; color:#2272ed; background-color:#fff; height:50px; line-height:50px; width:100%; margin:20px 0 50px; border-radius:8px; font-weight: bold; font-size:16px;}
 }

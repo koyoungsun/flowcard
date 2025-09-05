@@ -18,7 +18,12 @@
       <p v-if="card.summary" class="text-sm text-gray-600">
         {{ card.summary }}
       </p>
-
+      <!-- 카드 제목과 요약 아래 -->
+      <div v-if="card.tags?.length" class="mt-2 flex flex-wrap gap-1 text-xs text-gray-500">
+        <span v-for="(tag, idx) in card.tags" :key="idx" class="bg-gray-100 px-2 py-1 rounded-full">
+          #{{ tag }}
+        </span>
+      </div>
       <!-- 버튼 -->
       <div class="flex gap-2 mt-2">
         <button

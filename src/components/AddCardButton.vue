@@ -3,7 +3,7 @@
     @click="goToAdd"
     class="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center cursor-pointer hover:bg-gray-50"
   >
-    <p class="text-gray-600">➕ 링크 카드 추가</p>
+    <p class="link-card-add">➕ 링크 카드 추가</p>
   </div>
 </template>
 
