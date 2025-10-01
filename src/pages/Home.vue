@@ -96,7 +96,7 @@
         <!-- 카드형 -->
         <div class="card-wrap" v-else>
           <Swiper :slides-per-view="2.2" :space-between="16" centeredSlides>
-            <SwiperSlide v-for="(card, index) in group.cards" :key="`card-${index}`">
+            <SwiperSlide class="gradient-card" v-for="(card, index) in group.cards" :key="`card-${index}`">
               <Card :card="card" :groupIndex="gIdx" :cardIndex="index" />
             </SwiperSlide>
             <SwiperSlide key="add-card">

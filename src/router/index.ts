@@ -6,17 +6,33 @@ import EditCard from "@/pages/EditCard.vue";
 import Login from "@/pages/Login.vue";
 import Me from "@/pages/Me.vue";
 import CardList from "@/pages/CardList.vue";
-
+import Welcome from "@/pages/Welcome.vue"; 
+import Register from "@/pages/Register.vue";
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: "/login", component: Login },
-  { path: "/me", component: Me },
-  { path: "/list", component: CardList },
+  { path: "/login", name: "Login", component: Login },
+  { path: "/register", name: "Register", component: Register },
+  { path: "/welcome", name: "Welcome", component: Welcome }, // ✅ 리디렉션용
+
+
+  {
+    path: '/me',
+    name: 'Me',
+    component: Me,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/list',
+    name: 'CardList',
+    component: CardList,
+    meta: { requiresAuth: true }
+  },
   {
     path: '/add/:groupIndex',
     name: 'AddCard',
-    component: AddCard
+    component: AddCard,
+    meta: { requiresAuth: true }
   },
   {
     path: '/edit/:groupIndex/:cardIndex',
@@ -25,15 +41,16 @@ const routes = [
     props: route => ({
       groupIndex: Number(route.params.groupIndex),
       cardIndex: Number(route.params.cardIndex)
-    })
+    }),
+    meta: { requiresAuth: true }
   },
   {
     path: '/group-settings',
     name: 'GroupSettings',
-    component: () => import('@/pages/GroupSettings.vue')
+    component: () => import('@/pages/GroupSettings.vue'),
+    meta: { requiresAuth: true }
   }
 ];
-
 
 const router = createRouter({
   history: createWebHistory(),
@@ -41,3 +58,22 @@ const router = createRouter({
 });
 
 export default router;
+
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "@/firebase"
+
+let currentUser: any = null
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user
+})
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  if (requiresAuth && !currentUser) {
+    next('/login') // 인증이 필요한데 로그인 안 된 경우
+  } else {
+    next() // 통과
+  }
+})
