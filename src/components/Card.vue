@@ -1,41 +1,31 @@
 <template>
   <article>
-    <div class="border p-4 rounded shadow space-y-2">
+    <div class="card-detail">
       <!-- 카드 제목 -->
-      <em>{{ cardIndex + 1 }}</em>  
-      <h3 class="text-lg font-bold">{{ card.title }}</h3>
+        
+      <h3 class="tit"><em>{{ cardIndex + 1 }}</em>{{ card.title }}</h3>
 
       <!-- 링크 주소 -->
-      <a
-        class="text-blue-500 underline text-sm break-all"
-        :href="card.url"
-        target="_blank"
-      >
+      <a class="link-url" :href="card.url" target="_blank">
         {{ card.url }}
       </a>
 
       <!-- summary 있을 때만 노출 -->
-      <p v-if="card.summary" class="text-sm text-gray-600">
+      <p v-if="card.summary" class="summary">
         {{ card.summary }}
       </p>
       <!-- 카드 제목과 요약 아래 -->
-      <div v-if="card.tags?.length" class="mt-2 flex flex-wrap gap-1 text-xs text-gray-500">
-        <span v-for="(tag, idx) in card.tags" :key="idx" class="bg-gray-100 px-2 py-1 rounded-full">
+      <div v-if="card.tags?.length" class="tag">
+        <span v-for="(tag, idx) in card.tags" :key="idx" class="tag">
           #{{ tag }}
         </span>
       </div>
       <!-- 버튼 -->
-      <div class="flex gap-2 mt-2">
-        <button
-          @click="openLink"
-          class="bg-blue-500 text-white px-3 py-1 rounded text-sm"
-        >
+      <div class="btn-box">
+        <button @click="openLink" class="btn-go">
           바로가기
         </button>
-        <button
-          @click="editCard"
-          class="bg-gray-300 text-gray-800 px-3 py-1 rounded text-sm"
-        >
+        <button @click="editCard" class="btn-set">
           편집
         </button>
       </div>

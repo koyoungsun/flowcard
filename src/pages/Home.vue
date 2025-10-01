@@ -30,8 +30,11 @@
 
     <!-- 상태 -->
     <h2 class="now-posi">
-      <strong>Type {{ viewMode === 'card' ? 'Card' : 'List' }}</strong>
-      <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
+      <div>
+        <strong>Type {{ viewMode === 'card' ? 'Card' : 'List' }}</strong>
+        <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
+      </div>
+      <button @click="createGroup">+ 그룹 만들기</button>
     </h2>
 
     <!-- 그룹이 없는 경우 -->
@@ -51,11 +54,11 @@
 
           <!-- 그룹 옵션 메뉴 -->
           <div class="relative">
-            <button @click="toggleGroupMenu(gIdx)" class="text-gray-500 hover:text-black px-2 py-1 text-xl">⋮</button>
-            <div v-if="activeGroupMenuIndex === gIdx" class="absolute right-0 mt-2 w-36 bg-white border rounded shadow z-10">
+            <button @click="toggleGroupMenu(gIdx)" class="more">⋮</button>
+            <div v-if="activeGroupMenuIndex === gIdx" class="nav-r">
               <ul class="text-sm">
-                <li><button @click="renameGroup(gIdx)" class="w-full px-4 py-2 text-left hover:bg-gray-100">이름 수정</button></li>
-                <li><button @click="deleteGroup(gIdx)" class="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100">그룹 삭제</button></li>
+                <li><button @click="renameGroup(gIdx)" class="rename">이름 수정</button></li>
+                <li><button @click="deleteGroup(gIdx)" class="delete">그룹 삭제</button></li>
               </ul>
             </div>
           </div>
@@ -95,9 +98,15 @@
 
         <!-- 카드형 -->
         <div class="card-wrap" v-else>
-          <Swiper :slides-per-view="2.2" :space-between="16" centeredSlides>
+          <Swiper :slides-per-view="1.7" :space-between="8" centeredSlides>
             <SwiperSlide class="gradient-card" v-for="(card, index) in group.cards" :key="`card-${index}`">
-              <Card :card="card" :groupIndex="gIdx" :cardIndex="index" />
+              <div class="card-inner">
+                <Card :card="card" :groupIndex="gIdx" :cardIndex="index" />
+                <!-- 스파클(작은 반짝임)들 — 위치와 지연은 스타일 속성으로 조절 -->
+    <span class="sparkle" style="--x:12%; --y:20%; --s:0.9; --d:0s;"></span>
+    <span class="sparkle" style="--x:75%; --y:30%; --s:0.6; --d:0.6s;"></span>
+    <span class="sparkle" style="--x:50%; --y:68%; --s:0.8; --d:1.1s;"></span>
+              </div>
             </SwiperSlide>
             <SwiperSlide key="add-card">
               <AddCardSlide :groupIndex="gIdx" />
@@ -106,12 +115,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 새 그룹 만들기 -->
-    <div class="btn-create-group">
-      <button @click="createGroup">+ 새 그룹 만들기</button>
-    </div>
-
     <!-- 보기 전환 버튼 -->
     <div class="btn-toggle">
       <button @click="toggleView" class="btn-chk">

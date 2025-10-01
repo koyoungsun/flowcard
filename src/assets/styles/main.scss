@@ -56,9 +56,9 @@ animation: moveCircle2 12s linear infinite;
     100% { bottom:50%; right: 60%; }
 }
          
-.top-nav{height:100px; background-color:#fff; border-bottom:1px solid #fff; text-align:center; position:relative; position:fixed; top:0; left:0; right:0; z-index:10; box-shadow:0 0 10px #000;
+.top-nav{height:100px; background-color:#fff; border-bottom:1px solid #fff; text-align:center; position:relative; position:fixed; top:0; left:0; right:0; z-index:10;
     a{text-decoration:none; color:#2272ed; letter-spacing:-.4px;
-        h1{line-height:1em; letter-spacing: -.7px; font-size:27px; font-weight:400; color:#313131; padding:30px 0 10px;}
+        h1{width:175px; height:48.5px; background: url(../../img/logo1.png) 0 0 no-repeat; background-size:175px 48.5px; font-size:0; line-height:0; text-indent:-30000em; margin:20px auto 10px;}
     }
     .login{display:inline-block; position:absolute; top:15px; right:10px;}
 }
@@ -80,21 +80,127 @@ animation: moveCircle2 12s linear infinite;
     }
 }
 
-h2.now-posi{margin:20px 16px; text-align:right;
-    strong{font-size:18px;}
-    span{font-size:14px; margin-left:4px;}
+h2.now-posi{margin:20px 0; padding:24px 0 4px; margin:0 16px; border-bottom:2px solid #999; text-align:right; letter-spacing:-.7px; display:flex; justify-content:space-between;
+    strong{font-size:14px; font-weight:500; color:#666;}
+    span{font-size:14px; font-weight:700; color:#f90; margin-left:4px;}
 }
-.group-header-tit{padding:0 0 8px; display:flex; justify-content: space-between; margin:20px 16px 8px;
-    h3{font-weight:normal; color:#000;
+.group-header-tit{padding:0 0 8px; display:flex; justify-content: space-between; margin:20px 16px 8px; border-bottom:1px solid #eaeaea;
+    h3{font-weight:normal; color:#333;
         em{margin-right:6px; font-size:16px; font-style:normal; position:relative; top:-2px; color:#666;}
-        strong{font-size:20px;}
-        span{font-weight:14px; font-weight:normal; color:#f00; margin-left:6px;}
+        strong{font-size:16px; font-weight:400;}
+        span{font-size:14px; font-weight:400; color:#f90; margin-left:6px;}
+    }
+    .relative{
+        button{background:none; border:0;}
     }
 }
 .card-wrap{
-    .swiper-slide{background-color:#fff; border:1px solid #eee; filter: drop-shadow(0 3px 3px #999); padding:12px; border-radius: 8px; height:120px; margin:10px 0;}
-    .swiper-slide-active{background-color:#eaeaea;}
+    .swiper-slide{height:130px; margin:10px 0;
+    }
+    .swiper-slide-prev{
+        .card-inner{background-color:#f90; border-top:1px solid rgb(234, 126, 25); border-bottom:1px solid rgb(72, 14, 14);}
+    }
+    .swiper-slide-active{
+        .card-inner{background-color:rgb(74, 25, 25); border-radius:4px; border-bottom:1px solid rgb(41, 5, 5); border-top:1px solid #aaa;
+            h3{color:#fff;}
+            .link-url{color:#eee; margin-bottom:4px; display:inline-block;}
+            .summary{color:#eaeaea;}
+            .btn-box button{color:#cd8051;}
+            .tag{color:rgb(200, 121, 121);}
+        }
+    }
 }
+:root {
+    --card-radius: 14px;
+    --bw: 4px; /* 테두리 두께 */
+    --border-grad: linear-gradient(90deg, #06b6d4, #7c3aed);
+    --accent-grad: linear-gradient(135deg, rgba(6,182,212,0.06), rgba(124,58,237,0.06));
+    --shimmer-duration: 3.2s;
+  }
+  /* 2) 내부 카드 (실제 컨텐츠) */
+  .card-inner {
+    position: relative;
+    z-index: 1;
+    border-radius: calc(var(--card-radius) - var(--bw));
+    padding: 16px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-image:
+      linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 50%, rgba(255,255,255,0.03) 100%),
+      var(--accent-grad);
+    background-blend-mode: overlay;
+    backdrop-filter: blur(0.5px); /* 아주 미세한 흐림으로 부드러움 */
+    color: #0f172a;
+  }
+  
+  /* 3) 흘러가는 빛(Shimmer) */
+  .card-inner::after {
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: -60%;
+    width: 220%;
+    height: 160%;
+    transform: rotate(8deg);
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.00) 0%,
+      rgba(255,255,255,0.25) 45%,
+      rgba(255,255,255,0.12) 50%,
+      rgba(255,255,255,0.00) 70%
+    );
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    pointer-events: none;
+    animation: shimmer var(--shimmer-duration) linear infinite;
+  }
+  
+  /* 4) 작은 스파클들 — HTML 내 <span.sparkle> 3개 사용 */
+  .sparkle {
+    position: absolute;
+    left: var(--x, 50%);
+    top: var(--y, 50%);
+    width: calc(10px * var(--s, 1));
+    height: calc(10px * var(--s, 1));
+    transform: translate(-50%, -50%) scale(0.8);
+    border-radius: 50%;
+    pointer-events: none;
+  
+    /* 부드러운 원형 빛 */
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 30%, rgba(255,255,255,0.0) 60%);
+    filter: blur(0.6px);
+    opacity: 0;
+    animation: sparkle 2.4s cubic-bezier(.4,.0,.2,1) infinite;
+    animation-delay: var(--d, 0s);
+  }
+  
+  /* keyframes */
+  @keyframes shimmer {
+    0%   { transform: translateX(-50%) rotate(8deg); opacity: 0.9; }
+    20%  { opacity: 0.9; }
+    50%  { transform: translateX(0%) rotate(8deg); opacity: 0.95; }
+    100% { transform: translateX(50%) rotate(8deg); opacity: 0.9; }
+  }
+  
+  @keyframes sparkle {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+    10%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+    30%  { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+  }
+
+.card-detail{
+    h3.tit{font-size:16px; font-weight:700;
+        em{font-style:normal; font-weight:500; color:#fff; font-size:11px; position:relative; left:-7px; top:-12px;}
+    }
+    .link-url{font-size:13px;}
+    .summary{font-size:13px;}
+    .tag{font-size:11px; color:#2272ed; margin:2px 0;}
+    .btn-box{
+        button{border:none; background:none; text-decoration:underline; font-size:13px; font-weight:700; margin:0 4px 0 0;}
+    }
+}
+
 .list{ padding:10px 16px 30px;
     .list-area{margin-bottom:10px;}
     .list-detail{
@@ -121,10 +227,6 @@ h2.now-posi{margin:20px 16px; text-align:right;
             .drag-handle{font-size:13px; text-align:right; padding:5px 6px; border:1px solid #aeaeae; margin:2px 0 0 0; border-radius:2px; background-color:#fff;}
         }
     }
-}
-// 새 그룹 만들기
-.btn-create-group{padding:50px 20px 10px;
-    button{width:100%; height:50px; line-height:50px; border:0; color:#fff; background-color:#2272ed; border:1px solid #313131; border-radius:8px;}
 }
 
 // Toggle Button
