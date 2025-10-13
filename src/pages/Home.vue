@@ -19,24 +19,25 @@
     </div>
 
     <!-- 정렬 옵션 -->
-    <div v-if="viewMode === 'list'" class="flex justify-end items-center gap-2 text-sm">
+    <!-- <div v-if="viewMode === 'list'" class="flex justify-end items-center gap-2 text-sm">
       <label for="sortMode">정렬:</label>
       <select v-model="sortMode" class="border rounded px-2 py-1" id="sortMode">
         <option value="default">기본순</option>
         <option value="title">제목순</option>
         <option value="recent">최신순</option>
       </select>
-    </div>
+    </div> -->
 
     <!-- 상태 -->
-    <h2 class="now-posi">
-      <div>
-        <strong>Type {{ viewMode === 'card' ? 'Card' : 'List' }}</strong>
-        <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
-      </div>
-      <button @click="createGroup">+ 그룹 만들기</button>
-    </h2>
-
+    <div class="now-posi">
+      <h2>
+        <div>
+          <strong>{{ viewMode === 'card' ? '카드형' : '리스트형' }} 보기</strong>
+          <span class="text-sm text-gray-500">({{ totalCardCount }})</span>
+        </div>
+        <button @click="createGroup">+ 그룹 만들기</button>
+      </h2>
+  </div>
     <!-- 그룹이 없는 경우 -->
     <div v-if="groups.length === 0">
       <EmptyCard :groupIndex="0" />
@@ -117,9 +118,11 @@
     </div>
     <!-- 보기 전환 버튼 -->
     <div class="btn-toggle">
-      <button @click="toggleView" class="btn-chk">
-        {{ viewMode === 'card' ? 'List Type' : 'Card Type' }}
-      </button>
+      <div>
+        <button @click="toggleView" class="btn-chk">
+          {{ viewMode === 'card' ? '리스트로보기' : '카드보기' }}
+        </button>
+    </div>
     </div>
   </section>
 </template>
