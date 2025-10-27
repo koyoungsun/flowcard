@@ -1,8 +1,8 @@
 <template>
   <nav class="top-nav">
-    <router-link to="/" class="logo"><h1>Link Wallet</h1></router-link>
+    <router-link to="/" class="logo"><h1>LINK <strong>WALLET</strong></h1></router-link>
 
-    <div class="t-log-area">
+    <div class="t-log-area" style="display:none;">
       <!-- 사용자 이름 표시 -->
       <span v-if="currentUser" class="t-log-tit"> {{ currentUser.displayName || currentUser.email }}님 반갑습니다.</span>
 

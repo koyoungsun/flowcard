@@ -69,7 +69,7 @@
         <div v-if="viewMode === 'list'" class="list">
           <draggable v-model="group.cards" :item-key="(_, i) => i" animation="200" handle=".drag-handle" class="list-area">
             <template #item="{ element, index }">
-              <div class="list-detail">
+              <div class="list-detail drag-handle cursor-move">
                 <div class="flex-1">
                   <h3>
                     <em v-if="group.cards.length > 0">#{{ index + 1 }}</em>{{ element.title }}
@@ -84,10 +84,11 @@
                 <div class="btn-box-wrap">
                   <div class="btn-box">
                     <button class="btn-go" @click="openLink(element.url)">바로가기</button>
-                    <button class="btn-setting" @click="editCard(gIdx, index)">편집</button>
-                    <button class="btn-copy" @click="copyLink(element.url)">복사</button>
+                    <div class="link-set">
+                      <button class="btn-setting" @click="editCard(gIdx, index)">Setting</button>
+                      <button class="btn-copy" @click="copyLink(element.url)">Copy</button>
                   </div>
-                  <div class="drag-handle cursor-move text-gray-400 ml-3">Drag</div>
+                  </div>
                 </div>
               </div>
             </template>

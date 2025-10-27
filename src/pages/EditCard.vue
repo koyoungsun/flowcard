@@ -1,49 +1,48 @@
 <template>
-  <div class="p-4">
-    <h2 class="text-xl font-bold mb-4">링크카드 편집</h2>
-
+  <div class="linkcard-setting">
+    <h2 class="tit-link-set">링크카드 편집</h2>
     <form @submit.prevent="handleSave" class="space-y-4">
       <div>
-        <label class="block mb-1 text-sm font-medium">카드 제목</label>
+        <label class="">Card Title</label>
         <input
           v-model="form.title"
           type="text"
-          class="w-full border rounded px-3 py-2"
-          placeholder="예: 나의 유튜브 채널"
+          class="card-name"
+          placeholder="ex: 나의 유튜브 채널"
           required
         />
       </div>
 
       <div>
-        <label class="block mb-1 text-sm font-medium">링크 URL</label>
+        <label class="">Link URL</label>
         <input
           v-model="form.url"
           type="url"
           class="w-full border rounded px-3 py-2"
-          placeholder="예: https://youtube.com/..."
+          placeholder="ex: https://youtube.com/..."
           required
         />
       </div>
 
       <div>
-        <label class="block mb-1 text-sm font-medium">간단한 설명 (선택)</label>
+        <label class="">Comment</label>
         <textarea
           v-model="form.summary"
           class="w-full border rounded px-3 py-2"
-          placeholder="예: 유튜브 채널 정리용 카드"
+          placeholder="ex: 유튜브 채널 정리용 카드"
         ></textarea>
       </div>
 
       <div>
-        <label class="block mb-1 text-sm font-medium">태그 (쉼표 구분)</label>
+        <label class="">Tag</label>
         <input
           v-model="form.tagsInput"
           type="text"
           class="w-full border rounded px-3 py-2"
-          placeholder="예: 유튜브,채널"
+          placeholder="ex: 유튜브,채널"
         />
       </div>
-
+      <div class="btn-box">
       <button
         type="submit"
         class="bg-blue-500 text-white px-4 py-2 rounded w-full font-medium"
@@ -56,8 +55,9 @@
         @click="handleDelete"
         class="bg-red-500 text-white px-4 py-2 rounded w-full font-medium mt-2"
       >
-        삭제하기
+        삭제
       </button>
+    </div>
     </form>
   </div>
 </template>
