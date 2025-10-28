@@ -1,23 +1,39 @@
 <template>
-  <div
-    @click="goToAdd"
-    class="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center cursor-pointer hover:bg-gray-50"
-  >
-    <p class="link-card-add ">➕ 링크 카드 추가</p>
+  <div class="add-card-button text-center mt-4">
+    <button
+      class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded text-sm shadow transition"
+      @click="goToAddPage"
+    >
+      ➕ 새 링크 만들기
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { defineProps } from "vue";
 
-// 💡 여기서 props로 groupIndex를 받도록 합니다.
 const props = defineProps<{
-  groupIndex: number;
+  groupId: string;
+  groupIndex?: number;
 }>();
 
 const router = useRouter();
-const goToAdd = () => {
-  router.push({ name: 'AddCard', params: { groupIndex: props.groupIndex } });
-};
+
+// ✅ AddCard 페이지로 이동 (groupId 전달)
+function goToAddPage() {
+  console.log("👉 이동할 groupId:", props.groupId);
+  router.push({
+    name: "AddCard",
+    params: { groupId: props.groupId },
+  });
+}
 </script>
+
+<style scoped>
+.add-card-button button {
+  transition: all 0.2s ease;
+}
+.add-card-button button:hover {
+  transform: translateY(-2px);
+}
+</style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="linkcard-add-wrap">
-    <h2 class="tit">링크카드 추가</h2>
+  <div class="linkcard-add-wrap p-6 min-h-screen bg-gray-50">
+    <h2 class="tit text-xl font-semibold mb-4">🔗 링크카드 추가</h2>
 
-    <form @submit.prevent="handleAddCard" class="space-y-4">
+    <form @submit.prevent="handleAddCard" class="space-y-4 bg-white p-5 rounded shadow-md">
       <div class="body-tit">
-        <label class="block mb-1 text-sm font-medium"><em>*</em>카드 제목</label>
+        <label class="block mb-1 text-sm font-medium"><em>*</em> 카드 제목</label>
         <input
           v-model="form.title"
           type="text"
@@ -15,7 +15,7 @@
       </div>
 
       <div class="body-link">
-        <label class="block mb-1 text-sm font-medium"><em>*</em>링크 경로(URL)</label>
+        <label class="block mb-1 text-sm font-medium"><em>*</em> 링크 경로(URL)</label>
         <input
           v-model="form.url"
           type="url"
@@ -26,7 +26,7 @@
       </div>
 
       <div class="body-summary">
-        <label class="block mb-1 text-sm font-medium"><em>*</em>간단한 설명</label>
+        <label class="block mb-1 text-sm font-medium"><em>*</em> 간단한 설명</label>
         <textarea
           v-model="form.summary"
           class="w-full border rounded px-3 py-2"
@@ -43,90 +43,96 @@
           class="w-full border rounded px-3 py-2"
           placeholder="예: 클라우드,구글"
         />
-        <p>쉼표를 사용하여 추가할 수 있습니다.</p>
+        <p class="text-xs text-gray-500 mt-1">쉼표로 구분해서 입력할 수 있습니다.</p>
       </div>
 
       <button
         type="submit"
-        class="btn-create"
+        class="btn-create bg-indigo-500 text-white px-4 py-2 rounded w-full hover:bg-indigo-600 transition"
       >
         저장
       </button>
     </form>
+
+    <!-- ✅ ToastMessage 컴포넌트 추가 -->
+    <ToastMessage ref="toastRef" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useLinks } from "@/composables/useLinks";
+import ToastMessage from "@/components/ToastMessage.vue";
 
-type LinkCard = {
-  title: string
-  url: string
-  summary?: string
-  tags?: string[]
-  updatedAt?: number
-}
+const router = useRouter();
+const route = useRoute();
 
-type LinkGroup = {
-  groupName: string
-  cards: LinkCard[]
-}
+// ✅ groupIndex → groupId 로 수정 (라우터 파라미터 통일)
+const groupId = route.params.groupId as string;
 
-const router = useRouter()
-const route = useRoute()
+// ✅ Firestore 링크 훅
+const { links, addLink, fetchLinks } = useLinks(groupId);
 
-// groupIndex를 정확하게 파싱하고, 없으면 null로 처리
-const groupIndexRaw = route.params.groupIndex
-const groupIndex = groupIndexRaw !== undefined ? Number(groupIndexRaw) : null
+// ✅ ToastMessage
+const toastRef = ref();
 
 const form = ref({
-  title: '',
-  url: '',
-  summary: '',
-  tagsInput: '',
-})
+  title: "",
+  url: "",
+  summary: "",
+  tagsInput: "",
+});
 
-function handleAddCard(): void {
-  const raw = localStorage.getItem('groups')
-  if (!raw) {
-    alert('저장된 그룹이 없습니다.')
-    return
-  }
-
-  const groups = JSON.parse(raw) as LinkGroup[]
-  if (groupIndex === null || isNaN(groupIndex) || !groups[groupIndex]) {
-    alert('올바르지 않은 그룹입니다.')
-    return
-  }
-
-  const group = groups[groupIndex]
-  const cards = group.cards || []
-
-  const title = form.value.title.trim()
-  const url = form.value.url.trim()
-  const summary = form.value.summary?.trim() || ''
+async function handleAddCard() {
+  const title = form.value.title.trim();
+  const url = form.value.url.trim();
+  const summary = form.value.summary.trim();
   const tags = form.value.tagsInput
-    ? form.value.tagsInput.split(',').map(tag => tag.trim()).filter(Boolean)
-    : []
+    ? form.value.tagsInput.split(",").map((t) => t.trim()).filter(Boolean)
+    : [];
 
-  const isDuplicate = cards.some(card => card.url === url)
+  if (!title || !url) {
+    toastRef.value?.show("필수 항목을 입력해주세요!");
+    return;
+  }
+
+  // 🔸 Firestore 중복 검사
+  await fetchLinks();
+  const isDuplicate = links.value.some((card) => card.url === url);
   if (isDuplicate) {
-    alert('이미 등록된 링크입니다.')
-    return
+    toastRef.value?.show("이미 등록된 링크입니다!");
+    return;
   }
 
-  const newCard: LinkCard = {
-    title,
-    url,
-    summary,
-    tags,
-    updatedAt: Date.now()
+  try {
+    await addLink({
+      title,
+      url,
+      summary,
+      tags,
+      createdAt: Date.now(),
+    });
+
+    toastRef.value?.show("카드가 추가되었습니다!");
+    // ✅ router.go(0) 제거 → 실시간 구독으로 자동 반영됨
+    setTimeout(() => router.push("/"), 1000);
+  } catch (err: any) {
+    console.error("🚫 링크 추가 실패:", err);
+    toastRef.value?.show(`추가 실패: ${err.message}`);
   }
-
-  group.cards.push(newCard)
-  localStorage.setItem('groups', JSON.stringify(groups))
-
-  router.push('/')
 }
 </script>
+
+<style scoped>
+.tit em {
+  color: #ef4444;
+  margin-right: 4px;
+}
+.btn-create {
+  transition: all 0.2s ease;
+}
+.btn-create:hover {
+  transform: translateY(-1px);
+}
+</style>

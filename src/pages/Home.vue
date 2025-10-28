@@ -36,24 +36,22 @@
     </div>
 
     <!-- 그룹이 없는 경우 -->
-    <div v-if="groups.length === 0">
-      <EmptyCard :groupIndex="0" />
+    <div v-if="groups && groups.length === 0">
+      <EmptyCard :groupIndex="0" :groupId="''" />
     </div>
 
     <!-- 그룹 목록 -->
     <div v-else>
-      <div v-for="(group, gIdx) in groups" :key="group.id" class="mb-8">
+      <div v-for="group in groups" :key="group.id" class="mb-8">
         <!-- 그룹 헤더 -->
         <div class="group-header-tit flex justify-between items-center">
           <h3 class="text-lg font-semibold">
             <em>#</em><strong>{{ group.groupName }}</strong>
-            <span v-if="group.cards?.length" class="text-sm text-gray-500">({{ group.cards.length }}개)</span>
+            <span class="text-sm text-gray-500">({{ (linksByGroup[group.id]?.length) || 0 }}개)</span>
           </h3>
-
-          <!-- 그룹 옵션 메뉴 -->
           <div class="relative">
-            <button @click="toggleGroupMenu(gIdx)" class="text-lg">⋮</button>
-            <div v-if="activeGroupMenuIndex === gIdx" class="absolute right-0 bg-white shadow-md border rounded mt-1">
+            <button @click="toggleGroupMenu(group.id)" class="text-lg">⋮</button>
+            <div v-if="activeGroupMenuId === group.id" class="absolute right-0 bg-white shadow-md border rounded mt-1">
               <ul class="text-sm">
                 <li><button @click="onRenameGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100">이름 수정</button></li>
                 <li><button @click="onDeleteGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100 text-red-500">그룹 삭제</button></li>
@@ -64,14 +62,23 @@
 
         <!-- 리스트형 -->
         <div v-if="viewMode === 'list'" class="list">
-          <draggable v-model="group.cards" :item-key="(_, i) => i" animation="200" handle=".drag-handle" class="list-area mt-3">
+          <draggable
+            v-model="linksByGroup[group.id]"
+            :item-key="(_, i) => i"
+            animation="200"
+            handle=".drag-handle"
+            class="list-area mt-3"
+          >
             <template #item="{ element, index }">
-              <div class="list-detail drag-handle cursor-move bg-white p-3 rounded shadow-sm mb-2 flex justify-between">
-                <div class="flex-1">
-                  <h3>
-                    <em>#{{ index + 1 }}</em> {{ element.title }}
-                  </h3>
-                  <p v-if="element.summary" class="tit-summary text-gray-500">{{ element.summary }}</p>
+              <div class="list-detail drag-handle cursor-move bg-white p-3 rounded shadow-sm mb-2 flex items-center justify-between">
+                <div class="flex items-center gap-3 flex-1">
+                  <img :src="getFavicon(element.url)" alt="favicon" class="w-5 h-5 rounded shrink-0" />
+                  <div>
+                    <h3 class="font-medium">
+                      <em class="text-gray-400 mr-1">#{{ index + 1 }}</em> {{ element.title }}
+                    </h3>
+                    <p v-if="element.summary" class="tit-summary text-gray-500 text-sm">{{ element.summary }}</p>
+                  </div>
                 </div>
                 <div class="flex gap-2">
                   <button class="text-indigo-500 text-sm" @click="openLink(element.url)">바로가기</button>
@@ -81,37 +88,41 @@
             </template>
           </draggable>
           <div class="text-center mt-4">
-            <AddCardButton :groupIndex="gIdx" />
+            <AddCardButton :groupId="group.id" />
           </div>
         </div>
 
         <!-- 카드형 -->
         <div v-else class="card-wrap mt-3">
           <Swiper :slides-per-view="1.7" :space-between="8" centeredSlides>
-            <SwiperSlide class="gradient-card" v-for="(card, index) in group.cards" :key="`card-${index}`">
-              <div class="card-inner">
-                <Card :card="card" :groupIndex="gIdx" :cardIndex="index" />
+            <SwiperSlide class="gradient-card" v-for="(card, index) in (linksByGroup[group.id] || [])" :key="`card-${index}`">
+              <div class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm">
+                <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded" />
+                <Card :card="card" :groupId="group.id" :cardIndex="index" />
               </div>
             </SwiperSlide>
             <SwiperSlide key="add-card">
-              <AddCardSlide :groupIndex="gIdx" />
+              <AddCardSlide :groupId="group.id" />
             </SwiperSlide>
           </Swiper>
         </div>
       </div>
     </div>
 
-    <!-- 보기 전환 버튼 -->
+    <!-- 뷰 전환 버튼 -->
     <div class="text-center py-6">
       <button @click="toggleView" class="bg-indigo-500 text-white px-4 py-2 rounded">
         {{ viewMode === 'card' ? '리스트로 보기' : '카드로 보기' }}
       </button>
     </div>
+
+    <!-- ✅ 토스트 메시지 -->
+    <ToastMessage ref="toastRef" />
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted, watch, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
@@ -122,18 +133,37 @@ import Card from "@/components/Card.vue";
 import EmptyCard from "@/components/EmptyCard.vue";
 import AddCardButton from "@/components/AddCardButton.vue";
 import AddCardSlide from "@/components/AddCardSlide.vue";
+import ToastMessage from "@/components/ToastMessage.vue";
 import { useGroups } from "@/composables/useGroups";
+import { useLinks } from "@/composables/useLinks";
+import { useAuthWatcher } from "@/composables/useAuthWatcher";
 
 const router = useRouter();
-const { groups, fetchGroups, createGroup, deleteGroup, loading } = useGroups();
+const toastRef = ref();
+onMounted(() => useAuthWatcher(toastRef));
 
-const defaultView = ref<"card" | "list">((localStorage.getItem("defaultViewMode") as "card" | "list") || "card");
-const viewMode = ref<"card" | "list">(defaultView.value);
+const { groups, fetchGroups, createGroup, deleteGroup } = useGroups();
+const linksByGroup = reactive<Record<string, any[]>>({});
+const linkFetchers: Record<string, ReturnType<typeof useLinks>> = {};
+
+const defaultView = ref(localStorage.getItem("defaultViewMode") || "card");
+const viewMode = ref(defaultView.value);
 const showSettings = ref(false);
-const activeGroupMenuIndex = ref<number | null>(null);
+const activeGroupMenuId = ref<string | null>(null);
 const showNav = ref(false);
 
-const totalCardCount = computed(() => groups.value.reduce((sum, g) => sum + (g.cards?.length || 0), 0));
+const totalCardCount = computed(() =>
+  groups.value.reduce((sum, g) => sum + ((linksByGroup[g.id]?.length) || 0), 0)
+);
+
+function getFavicon(url: string): string {
+  if (!url || typeof url !== "string") return "/default-icon.png";
+  try {
+    return `https://www.google.com/s2/favicons?sz=64&domain_url=${new URL(url).origin}`;
+  } catch {
+    return "/default-icon.png";
+  }
+}
 
 function toggleView() {
   viewMode.value = viewMode.value === "card" ? "list" : "card";
@@ -144,6 +174,7 @@ function applyDefaultView() {
   localStorage.setItem("defaultViewMode", defaultView.value);
   viewMode.value = defaultView.value;
   showSettings.value = false;
+  toastRef.value?.show("설정이 적용되었습니다!");
 }
 
 function openLink(url: string) {
@@ -151,37 +182,64 @@ function openLink(url: string) {
 }
 
 function copyLink(url: string) {
-  navigator.clipboard.writeText(url).then(() => alert("링크가 복사되었습니다!"));
+  navigator.clipboard.writeText(url).then(() => toastRef.value?.show("링크가 복사되었습니다!"));
 }
 
-function toggleGroupMenu(index: number) {
-  activeGroupMenuIndex.value = activeGroupMenuIndex.value === index ? null : index;
+function toggleGroupMenu(id: string) {
+  activeGroupMenuId.value = activeGroupMenuId.value === id ? null : id;
 }
 
 async function onCreateGroup() {
   const name = prompt("그룹 이름을 입력하세요");
-  if (!name) return;
-  await createGroup(name.trim());
+  if (name) await createGroup(name.trim());
 }
 
 async function onDeleteGroup(group: any) {
   if (confirm("정말 이 그룹을 삭제하시겠습니까?")) {
     await deleteGroup(group.id);
+    delete linksByGroup[group.id];
   }
 }
 
 function onRenameGroup(group: any) {
   const newName = prompt("새 그룹명을 입력하세요", group.groupName);
-  if (!newName?.trim()) return;
-  alert(`그룹명 변경: ${group.groupName} → ${newName}`);
+  if (newName?.trim()) toastRef.value?.show(`그룹명 변경: ${group.groupName} → ${newName}`);
 }
 
 function handleNavGo(target: string) {
   showNav.value = false;
-  if (target === "home") router.push("/home");
+  if (target === "home") router.push("/");
   else if (target === "settings") showSettings.value = true;
-  else if (target === "profile") alert("👤 프로필 화면 준비 중!");
+  else if (target === "profile") toastRef.value?.show("👤 프로필 화면 준비 중!");
 }
 
-onMounted(fetchGroups);
+/* ✅ Firestore 실시간 링크 동기화 */
+watch(
+  () => groups.value.map((g) => g.id),
+  async (ids) => {
+    if (!ids?.length) return;
+
+    for (const id of ids) {
+      if (!id || linkFetchers[id]) continue;
+
+      const linkHandler = useLinks(id);
+      linkFetchers[id] = linkHandler;
+      await linkHandler.fetchLinks();
+
+      watch(
+        linkHandler.links,
+        async (newVal) => {
+          linksByGroup[id] = [...newVal];
+          await nextTick();
+        },
+        { immediate: true }
+      );
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
+  await fetchGroups();
+});
 </script>
