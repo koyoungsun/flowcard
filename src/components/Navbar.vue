@@ -10,13 +10,13 @@
     <!-- 오른쪽 영역 -->
     <div class="flex items-center gap-3">
       <!-- 사용자 이름 -->
-      <span v-if="currentUser" class="t-log-tit text-sm text-gray-600">
-        {{ currentUser.displayName || currentUser.email }}님 반갑습니다.
+      <span v-if="user" class="t-log-tit text-sm text-gray-600">
+        {{ user.displayName || user.email }}님 반갑습니다.
       </span>
 
       <!-- 로그인 / 로그아웃 -->
       <router-link
-        v-if="!currentUser"
+        v-if="!user"
         to="/login"
         class="nt-t-login text-indigo-500 hover:underline"
       >
@@ -43,18 +43,19 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useAuth } from "@/composables/useAuth";
+import { ref } from "vue";
+import { useAuthWatcher } from "@/composables/useAuthWatcher";
 
-const { currentUser, logout } = useAuth();
-const router = useRouter();
+const toastRef = ref();
+
+// ✅ useAuthWatcher에서 user와 manualSignOut 함께 가져옴
+const { user, manualSignOut } = useAuthWatcher(toastRef);
 
 async function handleLogout() {
   try {
-    await logout();
-    router.push("/login");
+    await manualSignOut(); // ✅ Firestore 구독 정리 + 로그아웃 + 토스트 + 라우팅
   } catch (err) {
-    console.error("로그아웃 실패:", err);
+    console.error("🚫 로그아웃 실패:", err);
   }
 }
 </script>
