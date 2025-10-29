@@ -1,27 +1,5 @@
 <template>
   <section class="relative min-h-screen bg-gray-50 p-4 space-y-6">
-    <!-- 설정 버튼 -->
-    <button class="top-setting" @click="showSettings = !showSettings">⚙️ Setting</button>
-
-    <!-- 보기 설정 -->
-    <div v-if="showSettings" class="setting-area bg-white p-4 rounded shadow-md">
-      <div class="sel-tit mb-3">
-        <h3 class="tit font-semibold">Default Mode Set</h3>
-        <div class="sel-chk space-y-1">
-          <label class="block">
-            <input type="radio" value="card" v-model="defaultView" class="mr-1" />Card Type
-          </label>
-          <label class="block">
-            <input type="radio" value="list" v-model="defaultView" class="mr-1" />List Type
-          </label>
-        </div>
-      </div>
-      <div class="sel-btn flex justify-end gap-2">
-        <button class="px-4 py-1 bg-indigo-500 text-white text-sm rounded" @click="applyDefaultView">확인</button>
-        <button class="px-4 py-1 bg-gray-300 text-sm rounded" @click="showSettings = false">닫기</button>
-      </div>
-    </div>
-
     <!-- 상태 -->
     <div class="now-posi flex justify-between items-center mt-2">
       <h2>
@@ -47,10 +25,16 @@
           </h3>
           <div class="relative">
             <button @click="toggleGroupMenu(group.id)" class="text-lg">⋮</button>
-            <div v-if="activeGroupMenuId === group.id" class="absolute right-0 bg-white shadow-md border rounded mt-1">
+            <div
+              v-if="activeGroupMenuId === group.id"
+              class="absolute right-0 bg-white shadow-md border rounded mt-1"
+            >
               <ul class="text-sm">
                 <li>
-                  <button @click="onRenameGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100">
+                  <button
+                    @click="onRenameGroup(group)"
+                    class="block w-full text-left px-3 py-1 hover:bg-gray-100"
+                  >
                     이름 수정
                   </button>
                 </li>
@@ -104,8 +88,15 @@
               </div>
             </template>
           </draggable>
+
+          <!-- 리스트 모드에서도 추가 버튼 노출 -->
           <div class="text-center mt-4">
-            <AddCardButton :groupId="group.id" />
+            <button
+              class="inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
+              @click="goToAddCard(group.id)"
+            >
+              ＋ 링크카드 추가
+            </button>
           </div>
         </div>
 
@@ -117,13 +108,23 @@
               v-for="(card, index) in (linksByGroup[group.id] || [])"
               :key="`card-${index}`"
             >
-              <div class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm">
+              <div
+                class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition"
+              >
                 <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded" />
                 <Card :card="card" :groupId="group.id" :cardIndex="index" />
               </div>
             </SwiperSlide>
+
+            <!-- ✅ 카드 추가 버튼 -->
             <SwiperSlide key="add-card">
-              <AddCardSlide :groupId="group.id" />
+              <div
+                class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center p-6 text-gray-500 hover:bg-gray-100 cursor-pointer transition"
+                @click="goToAddCard(group.id)"
+              >
+                <span class="text-3xl mb-1">＋</span>
+                <p class="text-sm font-medium">링크카드 추가</p>
+              </div>
             </SwiperSlide>
           </Swiper>
         </div>
@@ -149,13 +150,11 @@ import "swiper/css";
 import draggable from "vuedraggable";
 import Card from "@/components/Card.vue";
 import EmptyCard from "@/components/EmptyCard.vue";
-import AddCardButton from "@/components/AddCardButton.vue";
-import AddCardSlide from "@/components/AddCardSlide.vue";
 import ToastMessage from "@/components/ToastMessage.vue";
 import { useGroups } from "@/composables/useGroups";
 import { useLinks } from "@/composables/useLinks";
 import { useAuthWatcher } from "@/composables/useAuthWatcher";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const props = defineProps<{ viewMode?: string }>();
 
@@ -179,7 +178,6 @@ watch(
   }
 );
 
-const showSettings = ref(false);
 const activeGroupMenuId = ref<string | null>(null);
 
 const totalCardCount = computed(() =>
@@ -204,13 +202,6 @@ async function onRenameGroup(group: any) {
 function toggleView() {
   currentViewMode.value = currentViewMode.value === "card" ? "list" : "card";
   localStorage.setItem("defaultViewMode", currentViewMode.value);
-}
-
-function applyDefaultView() {
-  localStorage.setItem("defaultViewMode", defaultView.value);
-  currentViewMode.value = defaultView.value;
-  showSettings.value = false;
-  toastRef.value?.show("설정이 적용되었습니다!");
 }
 
 function openLink(url: string) {
@@ -240,6 +231,12 @@ async function onDeleteGroup(group: any) {
 function goToEditCard(groupId: string, cardId: string) {
   if (!groupId || !cardId) return console.warn("⚠️ groupId 또는 cardId 누락:", groupId, cardId);
   router.push({ name: "EditCard", params: { groupId, cardId } });
+}
+
+/* ✅ 추가 버튼 클릭 시 AddCard로 이동 */
+function goToAddCard(groupId: string) {
+  if (!groupId) return;
+  router.push({ name: "AddCard", params: { groupId } });
 }
 
 /* ✅ Firestore 실시간 링크 동기화 */

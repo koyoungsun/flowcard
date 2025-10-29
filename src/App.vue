@@ -5,6 +5,7 @@
       @toggleNav="showNav = !showNav"
       @login="router.push('/login')"
       @logout="logoutUser"
+      @openGuide="showInfoModal = true"
     />
 
     <!-- 햄버거 메뉴 -->

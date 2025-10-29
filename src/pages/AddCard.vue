@@ -35,26 +35,26 @@
         ></textarea>
       </div>
 
-      <div class="body-hash">
-        <label class="block mb-1 text-sm font-medium">태그</label>
-        <input
-          v-model="form.tagsInput"
-          type="text"
-          class="w-full border rounded px-3 py-2"
-          placeholder="예: 클라우드,구글"
-        />
-        <p class="text-xs text-gray-500 mt-1">쉼표로 구분해서 입력할 수 있습니다.</p>
-      </div>
+      <!-- ✅ 하단 버튼 2개 (취소 / 저장) -->
+      <div class="flex justify-between gap-3 pt-4 border-t mt-6">
+        <button
+          type="button"
+          class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition"
+          @click="cancelAdd"
+        >
+          취소
+        </button>
 
-      <button
-        type="submit"
-        class="btn-create bg-indigo-500 text-white px-4 py-2 rounded w-full hover:bg-indigo-600 transition"
-      >
-        저장
-      </button>
+        <button
+          type="submit"
+          class="flex-1 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition"
+        >
+          저장
+        </button>
+      </div>
     </form>
 
-    <!-- ✅ ToastMessage 컴포넌트 추가 -->
+    <!-- ✅ ToastMessage -->
     <ToastMessage ref="toastRef" />
   </div>
 </template>
@@ -67,37 +67,28 @@ import ToastMessage from "@/components/ToastMessage.vue";
 
 const router = useRouter();
 const route = useRoute();
-
-// ✅ groupIndex → groupId 로 수정 (라우터 파라미터 통일)
 const groupId = route.params.groupId as string;
 
-// ✅ Firestore 링크 훅
 const { links, addLink, fetchLinks } = useLinks(groupId);
-
-// ✅ ToastMessage
 const toastRef = ref();
 
 const form = ref({
   title: "",
   url: "",
   summary: "",
-  tagsInput: "",
 });
 
+/* ✅ 저장 */
 async function handleAddCard() {
   const title = form.value.title.trim();
   const url = form.value.url.trim();
   const summary = form.value.summary.trim();
-  const tags = form.value.tagsInput
-    ? form.value.tagsInput.split(",").map((t) => t.trim()).filter(Boolean)
-    : [];
 
   if (!title || !url) {
     toastRef.value?.show("필수 항목을 입력해주세요!");
     return;
   }
 
-  // 🔸 Firestore 중복 검사
   await fetchLinks();
   const isDuplicate = links.value.some((card) => card.url === url);
   if (isDuplicate) {
@@ -106,21 +97,18 @@ async function handleAddCard() {
   }
 
   try {
-    await addLink({
-      title,
-      url,
-      summary,
-      tags,
-      createdAt: Date.now(),
-    });
-
+    await addLink({ title, url, summary, createdAt: Date.now() });
     toastRef.value?.show("카드가 추가되었습니다!");
-    // ✅ router.go(0) 제거 → 실시간 구독으로 자동 반영됨
     setTimeout(() => router.push("/"), 1000);
   } catch (err: any) {
     console.error("🚫 링크 추가 실패:", err);
     toastRef.value?.show(`추가 실패: ${err.message}`);
   }
+}
+
+/* ✅ 취소 (이전 페이지로 이동) */
+function cancelAdd() {
+  router.back();
 }
 </script>
 
@@ -129,10 +117,11 @@ async function handleAddCard() {
   color: #ef4444;
   margin-right: 4px;
 }
-.btn-create {
+
+button {
   transition: all 0.2s ease;
 }
-.btn-create:hover {
+button:hover {
   transform: translateY(-1px);
 }
 </style>

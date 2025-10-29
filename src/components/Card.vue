@@ -7,12 +7,12 @@
     </h3>
 
     <!-- 링크 주소 -->
-    <a class="link-url text-blue-500 text-sm break-all hover:underline"
+    <!-- <a class="link-url text-blue-500 text-sm break-all hover:underline"
        :href="card.url"
        target="_blank"
        rel="noopener noreferrer">
       {{ card.url }}
-    </a>
+    </a> -->
 
     <!-- summary 있을 때만 노출 -->
     <p v-if="card.summary" class="summary text-gray-600 text-sm mt-1">

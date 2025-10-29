@@ -1,12 +1,89 @@
 @import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
+/* ===============================
+   🌙 LUNEST — LinkNest Theme Tokens
+   From Seeds to Systems.
+   =============================== */
 
+/* Root: 라이트 모드 기본값 */
+:root {
+    /* 배경 & 서피스 */
+    --color-bg: #f9fafb;
+    --color-surface: #ffffff;
+    --color-surface-alt: #f3f4f6;
+  
+    /* 텍스트 */
+    --color-text: #111827;
+    --color-text-sub: #6b7280;
+  
+    /* 포인트 / 브랜드 */
+    --color-brand: #4f46e5;       /* indigo-600 */
+    --color-brand-light: #6366f1; /* indigo-500 */
+    --color-accent: #10b981;      /* green-500 */
+  
+    /* 경계선 & 그림자 */
+    --color-border: #e5e7eb;
+    --shadow-base: 0 1px 3px rgba(0, 0, 0, 0.08);
+  
+    /* 상태 */
+    --color-error: #ef4444;
+    --color-success: #16a34a;
+    --color-warning: #f59e0b;
+  }
+  
+  /* ===============================
+     🌗 다크 모드
+     =============================== */
+  .dark {
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-surface-alt: #334155;
+  
+    --color-text: #f1f5f9;
+    --color-text-sub: #94a3b8;
+  
+    --color-brand: #818cf8;
+    --color-brand-light: #a5b4fc;
+    --color-accent: #34d399;
+  
+    --color-border: #475569;
+    --shadow-base: 0 1px 5px rgba(0, 0, 0, 0.4);
+  
+    --color-error: #f87171;
+    --color-success: #22c55e;
+    --color-warning: #fbbf24;
+  }
+  
+  /* ===============================
+     ✨ 공통 유틸리티
+     =============================== */
+  
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .card {
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-base);
+    border: 1px solid var(--color-border);
+  }
+  
+  .text-sub {
+    color: var(--color-text-sub);
+  }
+  
+  .btn-primary {
+    background-color: var(--color-brand);
+    color: #fff;
+    &:hover {
+      background-color: var(--color-brand-light);
+    }
+  }
 
 *{margin:0; padding:0;}
 body {
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif'; background:#FAFAFB
-
-    ;
-  }
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';}
   
 #app{position: relative; overflow: hidden;}
 
@@ -21,39 +98,6 @@ body {
     .login{display:inline-block; position:absolute; top:15px; right:10px;}
 }
 
-.top-setting{position:fixed; top:0; left:0; border:0; padding:15px; z-index:10; color:#523772; background:none;}
-.setting-area{height:50px; background-color:#eee; padding:8px 15px; display:flex; justify-content:space-between; position:fixed; bottom:100px; left:0; right:0; z-index:10; filter: drop-shadow(0 3px 3px #999);
-    .sel-tit{
-        h3{font-size:16px; color:#333;}
-        .sel-chk{margin-top:6px;
-            label{margin-right:12px; font-size:13px; color:#666;
-                input{margin-right:4px;}
-            }
-        }
-    }
-    .sel-btn{position:relative; top:5px;
-        button{margin-left:4px;padding:8px 12px; background-color:#fff; border:0; border-radius:4px; color:#696969; font-size:14px; border:1px solid #eaeaea;
-            &:first-child{background-color:#2272ed; color:#fff;}
-        }
-    }
-}
-.now-posi{padding:4px; margin:20px 16px 0 0; border-radius:0 4px 4px 0; background-color:#fff;
-    h2{letter-spacing:-.7px; display:flex; padding:4px 8px; border-radius:4px; justify-content:space-between;
-        strong{font-size:16px; font-weight:700; color:#302043; letter-spacing:-1px;}
-        span{font-size:13px; font-weight:700; color:#f90; margin-left:4px; position:relative; top:-1px;}
-        button{background:none; border:0; color:#302043; letter-spacing:-1px;}
-    }
-}
-.group-header-tit{padding:0 0 8px; display:flex; justify-content: space-between; margin:20px 0 8px 16px;
-    h3{font-weight:500; color:#302043; letter-spacing: -1px;
-        em{margin-right:6px; font-size:16px; font-style:normal; position:relative; top:-2px; color:#7c3aed;}
-        strong{font-size:16px; font-weight:700;}
-        span{font-size:12px; font-weight:400; color:#f90; margin-left:6px; position:relative; top:-1px;}
-    }
-    .relative{
-        button{background:none; border:0;}
-    }
-}
 .card-wrap{
     .swiper-slide{height:160px; margin:10px 0;
     }
@@ -94,60 +138,7 @@ body {
   }
   
   /* 3) 흘러가는 빛(Shimmer) */
-  .card-inner::after {
-    content: "";
-    position: absolute;
-    top: -30%;
-    left: -60%;
-    width: 220%;
-    height: 160%;
-    transform: rotate(8deg);
-    background: linear-gradient(
-      90deg,
-      rgba(255,255,255,0.00) 0%,
-      rgba(255,255,255,0.25) 45%,
-      rgba(255,255,255,0.12) 50%,
-      rgba(255,255,255,0.00) 70%
-    );
-    mix-blend-mode: screen;
-    opacity: 0.9;
-    pointer-events: none;
-    animation: shimmer var(--shimmer-duration) linear infinite;
-  }
   
-  /* 4) 작은 스파클들 — HTML 내 <span.sparkle> 3개 사용 */
-  .sparkle {
-    position: absolute;
-    left: var(--x, 50%);
-    top: var(--y, 50%);
-    width: calc(10px * var(--s, 1));
-    height: calc(10px * var(--s, 1));
-    transform: translate(-50%, -50%) scale(0.8);
-    border-radius: 50%;
-    pointer-events: none;
-  
-    /* 부드러운 원형 빛 */
-    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 30%, rgba(255,255,255,0.0) 60%);
-    filter: blur(0.6px);
-    opacity: 0;
-    animation: sparkle 2.4s cubic-bezier(.4,.0,.2,1) infinite;
-    animation-delay: var(--d, 0s);
-  }
-  
-  /* keyframes */
-  @keyframes shimmer {
-    0%   { transform: translateX(-50%) rotate(8deg); opacity: 0.9; }
-    20%  { opacity: 0.9; }
-    50%  { transform: translateX(0%) rotate(8deg); opacity: 0.95; }
-    100% { transform: translateX(50%) rotate(8deg); opacity: 0.9; }
-  }
-  
-  @keyframes sparkle {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
-    10%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
-    30%  { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
-  }
 
 .card-detail{
     h3.tit{font-size:16px; font-weight:700;
@@ -158,102 +149,5 @@ body {
     .tag{font-size:11px; color:#2272ed; margin:2px 0;}
     .btn-box{
         button{border:none; background:none; text-decoration:underline; font-size:13px; font-weight:700; margin:0 4px 0 0;}
-    }
-}
-
-.list{ padding:10px 16px 30px;
-    .list-area{margin-bottom:10px;}
-    .list-detail{
-        border-top: 1px solid rgba($color: #999, $alpha:.4); display:flex; justify-content: space-between; padding:16px 8px 16px;
-        &:first-child{border-top:0;}
-        em.thumnail{border:1px solid rgba(0,0,0,0.08); width:32px; height:32px; display:block; border-radius:50% ; position:absolute; left:0; top:0;
-            img{width:32px; height:32px; border-radius:50%;}
-        }
-        h3.li-tit{display:inline-block;}
-        .flex-1{
-            h3{font-size:16px; color:#000;
-                em{display:inline-block; font-weight:normal; font-style: normal; margin-right:8px;}
-            }
-            p{font-size:13px; padding:4px 0 1px; color:#666;} 
-            .tag{color:#2272ed; font-size:12px;
-                span{margin-right:4px;}
-            }  
-        }
-        .posi{position:relative; padding-left:40px;}
-        .btn-box-wrap{
-            .btn-box{
-                .btn-go{ padding:3px 10px; margin:0 0 4px; float:right;}
-                .link-set{
-                    button{font-size:13px; font-weight:bold; padding:4px 8px; margin-left:2px; background:none; color:#666; border:none; border-radius:2px;
-                    }
-                }
-            }
-            .drag-handle{font-size:13px; text-align:right; padding:5px 6px; border:1px solid #aeaeae; margin:2px 0 0 0; border-radius:2px; background-color:#fff;}
-        }
-    }
-}
-
-// Toggle Button
-.btn-toggle{position:fixed; bottom:10px; right:10px; z-index:100;
-    div{width:80px; height:80px;
-        button{width:80px; height:80px; border-radius:50%; background-color:rgba($color: #000, $alpha:.8); color:#fff; border:0;}
-    }
-}
-
-// link Card Add
-.link-card-add{ text-align:center; padding:2px 20px; font-size:12px;  border:none; letter-spacing:-1px; color:#333; font-weight:700; font-size:16px; background:none; display:flex; justify-content: end;}
-
-.linkcard-add-wrap{padding:30px 16px;
-    h2{font-size:20px; color:#fff; font-weight:100; text-align: center; letter-spacing:-2px; margin-bottom:10px; color:#fff;}
-    label{width:100px; display:inline-block; font-size:13px; float:left; line-height:34px;
-        em{color:#f00; margin-right:5px; position:relative; top:3px;}
-    }
-    input{width:calc(100% - 112px); float:right; height:32px; line-height: 32px; text-indent:10px; font-size:13px;}
-    textarea{width:calc(100% - 130px); float:right;padding:10px;}
-    div{clear:both; padding:5px 0;}
-    .btn-create{border:1px solid #2272ed; color:#2272ed; background-color:#fff; height:50px; line-height:50px; width:100%; margin:20px 0 50px; border-radius:8px; font-weight: bold; font-size:16px;}
-    
-}
-
-//
-.no-data{padding:16px;
-    p.tit-no{text-align:center; padding:130px 0; font-weight:700;}
-}
-// 로그인 영역
-.login-wrap{padding:100px 16px;
-    .login{ text-align:center;
-        h1{ font-size:27px; font-weight:100; letter-spacing:-.7px; padding-bottom:20px; color:#fff;}
-        .btn-google{width:100%; height:48px; background-color:#FDBB2D; line-height:48px; text-align:center; border:0; border-radius:4px; color:#fff; font-size:16px; font-weight:500; margin:0 0 24px;}
-        .add-coment{font-size:14px; font-weight:400; color:#999; padding-bottom:24px;}
-        .ins-f{width:100%;
-            input{ width:100%; height:36px; line-height:36px; border:none; border-bottom:1px solid #FDBB2D; text-align:center; margin-bottom:8px; background:none;
-                &::placeholder{color:#aeaeae; font-size:16px;}
-            }
-        }
-        .btn-login{background-color:#f90; width:100%; height:48px; line-height:48px; border:0; border-radius:8px; margin:16px 0; font-size:18px; font-weight:700; color:#fff;}
-        .etc{font-size:14px; font-weight:400; color:#999;
-            a{display:block; margin:8px 0; color:#fff}
-        }
-    }
-
-}
-.t-log-area{
-    span{font-size:13px; font-weight:400; color:#999;}
-    button{border:0; border-bottom:1px solid #aeaeae; color:#aeaeae; background-color:#fff; margin-left:8px;}
-}
-
-
-
-.linkcard-setting{ color:#fff; padding:16px;
-    h2{ text-align:center;padding:24px 0 8px; font-weight:100; letter-spacing:-2px;}
-    div{padding:8px 0;
-        label{ margin:0 4px 4px; display:block; font-weight:100; letter-spacing:-1px;}
-        input{width:100%; padding:12px; box-sizing:border-box; font-size:14px; color:#313131; letter-spacing:-.4px; font-weight:400;}
-        textarea{width:100%; padding:12px; box-sizing:border-box;letter-spacing:-.4px; font-weight:400;}
-        &.btn-box{ border-top:1px solid rgb(162, 144, 218); margin-top:24px; padding-top:8px;
-            button{width:calc(50% - 4px); float:left; height:48px; line-height:48px; font-size:16px; font-weight:700; background-color:#8b7cbd; border:0;  border-radius:4px; color:#fff;
-                &:last-child{float:right; background-color:#7c3aed; color:#fff;}
-            }
-        }
     }
 }
