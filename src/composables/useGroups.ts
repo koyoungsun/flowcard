@@ -6,6 +6,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  updateDoc,
   query,
   orderBy,
   onSnapshot,
@@ -14,10 +15,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 /**
- * ✅ Firestore 그룹 관리 (Silent Logout 안정화 버전)
- * - users/{uid}/groups/{groupId}/cards 구조 지원
- * - 실시간 동기화 및 세션 만료 시 자동 정리
- * - toastRef 연동 (선택)
+ * ✅ Firestore 그룹 관리 (Rename 기능 포함 버전)
+ * - users/{uid}/groups/{groupId}/cards 구조 완전 대응
+ * - renameGroup() 기능 추가 (Firestore 규칙 호환)
  */
 export function useGroups(toastRef?: any) {
   const groups = ref<any[]>([]);
@@ -39,8 +39,6 @@ export function useGroups(toastRef?: any) {
 
     try {
       const q = query(collection(db, "users", user.uid, "groups"), orderBy("createdAt", "asc"));
-
-      // 중복 구독 방지
       if (unsubscribe) unsubscribe();
 
       unsubscribe = onSnapshot(
@@ -120,6 +118,30 @@ export function useGroups(toastRef?: any) {
     }
   };
 
+  /** 🔹 그룹 이름 변경 */
+  const renameGroup = async (groupId: string, newName: string) => {
+    const user = auth.currentUser;
+    if (!user) {
+      toastRef?.value?.show?.("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const groupRef = doc(db, "users", user.uid, "groups", groupId);
+      await updateDoc(groupRef, { groupName: newName });
+
+      const target = groups.value.find((g) => g.id === groupId);
+      if (target) target.groupName = newName;
+
+      toastRef?.value?.show?.(`✅ 그룹명이 '${newName}'으로 변경되었습니다.`);
+      console.log("✏️ 그룹명 변경 완료:", groupId, "→", newName);
+    } catch (err: any) {
+      console.error("🚫 그룹명 변경 오류:", err);
+      toastRef?.value?.show?.("그룹명 변경 중 문제가 발생했습니다.");
+    }
+  };
+
   /** 🔹 그룹 삭제 */
   const deleteGroup = async (groupId: string) => {
     const user = auth.currentUser;
@@ -166,6 +188,7 @@ export function useGroups(toastRef?: any) {
     loading,
     fetchGroups,
     createGroup,
+    renameGroup,
     deleteGroup,
   };
 }

@@ -3,7 +3,7 @@
     <!-- 로고 -->
     <router-link to="/" class="logo">
       <h1 class="text-lg font-bold">
-        LINK <strong>WALLET</strong>
+        LINK <strong>NEST</strong>
       </h1>
     </router-link>
 
@@ -32,12 +32,12 @@
       </button>
 
       <!-- 햄버거 버튼 -->
-      <button
+      <!-- <button
         class="ml-2 text-2xl text-gray-700 hover:text-indigo-500"
         @click="$emit('toggleNav')"
       >
         ☰
-      </button>
+      </button> -->
     </div>
   </nav>
 </template>

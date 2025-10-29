@@ -18,19 +18,14 @@
     <p v-if="card.summary" class="summary text-gray-600 text-sm mt-1">
       {{ card.summary }}
     </p>
-
-    <!-- 태그 -->
-    <div v-if="card.tags?.length" class="tag flex flex-wrap gap-1 mt-2">
-      <span v-for="(tag, idx) in card.tags" :key="idx" class="px-2 py-1 bg-gray-100 rounded text-xs text-gray-700">
-        #{{ tag }}
-      </span>
-    </div>
-
     <!-- 버튼 -->
     <div class="btn-box flex justify-end gap-2 mt-3">
       <button @click="openLink" class="btn-go text-blue-500 text-sm hover:underline">
         바로가기
       </button>
+      <button @click="copyLink" class="btn-copy text-gray-500 text-sm hover:underline">
+    복사
+  </button>
       <button @click="editCard" class="btn-set text-indigo-500 text-sm hover:underline">
         편집
       </button>
@@ -54,6 +49,17 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
+
+/** 🔹 링크 주소 복사 */
+const copyLink = async () => {
+  if (!props.card?.url) return;
+  try {
+    await navigator.clipboard.writeText(props.card.url);
+    alert("링크가 복사되었습니다!"); // 나중에 Toast로 교체 가능
+  } catch (err) {
+    console.error("복사 실패:", err);
+  }
+};
 
 // 카드 번호 표시용 (없으면 빈칸)
 const indexLabel = props.cardIndex !== undefined ? props.cardIndex + 1 : "";

@@ -53,8 +53,19 @@
             <button @click="toggleGroupMenu(group.id)" class="text-lg">⋮</button>
             <div v-if="activeGroupMenuId === group.id" class="absolute right-0 bg-white shadow-md border rounded mt-1">
               <ul class="text-sm">
-                <li><button @click="onRenameGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100">이름 수정</button></li>
-                <li><button @click="onDeleteGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100 text-red-500">그룹 삭제</button></li>
+                <li>
+                  <button @click="onRenameGroup(group)" class="block w-full text-left px-3 py-1 hover:bg-gray-100">
+                    이름 수정
+                  </button>
+                </li>
+                <li>
+                  <button
+                    @click="onDeleteGroup(group)"
+                    class="block w-full text-left px-3 py-1 hover:bg-gray-100 text-red-500"
+                  >
+                    그룹 삭제
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -70,19 +81,29 @@
             class="list-area mt-3"
           >
             <template #item="{ element, index }">
-              <div class="list-detail drag-handle cursor-move bg-white p-3 rounded shadow-sm mb-2 flex items-center justify-between">
-                <div class="flex items-center gap-3 flex-1">
-                  <img :src="getFavicon(element.url)" alt="favicon" class="w-5 h-5 rounded shrink-0" />
+              <div
+                class="list-detail drag-handle cursor-move bg-white p-3 rounded shadow-sm mb-2 flex items-center justify-between"
+              >
+                <div class="flex items-center gap-3 flex-1 posi">
+                  <em class="thumnail">
+                    <img :src="getFavicon(element.url)" alt="favicon" class="w-5 h-5 rounded shrink-0" />
+                  </em>
                   <div>
-                    <h3 class="font-medium">
-                      <em class="text-gray-400 mr-1">#{{ index + 1 }}</em> {{ element.title }}
-                    </h3>
-                    <p v-if="element.summary" class="tit-summary text-gray-500 text-sm">{{ element.summary }}</p>
+                    <h3 class="font-medium li-tit">{{ element.title }}</h3>
+                    <p v-if="element.summary" class="tit-summary text-gray-500 text-sm">
+                      {{ element.summary }}
+                    </p>
                   </div>
                 </div>
                 <div class="flex gap-2">
                   <button class="text-indigo-500 text-sm" @click="openLink(element.url)">바로가기</button>
                   <button class="text-gray-500 text-sm" @click="copyLink(element.url)">복사</button>
+                  <button
+                    class="text-pink-500 text-sm hover:text-pink-600"
+                    @click="goToEditCard(group.id, element.id)"
+                  >
+                    ✏️ 수정
+                  </button>
                 </div>
               </div>
             </template>
@@ -95,7 +116,11 @@
         <!-- 카드형 -->
         <div v-else class="card-wrap mt-3">
           <Swiper :slides-per-view="1.7" :space-between="8" centeredSlides>
-            <SwiperSlide class="gradient-card" v-for="(card, index) in (linksByGroup[group.id] || [])" :key="`card-${index}`">
+            <SwiperSlide
+              class="gradient-card"
+              v-for="(card, index) in (linksByGroup[group.id] || [])"
+              :key="`card-${index}`"
+            >
               <div class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm">
                 <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded" />
                 <Card :card="card" :groupId="group.id" :cardIndex="index" />
@@ -142,7 +167,7 @@ const router = useRouter();
 const toastRef = ref();
 onMounted(() => useAuthWatcher(toastRef));
 
-const { groups, fetchGroups, createGroup, deleteGroup } = useGroups();
+const { groups, fetchGroups, createGroup, renameGroup, deleteGroup } = useGroups(toastRef);
 const linksByGroup = reactive<Record<string, any[]>>({});
 const linkFetchers: Record<string, ReturnType<typeof useLinks>> = {};
 
@@ -163,6 +188,13 @@ function getFavicon(url: string): string {
   } catch {
     return "/default-icon.png";
   }
+}
+
+/** 🔹 그룹 이름 수정 (useGroups 연결) */
+async function onRenameGroup(group: any) {
+  const newName = prompt("새 그룹명을 입력하세요", group.groupName);
+  if (!newName?.trim()) return;
+  await renameGroup(group.id, newName.trim());
 }
 
 function toggleView() {
@@ -201,16 +233,16 @@ async function onDeleteGroup(group: any) {
   }
 }
 
-function onRenameGroup(group: any) {
-  const newName = prompt("새 그룹명을 입력하세요", group.groupName);
-  if (newName?.trim()) toastRef.value?.show(`그룹명 변경: ${group.groupName} → ${newName}`);
-}
-
 function handleNavGo(target: string) {
   showNav.value = false;
   if (target === "home") router.push("/");
   else if (target === "settings") showSettings.value = true;
   else if (target === "profile") toastRef.value?.show("👤 프로필 화면 준비 중!");
+}
+
+function goToEditCard(groupId: string, cardId: string) {
+  if (!groupId || !cardId) return console.warn("⚠️ groupId 또는 cardId 누락:", groupId, cardId);
+  router.push({ name: "EditCard", params: { groupId, cardId } });
 }
 
 /* ✅ Firestore 실시간 링크 동기화 */

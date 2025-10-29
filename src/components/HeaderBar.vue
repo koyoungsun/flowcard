@@ -1,6 +1,5 @@
 <template>
     <header class="flex justify-between items-center p-4 border-b border-gray-200">
-      <h1 class="text-lg font-bold">LinkWalnut</h1>
       <button @click="$emit('toggleNav')" class="text-2xl">☰</button>
     </header>
   </template>
