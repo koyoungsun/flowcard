@@ -1,9 +1,5 @@
 <template>
   <section class="relative min-h-screen bg-gray-50 p-4 space-y-6">
-    <!-- 상단 헤더 -->
-    <HeaderBar @toggleNav="showNav = !showNav" />
-    <ToastNav :isOpen="showNav" @go="handleNavGo" />
-
     <!-- 설정 버튼 -->
     <button class="top-setting" @click="showSettings = !showSettings">⚙️ Setting</button>
 
@@ -29,7 +25,7 @@
     <!-- 상태 -->
     <div class="now-posi flex justify-between items-center mt-2">
       <h2>
-        <strong>{{ viewMode === 'card' ? '카드형' : '리스트형' }} 보기</strong>
+        <strong>{{ currentViewMode === 'card' ? '카드형' : '리스트형' }} 보기</strong>
         <span class="text-sm text-gray-500 ml-1">({{ totalCardCount }})</span>
       </h2>
       <button @click="onCreateGroup" class="text-indigo-600 font-medium">+ 그룹 만들기</button>
@@ -72,7 +68,7 @@
         </div>
 
         <!-- 리스트형 -->
-        <div v-if="viewMode === 'list'" class="list">
+        <div v-if="currentViewMode === 'list'" class="list">
           <draggable
             v-model="linksByGroup[group.id]"
             :item-key="(_, i) => i"
@@ -137,11 +133,10 @@
     <!-- 뷰 전환 버튼 -->
     <div class="text-center py-6">
       <button @click="toggleView" class="bg-indigo-500 text-white px-4 py-2 rounded">
-        {{ viewMode === 'card' ? '리스트로 보기' : '카드로 보기' }}
+        {{ currentViewMode === 'card' ? '리스트로 보기' : '카드로 보기' }}
       </button>
     </div>
 
-    <!-- ✅ 토스트 메시지 -->
     <ToastMessage ref="toastRef" />
   </section>
 </template>
@@ -152,8 +147,6 @@ import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import draggable from "vuedraggable";
-import HeaderBar from "@/components/HeaderBar.vue";
-import ToastNav from "@/components/ToastNav.vue";
 import Card from "@/components/Card.vue";
 import EmptyCard from "@/components/EmptyCard.vue";
 import AddCardButton from "@/components/AddCardButton.vue";
@@ -162,7 +155,12 @@ import ToastMessage from "@/components/ToastMessage.vue";
 import { useGroups } from "@/composables/useGroups";
 import { useLinks } from "@/composables/useLinks";
 import { useAuthWatcher } from "@/composables/useAuthWatcher";
+import { getAuth, signOut } from "firebase/auth";
 
+const props = defineProps<{ viewMode?: string }>();
+
+const auth = getAuth();
+const currentUser = ref(auth.currentUser);
 const router = useRouter();
 const toastRef = ref();
 onMounted(() => useAuthWatcher(toastRef));
@@ -172,10 +170,17 @@ const linksByGroup = reactive<Record<string, any[]>>({});
 const linkFetchers: Record<string, ReturnType<typeof useLinks>> = {};
 
 const defaultView = ref(localStorage.getItem("defaultViewMode") || "card");
-const viewMode = ref(defaultView.value);
+const currentViewMode = ref(props.viewMode || defaultView.value);
+
+watch(
+  () => props.viewMode,
+  (newVal) => {
+    if (newVal) currentViewMode.value = newVal;
+  }
+);
+
 const showSettings = ref(false);
 const activeGroupMenuId = ref<string | null>(null);
-const showNav = ref(false);
 
 const totalCardCount = computed(() =>
   groups.value.reduce((sum, g) => sum + ((linksByGroup[g.id]?.length) || 0), 0)
@@ -190,7 +195,6 @@ function getFavicon(url: string): string {
   }
 }
 
-/** 🔹 그룹 이름 수정 (useGroups 연결) */
 async function onRenameGroup(group: any) {
   const newName = prompt("새 그룹명을 입력하세요", group.groupName);
   if (!newName?.trim()) return;
@@ -198,13 +202,13 @@ async function onRenameGroup(group: any) {
 }
 
 function toggleView() {
-  viewMode.value = viewMode.value === "card" ? "list" : "card";
-  localStorage.setItem("defaultViewMode", viewMode.value);
+  currentViewMode.value = currentViewMode.value === "card" ? "list" : "card";
+  localStorage.setItem("defaultViewMode", currentViewMode.value);
 }
 
 function applyDefaultView() {
   localStorage.setItem("defaultViewMode", defaultView.value);
-  viewMode.value = defaultView.value;
+  currentViewMode.value = defaultView.value;
   showSettings.value = false;
   toastRef.value?.show("설정이 적용되었습니다!");
 }
@@ -231,13 +235,6 @@ async function onDeleteGroup(group: any) {
     await deleteGroup(group.id);
     delete linksByGroup[group.id];
   }
-}
-
-function handleNavGo(target: string) {
-  showNav.value = false;
-  if (target === "home") router.push("/");
-  else if (target === "settings") showSettings.value = true;
-  else if (target === "profile") toastRef.value?.show("👤 프로필 화면 준비 중!");
 }
 
 function goToEditCard(groupId: string, cardId: string) {

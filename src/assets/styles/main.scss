@@ -8,10 +8,7 @@ body {
     ;
   }
   
-#app{padding:80px 0 0; min-height: calc(100vh - 80px);
-    // background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
-    position: relative;
-    overflow: hidden;}
+#app{position: relative; overflow: hidden;}
 
          
 .top-nav{height:80px; background:#F7F9FD; border-bottom:1px solid #eee; text-align:center; position:relative; position:fixed; top:0; left:0; right:0; z-index:10; border-radius:0 0 4px 4px;
