@@ -20,8 +20,8 @@
         <!-- 그룹 헤더 -->
         <div class="group-header-tit flex justify-between items-center">
           <h3 class="text-lg font-semibold">
-            <em>#</em><strong>{{ group.groupName }}</strong>
-            <span class="text-sm text-gray-500">({{ (linksByGroup[group.id]?.length) || 0 }}개)</span>
+            <strong>{{ group.groupName }}</strong>
+            <span class="text-sm text-gray-500">({{ (linksByGroup[group.id]?.length) || 0 }})</span>
           </h3>
           <div class="relative">
             <button @click="toggleGroupMenu(group.id)" class="text-lg">⋮</button>
@@ -68,35 +68,34 @@
                   <em class="thumnail">
                     <img :src="getFavicon(element.url)" alt="favicon" class="w-5 h-5 rounded shrink-0" />
                   </em>
-                  <div>
-                    <h3 class="font-medium li-tit">{{ element.title }}</h3>
+                  <div class="user">
+                    <h3 class="font-medium li-tit">{{ element.title }}
+                      <button class="text-pink-500 text-sm hover:text-pink-600 btn-3" @click="goToEditCard(group.id, element.id)">편집</button>
+                    </h3>
                     <p v-if="element.summary" class="tit-summary text-gray-500 text-sm">
                       {{ element.summary }}
                     </p>
                   </div>
                 </div>
-                <div class="flex gap-2">
-                  <button class="text-indigo-500 text-sm" @click="openLink(element.url)">바로가기</button>
-                  <button class="text-gray-500 text-sm" @click="copyLink(element.url)">복사</button>
-                  <button
-                    class="text-pink-500 text-sm hover:text-pink-600"
-                    @click="goToEditCard(group.id, element.id)"
-                  >
-                    ✏️ 수정
-                  </button>
+                <div class="flex gap-2 btn-box">
+                  <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기</button>
+                  <button class="text-gray-500 text-sm btn-2" @click="copyLink(element.url)">복사</button>
+                  
                 </div>
               </div>
             </template>
           </draggable>
-
+          <ol class="info">
+            <h6>Notice</h6>
+            <li><i></i>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
+            <li><i></i>복사하기 버튼 클릭 시 해당아이템의 경로가 복사되어있습니다. 원하시는 위치에 붙여넣기 하시면 됩니다.</li>
+          </ol>
           <!-- 리스트 모드에서도 추가 버튼 노출 -->
-          <div class="text-center mt-4">
+          <div class="text-center mt-4 btn-link-add">
             <button
-              class="inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
+              class=" inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
               @click="goToAddCard(group.id)"
-            >
-              ＋ 링크카드 추가
-            </button>
+            >링크 추가</button>
           </div>
         </div>
 
@@ -111,7 +110,7 @@
               <div
                 class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition"
               >
-                <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded" />
+                <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded thum-card" />
                 <Card :card="card" :groupId="group.id" :cardIndex="index" />
               </div>
             </SwiperSlide>
@@ -132,7 +131,7 @@
     </div>
 
     <!-- 뷰 전환 버튼 -->
-    <div class="text-center py-6">
+    <div class="text-center py-6 btn-toggle">
       <button @click="toggleView" class="bg-indigo-500 text-white px-4 py-2 rounded">
         {{ currentViewMode === 'card' ? '리스트로 보기' : '카드로 보기' }}
       </button>

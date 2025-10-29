@@ -2,18 +2,8 @@
   <article class="card-detail bg-white rounded-xl p-4 shadow-sm">
     <!-- 카드 제목 -->
     <h3 class="tit text-lg font-semibold flex items-center gap-1">
-      <em class="text-gray-400 text-sm">{{ indexLabel }}</em>
       {{ card.title }}
     </h3>
-
-    <!-- 링크 주소 -->
-    <!-- <a class="link-url text-blue-500 text-sm break-all hover:underline"
-       :href="card.url"
-       target="_blank"
-       rel="noopener noreferrer">
-      {{ card.url }}
-    </a> -->
-
     <!-- summary 있을 때만 노출 -->
     <p v-if="card.summary" class="summary text-gray-600 text-sm mt-1">
       {{ card.summary }}
@@ -86,21 +76,4 @@ const editCard = () => {
 };
 </script>
 
-<style scoped>
-.card-detail {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card-detail:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-}
-.btn-go,
-.btn-set {
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.btn-go:hover,
-.btn-set:hover {
-  opacity: 0.8;
-}
-</style>
+<style scoped></style>

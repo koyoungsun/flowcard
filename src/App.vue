@@ -21,25 +21,29 @@
     />
 
     <!-- 메인 콘텐츠 -->
-    <router-view :key="viewMode" :viewMode="viewMode" /> <!-- ✅ 전달 -->
+    <router-view :key="viewMode" :viewMode="viewMode" /> <!--  전달 -->
 
-    <!-- ✅ 서비스 안내 모달 -->
+    <!-- 서비스 안내 모달 -->
     <transition name="fade">
       <div
         v-if="showInfoModal"
         class="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center"
         @click.self="showInfoModal = false"
       >
-        <div class="bg-white rounded-xl shadow-lg p-6 w-80 text-center relative">
+      <div class="dimd"></div>
+        <div class="bg-white rounded-xl shadow-lg p-6 w-80 text-center relative modal-pop">
           <button
             class="absolute top-2 right-3 text-gray-400 text-xl hover:text-gray-600"
             @click="showInfoModal = false"
           >
             ×
           </button>
-          <h2 class="text-lg font-semibold mb-4">서비스 안내</h2>
+          <h2 class="text-lg font-semibold mb-4">LinkNest란?</h2>
+          <h3>자주 쓰는 웹사이트와 앱 링크들 한 화면에 보기 쉽게 정리해두고,
+클릭 한 번으로 바로 실행할 수 있게 도와주는 개인 공간 입니다. 나만의 기억을 담은 링크리스트.</h3>
           <p class="text-sm text-gray-500">
-            이곳에 서비스 설명이나 업데이트 내용을 표시할 예정입니다.
+            복잡한 북마크 폴더를 뒤지지 말고,
+눈에 보이는 카드에서 바로 실행하세요.
           </p>
         </div>
       </div>

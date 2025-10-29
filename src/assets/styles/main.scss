@@ -86,60 +86,37 @@ body {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';}
   
 #app{position: relative; overflow: hidden;}
-
+.dimd{position:fixed; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.4); top:0; left:0; right:0; bottom:0;}
          
-.top-nav{height:80px; background:#F7F9FD; border-bottom:1px solid #eee; text-align:center; position:relative; position:fixed; top:0; left:0; right:0; z-index:10; border-radius:0 0 4px 4px;
-    a{text-decoration:none; color:#2272ed; letter-spacing:-.4px;
-        // h1{width:175px; height:48.5px; background: url(../../img/logo1.png) 0 0 no-repeat; background-size:175px 48.5px; font-size:0; line-height:0; text-indent:-30000em; margin:20px auto 10px;}
-        h1{color:#9BA9FF; padding:20px 0 4px; font-weight:100; letter-spacing:-2.5px;
-            strong{font-weight:500; color:#9BA9FF;}
+.top-nav{height:80px; background:#F7F9FD; border-bottom:1px solid #999; text-align:center; position:relative; 
+    a{text-decoration:none;
+        h1{color:#000; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px;
+            strong{font-weight:500; color:#222;}
         }
     }
-    .login{display:inline-block; position:absolute; top:15px; right:10px;}
+    .top-info{position:absolute; top:10px; left:10px; width:40px; height:40px; border:0; background:none; font-size:14px;}
+    .top-navi{position:absolute; top:10px; right:10px; width:40px; height:40px; border:0; background:none; font-size:14px;}
 }
 
-.card-wrap{
-    .swiper-slide{height:160px; margin:10px 0;
+.card-wrap{padding:16px 0; 
+    .swiper-slide{height:100px; margin:10px 0; background-color:#eee; border:1px solid #999; border-radius:4px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.4); position:relative;
     }
     .swiper-slide-prev{
-        .card-inner{background-color:#f90; border-top:1px solid rgb(234, 126, 25); border-bottom:1px solid rgb(72, 14, 14);}
     }
     .swiper-slide-active{
-        .card-inner{background-color:rgb(74, 25, 25); border-radius:4px; border-bottom:1px solid rgb(41, 5, 5); border-top:1px solid #aaa;
-            h3{color:#fff;}
-            .link-url{color:#eee; margin-bottom:4px; display:inline-block;}
-            .summary{color:#eaeaea;}
-            .btn-box button{color:#cd8051;}
-            .tag{color:rgb(200, 121, 121);}
-        }
+        .card-inner{}
     }
+    .thum-card{width:32px; height:32px; border-radius:50%; position:absolute; right:16px; top:16px;}
 }
-:root {
-    --card-radius: 14px;
-    --bw: 4px; /* 테두리 두께 */
-    --border-grad: linear-gradient(90deg, #06b6d4, #7c3aed);
-    --accent-grad: linear-gradient(135deg, rgba(6,182,212,0.06), rgba(124,58,237,0.06));
-    --shimmer-duration: 3.2s;
-  }
-  /* 2) 내부 카드 (실제 컨텐츠) */
   .card-inner {
     position: relative;
     z-index: 1;
-    border-radius: calc(var(--card-radius) - var(--bw));
     padding: 16px;
     overflow: hidden;
     box-sizing: border-box;
-    background-image:
-      linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 50%, rgba(255,255,255,0.03) 100%),
-      var(--accent-grad);
-    background-blend-mode: overlay;
-    backdrop-filter: blur(0.5px); /* 아주 미세한 흐림으로 부드러움 */
     color: #0f172a;
   }
   
-  /* 3) 흘러가는 빛(Shimmer) */
-  
-
 .card-detail{
     h3.tit{font-size:16px; font-weight:700;
         em{font-style:normal; font-weight:500; color:#fff; font-size:11px; position:relative; left:-7px; top:-12px;}
@@ -150,4 +127,119 @@ body {
     .btn-box{
         button{border:none; background:none; text-decoration:underline; font-size:13px; font-weight:700; margin:0 4px 0 0;}
     }
+}
+
+
+// toast navi
+aside {position:fixed; top: 0;
+    right: 0;
+    width:80%;
+    height: 100vh;
+    background: #fff;
+    border-left:3px solid #fff;
+    z-index: 9999;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    .btn-close{position:absolute; top:0; right:0; width:40px; height:40px; font-size:30px; line-height:40px; font-weight:100; color:#fff; background:none; border:0;}
+    .profile{padding: 56px 16px 24px; text-align:center; background-color: #10b981;
+        img{width:80px; height:80px; border-radius:50%; border:1px solid #fff;}
+        .user-name{padding:16px 0 0; font-weight:700; color:#f4dd47;
+            span{font-weight:400; color:#eaeaea;}
+        }
+        p{line-height:160%; font-size:14px; color:#eaeaea;}
+    }
+    .status-view{text-align:center; padding:24px 16px; font-size:16px; border-bottom:8px solid #10b981;
+        h3{line-height:160%; font-weight:400; font-size:15px;}
+        i{display:inline-block; width:1px; height:15px; background-color:#22c55e; margin:0 16px;}
+        span{font-size:14px;}
+        strong{margin:0 4px; color:#f90;}
+    }
+    .setting{ padding: 24px 16px; border-bottom:8px solid #10b981;
+        .mt-4{display:flex; justify-content:space-between; height:40px; line-height:40px; border-top:1px solid #eaeaea;
+            h4{font-size:14px; font-weight:400;}
+            label{font-size:13px; margin-left:8px;}
+
+        }
+        .noline{border-top:0;}
+    }
+    .service{ text-align:center; padding:24px 16px; font-size:14px;
+        p{letter-spacing:-.4px;}
+        a{ display:inline-block; font-weight:500; letter-spacing:-.7px; margin:8px 0 0; color:#2272ed}
+        button{ clear:both; display:block; margin:16px auto; width:100%; height:48px; line-height:48px; text-align:center; font-weight:700; font-size:16px; background-color:#06b6d4; border:0; border-radius:4px; color:#fff; letter-spacing:-.7px;}
+    }
+    .footer{ text-align:center; 
+        .item{font-size:14px; letter-spacing:-.7px; color:#22c55e;}
+        .company{color:#222; margin:16px 16px 0; font-size:11px;
+            strong{margin-right:4px;}
+        }
+    }
+  }
+  
+  /* 슬라이드 효과 */
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: transform 0.3s ease;
+  }
+  .slide-enter-from,
+  .slide-leave-to {
+    transform: translateX(100%);
+  }
+  
+  /* 페이드 효과 */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.25s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .modal-pop{background-color:#fff; position:fixed; top:50%; left:0; right:0; margin:0 16px 0; border-radius:8px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.08); padding:16px; text-align:center;}
+
+.now-posi{margin:24px 16px 8px; display:flex; border-bottom:3px solid #666; justify-content:space-between;
+    strong{font-size:20px; letter-spacing:-.7px; font-weight:700;}
+    span{font-size:14px; margin-left:4px; font-weight:400;}
+    button{ letter-spacing:-.7px; color:#2272ed; border:0; background: none;}
+}
+
+.group-header-tit{padding:16px 16px 8px; font-size:16px; font-weight:500; letter-spacing:-.4px; background-color:#333; color:#fff; display:flex; justify-content:space-between;
+    h3{
+        span{color:#f90; font-weight:100; font-size:14px; margin-left:4px;}
+    }
+}
+
+.list{margin:24px 16px;
+    ol.info{list-style:none; padding:8px 0;
+        h6{font-size:14px; font-weight:500; padding:10px 0 2px; color:#999;}
+        li{ font-size:12px; letter-spacing:-.4px; line-height:160%; margin:4px 0; color:#999; padding:0 0 0 8px;
+            i{width:3px; height:3px; background-color:#999;  display:inline-block; border-radius:50%; margin:0 4px 0 -8px; position:relative; top:-2px}
+        }
+    }
+    .list-area{
+        .list-detail{border-bottom:1px solid #aeaeae; position: relative; padding:16px 120px 16px 40px;
+            em.thumnail{width:32px; height:32px; display:block; position:absolute; top:20px; left:0; border-radius:50%; border:1px solid #999;
+                img{width:32px; height:32px; border-radius:50%;}
+            }
+            .user{
+                h3{font-size:16px; letter-spacing:-.7px; margin:4px 0 2px;
+                    button{background-color:#f90; color:#fff; border:0; font-size:11px;padding: 3px 6px; border-radius:2px; position:relative; top:-3px; margin-left:4px;}
+                }
+                p{font-size:13px; letter-spacing:-.4px;}
+            }
+            .btn-box{position:absolute; right:0; top:20px; width:120px;
+                button{width:58px; margin-left:2px; font-size:12px; padding:10px 0; border:0; font-weight:700; border-radius:2px;
+                    &.btn-1{background-color: #334155; color:#fff;}
+                }
+            }
+        }
+    }
+}
+.btn-link-add{margin:8px 0 0;
+    button{width:100%; height:50px; line-height:50px; text-align:center; border:0; border-radius:4px; font-weight:700; letter-spacing:-.4px;;}
+}
+
+.btn-toggle{position:fixed; right:16px; bottom:16px; z-index:2; width:70px; height:70px; display:block;
+    button{width:70px; height:70px; border-radius:50%; background-color:rgba(0, 0, 0, 0.8); color:#fff; font-size:13px; font-weight:700; border:0; letter-spacing:-.7px;}
 }
