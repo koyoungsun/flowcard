@@ -20,40 +20,29 @@
         <!-- 그룹 헤더 -->
         <div class="group-header-tit flex justify-between items-center">
           <h3 class="text-lg font-semibold">
-            <strong>{{ group.groupName }}</strong>
-            <span class="text-sm text-gray-500">({{ (linksByGroup[group.id]?.length) || 0 }})</span>
+            <strong><i class="bi bi-link-45deg"></i>{{ group.groupName }}</strong>
+            <span class="btn-set text-sm text-gray-500">
+              ({{ (linksByGroup[group.id]?.length) || 0 }})
+            </span>
           </h3>
-          <div class="relative">
-            <button @click="toggleGroupMenu(group.id)" class="text-lg">⋮</button>
-            <div
-              v-if="activeGroupMenuId === group.id"
-              class="absolute right-0 bg-white shadow-md border rounded mt-1"
-            >
-              <ul class="text-sm">
-                <li>
-                  <button
-                    @click="onRenameGroup(group)"
-                    class="block w-full text-left px-3 py-1 hover:bg-gray-100"
-                  >
-                    이름 수정
-                  </button>
-                </li>
-                <li>
-                  <button
-                    @click="onDeleteGroup(group)"
-                    class="block w-full text-left px-3 py-1 hover:bg-gray-100 text-red-500"
-                  >
-                    그룹 삭제
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <button @click="openBottomSheet(group)" class="text-lg"><i class="bi bi-gear"></i></button>
         </div>
 
         <!-- 리스트형 -->
         <div v-if="currentViewMode === 'list'" class="list">
+          <!-- ✅ 리스트가 비어 있을 때 -->
+          <div
+            v-show="!linksByGroup[group.id] || linksByGroup[group.id].length === 0"
+            class="empty-message list-no-data text-center text-gray-400 py-8"
+          >
+            <em></em>
+            <h3 class="text-sm font-medium">아직 저장된 링크가 없습니다.</h3>
+            <p>링크를 등록해 보세요.</p>
+          </div>
+
+          <!-- ✅ 리스트 내용 -->
           <draggable
+            v-show="linksByGroup[group.id] && linksByGroup[group.id].length > 0"
             v-model="linksByGroup[group.id]"
             :item-key="(_, i) => i"
             animation="200"
@@ -69,39 +58,59 @@
                     <img :src="getFavicon(element.url)" alt="favicon" class="w-5 h-5 rounded shrink-0" />
                   </em>
                   <div class="user">
-                    <h3 class="font-medium li-tit">{{ element.title }}
-                      <button class="text-pink-500 text-sm hover:text-pink-600 btn-3" @click="goToEditCard(group.id, element.id)">편집</button>
-                    </h3>
+                    <h3 class="font-medium li-tit">{{ element.title }}</h3>
                     <p v-if="element.summary" class="tit-summary text-gray-500 text-sm">
                       {{ element.summary }}
                     </p>
+                    <div class="btn-combo">
+                      <button class="text-pink-500 text-sm hover:text-pink-600 btn-3" @click="goToEditCard(group.id, element.id)">편집</button>
+                      <button class="text-gray-500 text-sm btn-2" @click="copyLink(element.url)">복사</button>
+                    </div>
                   </div>
                 </div>
                 <div class="flex gap-2 btn-box">
                   <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기</button>
-                  <button class="text-gray-500 text-sm btn-2" @click="copyLink(element.url)">복사</button>
-                  
+                  <i class="bi bi-grip-vertical"></i>
                 </div>
               </div>
             </template>
           </draggable>
-          <ol class="info">
-            <h6>Notice</h6>
-            <li><i></i>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
-            <li><i></i>복사하기 버튼 클릭 시 해당아이템의 경로가 복사되어있습니다. 원하시는 위치에 붙여넣기 하시면 됩니다.</li>
+
+          <!-- 안내 -->
+          <ol class="info mt-4">
+            <h6><i class="bi bi-bell-fill"></i> Notice</h6>
+            <li>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
+            <li>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
           </ol>
-          <!-- 리스트 모드에서도 추가 버튼 노출 -->
+
+          <!-- ✅ 항상 보이는 링크 추가 버튼 -->
           <div class="text-center mt-4 btn-link-add">
             <button
-              class=" inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
+              class="inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
               @click="goToAddCard(group.id)"
-            >링크 추가</button>
+            >
+              <i class="bi bi-plus-lg"></i> 링크 추가
+            </button>
           </div>
         </div>
 
         <!-- 카드형 -->
         <div v-else class="card-wrap mt-3">
           <Swiper :slides-per-view="1.7" :space-between="8" centeredSlides>
+            <!-- ✅ 카드가 없을 때 -->
+            <SwiperSlide
+              v-if="!linksByGroup[group.id] || linksByGroup[group.id].length === 0"
+              key="empty-card"
+            >
+              <div
+                class="bg-gray-100 border border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center p-6 text-gray-400"
+              >
+                <h3 class="text-sm font-medium"></h3>
+                <p>링크를 등록해 보세요.</p>
+              </div>
+            </SwiperSlide>
+
+            <!-- ✅ 카드가 있을 때 -->
             <SwiperSlide
               class="gradient-card"
               v-for="(card, index) in (linksByGroup[group.id] || [])"
@@ -130,12 +139,30 @@
       </div>
     </div>
 
-    <!-- 뷰 전환 버튼 -->
+    <!-- 보기 전환 버튼 -->
     <div class="text-center py-6 btn-toggle">
       <button @click="toggleView" class="bg-indigo-500 text-white px-4 py-2 rounded">
-        {{ currentViewMode === 'card' ? '리스트로 보기' : '카드로 보기' }}
+        {{ currentViewMode === 'card' ? '리스트 보기' : '카드 보기' }}
       </button>
     </div>
+
+    <!-- 바텀시트 -->
+    <transition name="bottom-sheet">
+      <div v-if="isBottomSheetOpen" class="bottom-sheet-overlay" @click="closeBottomSheet">
+        <div class="bottom-sheet" @click.stop>
+          <div class="sheet-handle"></div>
+          <div class="btm-header">
+            <h3 class="text-center text-gray-100 font-semibold mb-4">그룹 설정</h3>
+            <button class="sheet-btn-close" @click="closeBottomSheet"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <ul class="space-y-2">
+            <li><button @click="onRenameGroup(activeGroup)" class="sheet-btn">이름 수정</button></li>
+            <li><button @click="onDeleteGroup(activeGroup)" class="sheet-btn text-red-400">그룹 삭제</button></li>
+          </ul>
+          <p class="text-xs text-gray-300 mt-4">* 그룹 삭제 시 포함된 모든 링크가 제거됩니다.</p>
+        </div>
+      </div>
+    </transition>
 
     <ToastMessage ref="toastRef" />
   </section>
@@ -177,8 +204,6 @@ watch(
   }
 );
 
-const activeGroupMenuId = ref<string | null>(null);
-
 const totalCardCount = computed(() =>
   groups.value.reduce((sum, g) => sum + ((linksByGroup[g.id]?.length) || 0), 0)
 );
@@ -211,10 +236,6 @@ function copyLink(url: string) {
   navigator.clipboard.writeText(url).then(() => toastRef.value?.show("링크가 복사되었습니다!"));
 }
 
-function toggleGroupMenu(id: string) {
-  activeGroupMenuId.value = activeGroupMenuId.value === id ? null : id;
-}
-
 async function onCreateGroup() {
   const name = prompt("그룹 이름을 입력하세요");
   if (name) await createGroup(name.trim());
@@ -232,20 +253,21 @@ function goToEditCard(groupId: string, cardId: string) {
   router.push({ name: "EditCard", params: { groupId, cardId } });
 }
 
-/* ✅ 추가 버튼 클릭 시 AddCard로 이동 */
 function goToAddCard(groupId: string) {
   if (!groupId) return;
   router.push({ name: "AddCard", params: { groupId } });
 }
 
-/* ✅ Firestore 실시간 링크 동기화 */
+/* ✅ Firestore 실시간 링크 동기화 + 초기값 보장 */
 watch(
   () => groups.value.map((g) => g.id),
   async (ids) => {
     if (!ids?.length) return;
-
     for (const id of ids) {
       if (!id || linkFetchers[id]) continue;
+
+      // 🔹 초기화 보장
+      if (!linksByGroup[id]) linksByGroup[id] = [];
 
       const linkHandler = useLinks(id);
       linkFetchers[id] = linkHandler;
@@ -264,7 +286,33 @@ watch(
   { immediate: true }
 );
 
+const isBottomSheetOpen = ref(false);
+const activeGroup = ref(null);
+
+function openBottomSheet(group: any) {
+  activeGroup.value = group;
+  isBottomSheetOpen.value = true;
+}
+
+function closeBottomSheet() {
+  isBottomSheetOpen.value = false;
+}
+
 onMounted(async () => {
   await fetchGroups();
+  // ✅ 그룹 목록 초기화 시점에 linksByGroup 빈배열 세팅
+  groups.value.forEach((g) => {
+    if (!linksByGroup[g.id]) linksByGroup[g.id] = [];
+  });
 });
 </script>
+
+<style scoped>
+.empty-message {
+  font-size: 15px;
+  color: #9CA3AF;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  padding: 24px;
+}
+</style>

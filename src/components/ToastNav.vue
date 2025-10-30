@@ -12,7 +12,7 @@
     >
       <!-- 닫기 버튼 -->
       <button @click="$emit('close')" class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-gray-700 btn-close">
-        X
+        <i class="bi bi-x-lg"></i>
       </button>
 
       <!-- 상단 프로필 -->
@@ -109,13 +109,7 @@
           문의하기
         </a>
 
-        <button
-          @click="logout"
-          class="text-red-500 font-medium hover:underline w-full text-left mb-3"
-        >
-          로그아웃
-        </button>
-
+        <button @click="$emit('logout')" class="text-red-500 font-medium hover:underline w-full text-left mb-3">로그아웃</button>
         
       </div>
       <div class="footer">
@@ -131,8 +125,14 @@ import { ref, onMounted } from "vue";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 
-/* ✅ 이벤트 정의 */
-const emit = defineEmits(["close", "viewModeChanged"]);
+/* ✅ 이벤트 정의 (한 번만 호출) */
+const emit = defineEmits([
+  "close",
+  "go",
+  "showInfo",
+  "viewModeChanged",
+  "logout"
+]);
 
 defineProps<{
   isOpen: boolean;
@@ -144,18 +144,16 @@ defineProps<{
 const router = useRouter();
 const auth = getAuth();
 
-/* 로그아웃 */
+/* ✅ 로그아웃 (App.vue에서 처리되도록 emit으로 위임) */
 function logout() {
-  signOut(auth)
-    .then(() => router.push("/login"))
-    .catch((err) => console.error("로그아웃 실패:", err));
+  emit("logout");
 }
 
 /* ✅ 보기 모드 (즉시 적용 + 이벤트 전달) */
 const selectedView = ref(localStorage.getItem("defaultViewMode") || "card");
 function applyViewMode() {
   localStorage.setItem("defaultViewMode", selectedView.value);
-  emit("viewModeChanged", selectedView.value); // App.vue에 전달
+  emit("viewModeChanged", selectedView.value);
   console.log("보기 모드 변경:", selectedView.value);
 }
 
@@ -177,7 +175,6 @@ function applyTheme() {
   console.log("테마 변경:", selectedTheme.value);
 }
 </script>
-
 <style scoped>
 
 </style>

@@ -15,9 +15,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 /**
- * ✅ Firestore 그룹 관리 (Rename 기능 포함 버전)
- * - users/{uid}/groups/{groupId}/cards 구조 완전 대응
- * - renameGroup() 기능 추가 (Firestore 규칙 호환)
+ * ✅ Firestore 그룹 관리 (Rename, Delete, Realtime 포함)
+ * - Firestore 구조: users/{uid}/groups/{groupId}/cards
+ * - 그룹 및 카드 실시간 반영, 구독 정리 포함
  */
 export function useGroups(toastRef?: any) {
   const groups = ref<any[]>([]);
@@ -26,7 +26,7 @@ export function useGroups(toastRef?: any) {
 
   let unsubscribe: (() => void) | null = null;
 
-  /** 🔹 실시간 그룹 + 카드 목록 구독 */
+  /** 🔹 그룹 + 카드 실시간 구독 */
   const fetchGroups = async () => {
     const user = auth.currentUser;
     if (!user) {
@@ -47,10 +47,11 @@ export function useGroups(toastRef?: any) {
           if (!auth.currentUser) return;
 
           const groupList: any[] = [];
+
           for (const groupDoc of snapshot.docs) {
             const groupData = { id: groupDoc.id, ...groupDoc.data() };
 
-            // 카드 하위 컬렉션 로드
+            // 🔹 각 그룹의 카드 목록 로드
             const cardsSnap = await getDocs(
               collection(db, "users", user.uid, "groups", groupDoc.id, "cards")
             );
@@ -60,7 +61,7 @@ export function useGroups(toastRef?: any) {
           }
 
           groups.value = groupList;
-          console.log("✅ 그룹 및 카드 불러오기 완료:", groups.value);
+          console.log("✅ 그룹 및 카드 실시간 업데이트:", groups.value);
         },
         (err) => {
           if (err.code === "permission-denied") {
@@ -71,21 +72,6 @@ export function useGroups(toastRef?: any) {
           toastRef?.value?.show?.("그룹 데이터를 불러오는 중 오류가 발생했습니다.");
         }
       );
-
-      /** 🔸 전역 구독 해제 핸들러 등록 */
-      if (!window.__unsubscribeAll__) window.__unsubscribeAll__ = () => {};
-      const oldUnsub = window.__unsubscribeAll__;
-      window.__unsubscribeAll__ = () => {
-        try {
-          if (unsubscribe) {
-            unsubscribe();
-            console.log("🧹 그룹 실시간 구독 해제됨");
-          }
-        } catch (e) {
-          console.warn("⚠️ 그룹 구독 해제 중 예외:", e);
-        }
-        oldUnsub();
-      };
     } catch (err: any) {
       console.error("🚫 그룹 구독 실패:", err);
       toastRef?.value?.show?.("그룹 데이터를 불러오는 중 문제가 발생했습니다.");
@@ -94,7 +80,7 @@ export function useGroups(toastRef?: any) {
     }
   };
 
-  /** 🔹 그룹 생성 */
+  /** 🔹 새 그룹 생성 */
   const createGroup = async (name: string) => {
     const user = auth.currentUser;
     if (!user) {
@@ -155,6 +141,7 @@ export function useGroups(toastRef?: any) {
       const groupRef = doc(db, "users", user.uid, "groups", groupId);
       await deleteDoc(groupRef);
       groups.value = groups.value.filter((g) => g.id !== groupId);
+
       toastRef?.value?.show?.("🗑️ 그룹이 삭제되었습니다.");
       console.log("✅ 그룹 삭제 완료:", groupId);
     } catch (err: any) {

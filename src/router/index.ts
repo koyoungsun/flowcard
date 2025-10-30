@@ -8,17 +8,57 @@ import Me from "@/pages/Me.vue";
 import CardList from "@/pages/CardList.vue";
 import Welcome from "@/pages/Welcome.vue";
 import Register from "@/pages/Register.vue";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-// ✅ 라우트 정의
+/* ✅ 라우트 정의 */
 const routes = [
+  // 🔸 비로그인 기본 페이지 (소개 / 웰컴)
   {
     path: "/",
+    name: "Welcome",
+    component: Welcome,
+  },
+
+  // 🔒 로그인 후 내부 페이지
+  {
+    path: "/home",
     name: "Home",
     component: Home,
     meta: { requiresAuth: true },
   },
+  {
+    path: "/list",
+    name: "CardList",
+    component: CardList,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/me",
+    name: "Me",
+    component: Me,
+    meta: { requiresAuth: true },
+  },
+
+  // ✅ 카드 추가 / 수정
+  {
+    path: "/add/:groupId",
+    name: "AddCard",
+    component: AddCard,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/edit/:groupId/:cardId",
+    name: "EditCard",
+    component: EditCard,
+    props: (route) => ({
+      groupId: route.params.groupId as string,
+      cardId: route.params.cardId as string,
+    }),
+    meta: { requiresAuth: true },
+  },
+
+  // ✅ 로그인 / 회원가입
   {
     path: "/login",
     name: "Login",
@@ -29,46 +69,8 @@ const routes = [
     name: "Register",
     component: Register,
   },
-  {
-    path: "/welcome",
-    name: "Welcome",
-    component: Welcome,
-  },
-  {
-    path: "/me",
-    name: "Me",
-    component: Me,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/list",
-    name: "CardList",
-    component: CardList,
-    meta: { requiresAuth: true },
-  },
 
-  // ✅ Firestore 그룹 기반 카드 추가
-  {
-    path: "/add/:groupId",
-    name: "AddCard",
-    component: AddCard,
-    props: true,
-    meta: { requiresAuth: true },
-  },
-
-  // ✅ Firestore 카드 수정 (groupId + cardId 기반)
-  {
-    path: "/edit/:groupId/:cardId",
-    name: "EditCard",
-    component: EditCard,
-    props: route => ({
-      groupId: route.params.groupId as string,
-      cardId: route.params.cardId as string,
-    }),
-    meta: { requiresAuth: true },
-  },
-
-  // ✅ 그룹 설정 페이지 (선택적)
+  // ✅ 그룹 설정 페이지 (선택)
   {
     path: "/group-settings",
     name: "GroupSettings",
@@ -76,60 +78,59 @@ const routes = [
     meta: { requiresAuth: true },
   },
 
-  // ✅ /home 접근 시 자동 리디렉션 (오류 방지)
-  {
-    path: "/home",
-    redirect: "/",
-  },
-
-  // ✅ 존재하지 않는 경로 → 홈으로 리디렉션
+  // ✅ 존재하지 않는 경로는 웰컴으로 리디렉션
   {
     path: "/:pathMatch(.*)*",
     redirect: "/",
   },
 ];
 
-// ✅ 라우터 인스턴스 생성
+/* ✅ 라우터 인스턴스 생성 */
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
-// ✅ Firebase 인증 상태 캐시
-let isAuthReady = false;
+/* ✅ Firebase 인증 상태 관리 */
+let isAuthChecked = false;
 let currentUser: any = null;
 
-// ✅ 인증 상태 구독
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-  isAuthReady = true;
-});
+/* 🔐 인증 확인 함수 */
+function getAuthState() {
+  const auth = getAuth();
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      isAuthChecked = true;
+      unsubscribe();
+      resolve(user);
+    });
+  });
+}
 
-// ✅ 인증 가드
-router.beforeEach((to, from, next) => {
+/* ✅ 전역 인증 가드 */
+router.beforeEach(async (to, from, next) => {
+  const auth = getAuth();
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  // 아직 인증 상태를 모르면 일시 대기
-  if (!isAuthReady) {
-    const unwatch = onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      isAuthReady = true;
-      unwatch();
-      proceed();
-    });
-  } else {
-    proceed();
+  // Firebase 상태 미확인 시 대기
+  if (!isAuthChecked) {
+    await getAuthState();
   }
 
-  // 라우팅 진행 함수
-  function proceed() {
-    if (requiresAuth && !currentUser) {
-      next("/login");
-    } else if ((to.path === "/login" || to.path === "/register") && currentUser) {
-      next("/");
-    } else {
-      next();
-    }
+  const isLoggedIn = !!auth.currentUser;
+
+  // 🚫 로그인 필요 페이지 접근 시 → 웰컴
+  if (requiresAuth && !isLoggedIn) {
+    next("/");
+  }
+  // 🚫 로그인 상태에서 로그인/회원가입/웰컴 진입 → 홈으로 리디렉션
+  else if (isLoggedIn && ["/", "/login", "/register"].includes(to.path)) {
+    next("/home");
+  }
+  // ✅ 그 외 정상 이동
+  else {
+    next();
   }
 });
 
