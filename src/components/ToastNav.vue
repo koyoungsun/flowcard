@@ -11,7 +11,10 @@
       class="fixed top-0 right-0 h-full w-[70vw] max-w-sm bg-white shadow-2xl z-50 flex flex-col justify-between relative"
     >
       <!-- 닫기 버튼 -->
-      <button @click="$emit('close')" class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-gray-700 btn-close">
+      <button
+        @click="$emit('close')"
+        class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-gray-700 btn-close"
+      >
         <i class="bi bi-x-lg"></i>
       </button>
 
@@ -24,7 +27,9 @@
             class="w-10 h-10 rounded-full mr-3"
           />
           <div>
-            <p class="user-name font-semibold">{{ user?.displayName || "Guest" }}<span>님 환영합니다.</span></p>
+            <p class="user-name font-semibold">
+              {{ user?.displayName || "Guest" }}<span>님 환영합니다.</span>
+            </p>
             <p v-if="user?.email" class="text-xs text-gray-500">{{ user.email }}</p>
           </div>
         </div>
@@ -38,8 +43,10 @@
           <span>그룹: <strong class="text-gray-800">{{ groupCount }}</strong>개</span><i></i>
           <span>링크: <strong class="text-gray-800">{{ linkCount }}</strong>개</span>
         </div>
+
+        <!-- 설정 -->
         <div class="setting">
-          <!-- ✅ 기본 보기 모드 -->
+          <!-- 보기 모드 -->
           <div class="mt-4 noline">
             <h4 class="text-sm font-medium text-gray-700 mb-2">기본 보기 모드</h4>
             <div class="flex items-center gap-3 text-sm">
@@ -68,8 +75,8 @@
             </div>
           </div>
 
-          <!-- ✅ 테마 전환 (UI 통일) -->
-          <div class="mt-4">
+          <!-- 테마 (숨김) -->
+          <div class="mt-4" style="display: none;">
             <h4 class="text-sm font-medium text-gray-700 mb-2">테마 전환</h4>
             <div class="flex items-center gap-3 text-sm">
               <label class="flex items-center gap-1 cursor-pointer">
@@ -101,7 +108,9 @@
 
       <!-- 하단 -->
       <div class="p-6 border-t border-gray-200 text-center service">
-        <p>서비스 이용 문의하기 (메일전송)</p>
+        <p>
+          <strong><i class="bi bi-envelope"></i> 서비스 이용 문의하기</strong> (메일전송)
+        </p>
         <a
           href="mailto:srrtr4@gmail.com?subject=LinkNest%20피드백&body=안녕하세요%2C%20LUNEST%20팀에게%20전달할%20의견이나%20제안사항을%20작성해주세요.%0A%0A감사합니다!"
           class="inline-block text-indigo-500 font-medium hover:underline mb-3"
@@ -109,12 +118,32 @@
           문의하기
         </a>
 
-        <button @click="$emit('logout')" class="text-red-500 font-medium hover:underline w-full text-left mb-3">로그아웃</button>
-        
+        <!-- ✅ 약관 링크 추가 -->
+        <router-link
+          to="/policy"
+          class="block text-sm text-gray-600 hover:text-indigo-600 mb-3"
+          @click="$emit('close')"
+        >
+          이용약관 및 개인정보 처리방침
+        </router-link>
+
+        <!-- 로그아웃 -->
+        <button
+          @click="$emit('logout')"
+          class="text-red-500 font-medium hover:underline w-full text-left mb-3"
+        >
+          로그아웃
+        </button>
       </div>
+
+      <!-- 푸터 -->
       <div class="footer">
-        <p class="item text-xs text-gray-400 text-center leading-tight mt-3"><strong>LINK NEST</strong> ver. 0.1.0 / 2025.10.29</p>
-        <p class="company"><strong>© LUNEST</strong>From Seeds to Systems.</p>
+        <p class="item text-xs text-gray-400 text-center leading-tight mt-3">
+          <strong>LINK NEST</strong> ver. 0.1.0 / 2025.10.29
+        </p>
+        <p class="company text-center text-xs text-gray-400">
+          <strong>© LUNEST</strong> From Seeds to Systems.
+        </p>
       </div>
     </aside>
   </transition>
@@ -122,17 +151,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getAuth, signOut } from "firebase/auth";
-import { useRouter } from "vue-router";
 
-/* ✅ 이벤트 정의 (한 번만 호출) */
-const emit = defineEmits([
-  "close",
-  "go",
-  "showInfo",
-  "viewModeChanged",
-  "logout"
-]);
+const emit = defineEmits(["close", "go", "showInfo", "viewModeChanged", "logout"]);
 
 defineProps<{
   isOpen: boolean;
@@ -141,30 +161,20 @@ defineProps<{
   linkCount?: number;
 }>();
 
-const router = useRouter();
-const auth = getAuth();
-
-/* ✅ 로그아웃 (App.vue에서 처리되도록 emit으로 위임) */
-function logout() {
-  emit("logout");
-}
-
-/* ✅ 보기 모드 (즉시 적용 + 이벤트 전달) */
+/* ✅ 보기 모드 */
 const selectedView = ref(localStorage.getItem("defaultViewMode") || "card");
 function applyViewMode() {
   localStorage.setItem("defaultViewMode", selectedView.value);
   emit("viewModeChanged", selectedView.value);
-  console.log("보기 모드 변경:", selectedView.value);
 }
 
-/* ✅ 테마 모드 (즉시 적용) */
+/* ✅ 테마 */
 const selectedTheme = ref(localStorage.getItem("theme") || "light");
 onMounted(() => {
   if (selectedTheme.value === "dark") {
     document.documentElement.classList.add("dark");
   }
 });
-
 function applyTheme() {
   if (selectedTheme.value === "dark") {
     document.documentElement.classList.add("dark");
@@ -172,9 +182,12 @@ function applyTheme() {
     document.documentElement.classList.remove("dark");
   }
   localStorage.setItem("theme", selectedTheme.value);
-  console.log("테마 변경:", selectedTheme.value);
 }
 </script>
-<style scoped>
 
+<style scoped>
+.service a.router-link-active {
+  font-weight: 500;
+  color: #4f46e5;
+}
 </style>

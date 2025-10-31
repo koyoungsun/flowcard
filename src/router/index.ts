@@ -70,7 +70,7 @@ const routes = [
     component: Register,
   },
 
-  // ✅ 그룹 설정 페이지 (선택)
+  // ✅ 그룹 설정 페이지
   {
     path: "/group-settings",
     name: "GroupSettings",
@@ -78,7 +78,15 @@ const routes = [
     meta: { requiresAuth: true },
   },
 
-  // ✅ 존재하지 않는 경로는 웰컴으로 리디렉션
+  // ✅ 약관 및 개인정보 처리방침 페이지 (공개 접근)
+  {
+    path: "/policy",
+    name: "Policy",
+    component: () => import("@/views/Policy.vue"),
+    meta: { public: true }, // 🔹 로그인 불필요하게 처리
+  },
+
+  // ✅ 존재하지 않는 경로 → 웰컴 리디렉션
   {
     path: "/:pathMatch(.*)*",
     redirect: "/",
@@ -112,6 +120,7 @@ function getAuthState() {
 router.beforeEach(async (to, from, next) => {
   const auth = getAuth();
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const isPublic = to.matched.some((record) => record.meta.public);
 
   // Firebase 상태 미확인 시 대기
   if (!isAuthChecked) {
@@ -120,7 +129,7 @@ router.beforeEach(async (to, from, next) => {
 
   const isLoggedIn = !!auth.currentUser;
 
-  // 🚫 로그인 필요 페이지 접근 시 → 웰컴
+  // 🚫 로그인 필요 페이지 접근 시 → 웰컴으로 이동
   if (requiresAuth && !isLoggedIn) {
     next("/");
   }
@@ -128,7 +137,11 @@ router.beforeEach(async (to, from, next) => {
   else if (isLoggedIn && ["/", "/login", "/register"].includes(to.path)) {
     next("/home");
   }
-  // ✅ 그 외 정상 이동
+  // ✅ 약관 등 공개 페이지는 항상 허용
+  else if (isPublic) {
+    next();
+  }
+  // ✅ 정상 이동
   else {
     next();
   }

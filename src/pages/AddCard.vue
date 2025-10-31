@@ -1,9 +1,9 @@
 <template>
   <div class="linkcard-add-wrap p-6 min-h-screen bg-gray-50">
-    <h2 class="tit text-xl font-semibold mb-4">🔗 링크카드 추가</h2>
+    <h2 class="tit text-xl font-semibold mb-4"><strong>링크카드</strong > 추가</h2>
 
     <form @submit.prevent="handleAddCard" class="space-y-4 bg-white p-5 rounded shadow-md">
-      <div class="body-tit">
+      <div class="body-tit input-form">
         <label class="block mb-1 text-sm font-medium"><em>*</em> 카드 제목</label>
         <input
           v-model="form.title"
@@ -14,7 +14,7 @@
         />
       </div>
 
-      <div class="body-link">
+      <div class="body-link input-form">
         <label class="block mb-1 text-sm font-medium"><em>*</em> 링크 경로(URL)</label>
         <input
           v-model="form.url"
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <div class="body-summary">
+      <div class="body-summary input-form">
         <label class="block mb-1 text-sm font-medium"><em>*</em> 간단한 설명</label>
         <textarea
           v-model="form.summary"
@@ -36,7 +36,7 @@
       </div>
 
       <!-- ✅ 하단 버튼 2개 (취소 / 저장) -->
-      <div class="flex justify-between gap-3 pt-4 border-t mt-6">
+      <div class="btn-combo flex justify-between gap-3 pt-4 border-t mt-6">
         <button
           type="button"
           class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition"

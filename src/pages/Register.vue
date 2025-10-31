@@ -1,6 +1,5 @@
 <template>
-    <div class="p-4">
-      <h1 class="text-xl font-bold mb-4">회원가입</h1>
+    <div class="p-4 join-wrap">
       <RegisterForm />
     </div>
   </template>

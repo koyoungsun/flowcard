@@ -1,15 +1,23 @@
 <template>
   <section class="login-wrap">
+    <nav class="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-white shadow-sm top-nav">
+      <a href="/" class="flex items-center gap-1 select-none">
+        <h1 class="text-lg font-bold tracking-wide">
+          <span class="text-lavender-700">LINK</span>
+          <strong class="text-gray-800">NEST</strong>
+        </h1>
+      </a>
+    </nav>
     <div class="login">
       <h1 class="">로그인</h1>
       <button class="btn-google" @click="loginWithGoogle">
-        Google로 로그인
+        <i class="bi bi-google"></i> Google 로그인
       </button>
 
-      <p class="add-coment">또는 이메일로 로그인</p>
+      <p class="add-coment">또는 <span><i class="bi bi-envelope"></i> 이메일로 로그인</span></p>
       <form class="space-y-4" @submit.prevent="loginWithEmail">
         <div class="ins-f">
-          <input v-model="email" type="email" placeholder="email" class="ins-email" />
+          <input v-model="email" type="email" placeholder="Insert email" class="ins-email" />
       </div>
       <div class="ins-f">
         <input v-model="password" type="password" placeholder="password" class="ins-pass" />

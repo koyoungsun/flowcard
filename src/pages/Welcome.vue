@@ -47,7 +47,9 @@
           회원가입
         </router-link>
       </div>
-
+      <div class="wel-footer">
+        <p class="company"><strong>© LUNEST</strong> From Seeds to Systems.</p>
+      </div>
       
   </div>
   </section>

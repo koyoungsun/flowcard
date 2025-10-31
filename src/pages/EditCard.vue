@@ -1,9 +1,9 @@
 <template>
   <div class="linkcard-edit-wrap p-6 bg-gray-50 min-h-screen">
-    <h2 class="tit text-xl font-semibold mb-4">✏️ 링크 카드 수정</h2>
+    <h2 class="tit text-xl font-semibold mb-4"><strong>링크 카드</strong> 수정</h2>
 
     <form @submit.prevent="handleSave" class="space-y-4 bg-white p-5 rounded shadow-md">
-      <div>
+      <div class="input-form">
         <label class="block mb-1 text-sm font-medium"><em>*</em> 카드 제목</label>
         <input
           v-model="form.title"
@@ -14,7 +14,7 @@
         />
       </div>
 
-      <div>
+      <div class="input-form">
         <label class="block mb-1 text-sm font-medium"><em>*</em> 링크 경로(URL)</label>
         <input
           v-model="form.url"
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <div>
+      <div class="input-form">
         <label class="block mb-1 text-sm font-medium">간단한 설명</label>
         <textarea
           v-model="form.summary"
@@ -36,7 +36,7 @@
       </div>
 
       <!-- ✅ 하단 버튼 -->
-      <div class="flex justify-between gap-3 pt-4 border-t mt-6">
+      <div class="flex justify-between gap-3 pt-4 border-t mt-6 btn-combo">
         <button
           type="button"
           class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition"
@@ -51,19 +51,16 @@
         >
           수정 완료
         </button>
+
+        <button
+          type="button"
+          @click="handleDelete"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition w-full max-w-xs"
+        >
+          카드 삭제
+        </button>
       </div>
     </form>
-
-    <div class="text-center mt-4">
-      <button
-        type="button"
-        @click="handleDelete"
-        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition w-full max-w-xs"
-      >
-        카드 삭제
-      </button>
-    </div>
-
     <ToastMessage ref="toastRef" />
   </div>
 </template>

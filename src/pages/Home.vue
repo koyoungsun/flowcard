@@ -69,7 +69,7 @@
                   </div>
                 </div>
                 <div class="flex gap-2 btn-box">
-                  <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기</button>
+                  <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기 <em class="bi bi-arrow-right"></em></button>
                   <i class="bi bi-grip-vertical"></i>
                 </div>
               </div>
@@ -79,8 +79,8 @@
           <!-- 안내 -->
           <ol class="info mt-4">
             <h6><i class="bi bi-bell-fill"></i> Notice</h6>
-            <li>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
-            <li>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
+            <li><i></i>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
+            <li><i></i>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
           </ol>
 
           <!-- ✅ 항상 보이는 링크 추가 버튼 -->
