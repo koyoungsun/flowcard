@@ -2,10 +2,7 @@
   <transition name="fade">
     <div
       v-if="visible"
-      class="fixed bottom-6 left-1/2 -translate-x-1/2 transform z-50
-             bg-[rgba(0,0,0,0.75)] text-white text-sm px-5 py-2 rounded-full
-             shadow-md backdrop-blur-sm text-center max-w-[80%]"
-    >
+      class="toast-msg">
       {{ message }}
     </div>
   </transition>

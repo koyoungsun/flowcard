@@ -58,7 +58,7 @@ const password = ref('')
 const errorMsg = ref('')
 const router = useRouter()
 
-// ✅ Google 로그인
+// Google 로그인
 async function loginWithGoogle() {
   const provider = new GoogleAuthProvider()
   try {
@@ -71,30 +71,31 @@ async function loginWithGoogle() {
   }
 }
 
-// ✅ 이메일 로그인 (이메일 인증 필수)
+// 이메일 로그인 (이메일 인증 필수)
 async function loginWithEmail() {
   errorMsg.value = ''
   try {
     const result = await signInWithEmailAndPassword(auth, email.value, password.value)
     const user = result.user
 
-    // 최신 상태 갱신 (여기 중요!)
+    // 🔄 최신 상태 갱신
     await user.reload()
 
+    // 이메일 인증 확인
     if (!user.emailVerified) {
-  try {
-    // 🔒 최근 로그인 이후 일정 시간(60초) 이상 경과 시에만 메일 재발송
-    const lastSignIn = user.metadata.lastSignInTime
-      ? new Date(user.metadata.lastSignInTime).getTime()
-      : 0
-    const now = Date.now()
+      try {
+        // 🔒 최근 로그인 이후 일정 시간(60초) 이상 경과 시에만 메일 재발송
+        const lastSignIn = user.metadata.lastSignInTime
+          ? new Date(user.metadata.lastSignInTime).getTime()
+          : 0
+        const now = Date.now()
 
-    if (now - lastSignIn > 60000) {
-      await sendEmailVerification(user)
-      console.log('인증 메일 발송됨')
-      } else {
-        console.log('최근에 이미 발송됨 → 재발송 생략')
-      }
+        if (now - lastSignIn > 60000) {
+          await sendEmailVerification(user)
+          console.log('📨 인증 메일 재발송 완료')
+        } else {
+          console.log('최근에 이미 발송됨 → 재발송 생략')
+        }
       } catch (err: any) {
         if (err.code === 'auth/too-many-requests') {
           errorMsg.value = '* 인증 메일 요청이 많습니다. 잠시 후 시도해주세요.'
@@ -103,12 +104,19 @@ async function loginWithEmail() {
         }
       }
 
-      await signOut(auth)
-      errorMsg.value =
-        '* 이메일 인증 후 로그인할 수 있습니다. (인증메일 확인)'
+      // 인증 미완료 안내 페이지로 이동
+      router.push('/verify-email')
+
+      // 약간의 지연 후 로그아웃 (라우팅 안정화용)
+      setTimeout(async () => {
+        await signOut(auth)
+        console.log('🚪 비인증 유저 로그아웃 완료')
+      }, 500)
+
       return
     }
 
+    // 인증된 사용자 → 홈으로 이동
     console.log('이메일 로그인 성공:', user)
     router.push('/')
   } catch (error: any) {

@@ -9,7 +9,7 @@
   </nav>
 
   <div class="join max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm relative">
-    <!-- ✅ 이메일 인증 안내 -->
+    <!-- 이메일 인증 안내 -->
     <div v-if="emailSent" class="text-center space-y-4 send-chk">
       <em></em>
       <h2 class="text-xl font-bold text-indigo-600">이메일 인증 요청 완료</h2>
@@ -22,7 +22,7 @@
         로그인 화면으로 이동
       </button>
     </div>
-<!-- ✅ 회원가입 폼 -->
+<!-- 회원가입 폼 -->
 <form v-else @submit.prevent="handleRegister" class="space-y-4">
   <h1 class="text-xl font-bold mb-2">회원 가입</h1>
   <p class="cmt text-gray-600 text-sm mb-4">이메일 주소와 비밀번호로 가입하세요.</p>
@@ -133,7 +133,7 @@ const agreeError = ref("");
 
 const emailChecked = ref(false);
 const emailSent = ref(false);
-const defaultImage = "https://cdn.lunest.app/avatars/default1.png";
+const defaultImage = "../../img/noimg.png";
 
 /* 이메일 유효성 검사 */
 async function validateEmail() {
@@ -159,7 +159,7 @@ async function validateEmail() {
     }
     emailChecked.value = true;
   } catch (err) {
-    console.error("🚫 이메일 중복 확인 오류:", err);
+    console.error(" 이메일 중복 확인 오류:", err);
     emailError.value = "이메일 확인 중 오류가 발생했습니다.";
   }
 }
@@ -216,7 +216,7 @@ async function handleRegister() {
     console.log("📩 Firebase 회원 생성 시도:", email.value);
     const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
     const user = userCredential.user;
-    console.log("✅ Firebase 사용자 생성 완료:", user.uid);
+    console.log("Firebase 사용자 생성 완료:", user.uid);
 
     await updateProfile(user, {
       displayName: nickname.value,
@@ -234,7 +234,7 @@ async function handleRegister() {
     });
     console.log("📘 Firestore에 유저 정보 저장 완료");
 
-    // ✅ 인증 메일 발송 (중복 방지 + 에러 처리)
+    // 인증 메일 발송 (중복 방지 + 에러 처리)
     try {
       await sendEmailVerification(user);
       console.log("📨 인증 이메일 발송 완료");
@@ -247,7 +247,7 @@ async function handleRegister() {
       }
     }
 
-    // ✅ 기본 그룹 생성 (메일 발송 완료 후)
+    // 기본 그룹 생성 (메일 발송 완료 후)
     const groupsRef = collection(db, "users", user.uid, "groups");
     await addDoc(groupsRef, {
       groupName: "기본 그룹",
@@ -255,13 +255,13 @@ async function handleRegister() {
     });
     console.log("📁 기본 그룹 생성 완료");
 
-    // ✅ 로그아웃 (Firestore sync 보장 후 1초 딜레이)
+    // 로그아웃 (Firestore sync 보장 후 1초 딜레이)
     setTimeout(async () => {
       await signOut(auth);
       console.log("🚪 로그아웃 완료");
     }, 1000);
   } catch (err: any) {
-    console.error("🚫 회원가입 전체 실패:", err);
+    console.error(" 회원가입 전체 실패:", err);
     if (err.code) console.error("🔥 Firebase 에러 코드:", err.code);
     emailError.value = err.message || "회원가입 중 오류가 발생했습니다.";
   }

@@ -38,7 +38,7 @@
         return;
       }
   
-      // ✅ 실시간 통계 구독
+      // 실시간 통계 구독
       const statsRef = doc(db, "stats", "global");
       onSnapshot(statsRef, (snap) => {
         stats.value = snap.data() || {};

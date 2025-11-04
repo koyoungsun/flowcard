@@ -21,11 +21,20 @@
       <!-- 상단 프로필 -->
       <div class="p-6 border-b border-gray-200 mt-8">
         <div class="flex items-center mb-4 profile">
-          <img
-            :src="user?.photoURL || '/default-profile.png'"
-            alt="Profile"
-            class="w-10 h-10 rounded-full mr-3"
-          />
+            <!-- 프로필 이미지 영역 -->
+            <template v-if="user?.photoURL && user.photoURL.startsWith('http') && !user.photoURL.includes('cdn.lunest.app/avatars/default1.png')">
+              <img
+                :src="user.photoURL"
+                alt="Profile"
+                class="w-10 h-10 rounded-full mr-3 object-cover bg-gray-100"
+              />
+            </template>
+
+            <template v-else>
+              <span class="w-10 h-10 mr-3 rounded-full bg-gray-100 flex items-center justify-center noimg">
+                <i class="bi bi-person text-gray-400 text-xl"></i>
+              </span>
+            </template>
           <div>
             <p class="user-name font-semibold">
               {{ user?.displayName || "Guest" }}<span>님 환영합니다.</span>
@@ -118,8 +127,6 @@
           문의하기
         </a>
 
-        
-
         <!-- 로그아웃 -->
         <button
           @click="$emit('logout')"
@@ -137,7 +144,7 @@
         <p class="company text-center text-xs text-gray-400">
           <strong>© LUNEST</strong> From Seeds to Systems.
         </p>
-        <!-- ✅ 약관 링크 추가 -->
+        <!-- 약관 링크 -->
         <router-link
           to="/policy"
           class="block text-sm text-gray-600 hover:text-indigo-600 mb-3"
@@ -162,14 +169,14 @@ defineProps<{
   linkCount?: number;
 }>();
 
-/* ✅ 보기 모드 */
+/* 보기 모드 */
 const selectedView = ref(localStorage.getItem("defaultViewMode") || "card");
 function applyViewMode() {
   localStorage.setItem("defaultViewMode", selectedView.value);
   emit("viewModeChanged", selectedView.value);
 }
 
-/* ✅ 테마 */
+/* 테마 */
 const selectedTheme = ref(localStorage.getItem("theme") || "light");
 onMounted(() => {
   if (selectedTheme.value === "dark") {

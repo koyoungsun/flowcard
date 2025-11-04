@@ -48,14 +48,14 @@ import { useAuthWatcher } from "@/composables/useAuthWatcher";
 
 const toastRef = ref();
 
-// ✅ useAuthWatcher에서 user와 manualSignOut 함께 가져옴
+// useAuthWatcher에서 user와 manualSignOut 함께 가져옴
 const { user, manualSignOut } = useAuthWatcher(toastRef);
 
 async function handleLogout() {
   try {
-    await manualSignOut(); // ✅ Firestore 구독 정리 + 로그아웃 + 토스트 + 라우팅
+    await manualSignOut(); // Firestore 구독 정리 + 로그아웃 + 토스트 + 라우팅
   } catch (err) {
-    console.error("🚫 로그아웃 실패:", err);
+    console.error(" 로그아웃 실패:", err);
   }
 }
 </script>

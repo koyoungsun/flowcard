@@ -1,8 +1,7 @@
 <template>
   <article
-    class="card-detail rounded-xl p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-    :style="{ backgroundColor: bgColor }"
-  >
+  class="card-detail rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+>
     <!-- 카드 제목 -->
     <h3 class="tit text-lg font-semibold flex items-center gap-1 text-gray-800">
       {{ card.title }}
@@ -16,12 +15,12 @@
     <!-- 버튼 -->
     <div class="btn-box flex justify-end gap-3 mt-4">
       <button
-        @click.stop="openLink"
-        class="btn-go text-sm text-blue-600 hover:underline transition-colors"
+        @click.stop="editCard"
+        class="btn-set text-sm text-indigo-600 hover:underline transition-colors"
       >
-        바로가기
+        편집
       </button>
-
+      
       <button
         @click.stop="copyLink"
         class="btn-copy text-sm text-gray-600 hover:text-gray-800 hover:underline transition-colors"
@@ -30,10 +29,10 @@
       </button>
 
       <button
-        @click.stop="editCard"
-        class="btn-set text-sm text-indigo-600 hover:underline transition-colors"
+        @click.stop="openLink"
+        class="btn-go text-sm text-blue-600 hover:underline transition-colors"
       >
-        편집
+        바로가기
       </button>
     </div>
   </article>
@@ -59,19 +58,6 @@ const props = defineProps<{
 
 const router = useRouter();
 
-/** 🔹 랜덤 파스텔 컬러 생성 함수 */
-const getRandomPastelColor = () => {
-  const hue = Math.floor(Math.random() * 360);
-  const saturation = 70 + Math.random() * 10; // 70~80%
-  const lightness = 85 + Math.random() * 10; // 85~95%
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-};
-
-/** 🔹 배경색 지정 (저장된 색상 > 랜덤색 순서) */
-const bgColor = ref<string>("#f9fafb"); // fallback 기본색
-onMounted(() => {
-  bgColor.value = props.card.color || getRandomPastelColor();
-});
 
 /** 🔹 링크 복사 */
 const copyLink = async () => {

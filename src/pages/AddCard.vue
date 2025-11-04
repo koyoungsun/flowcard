@@ -35,7 +35,7 @@
         ></textarea>
       </div>
 
-      <!-- ✅ 하단 버튼 2개 (취소 / 저장) -->
+      <!-- 하단 버튼 2개 (취소 / 저장) -->
       <div class="btn-combo flex justify-between gap-3 pt-4 border-t mt-6">
         <button
           type="button"
@@ -54,7 +54,7 @@
       </div>
     </form>
 
-    <!-- ✅ ToastMessage -->
+    <!-- ToastMessage -->
     <ToastMessage ref="toastRef" />
   </div>
 </template>
@@ -78,7 +78,7 @@ const form = ref({
   summary: "",
 });
 
-/* ✅ 저장 */
+/* 저장 */
 async function handleAddCard() {
   const title = form.value.title.trim();
   const url = form.value.url.trim();
@@ -101,12 +101,12 @@ async function handleAddCard() {
     toastRef.value?.show("카드가 추가되었습니다!");
     setTimeout(() => router.push("/"), 1000);
   } catch (err: any) {
-    console.error("🚫 링크 추가 실패:", err);
+    console.error(" 링크 추가 실패:", err);
     toastRef.value?.show(`추가 실패: ${err.message}`);
   }
 }
 
-/* ✅ 취소 (이전 페이지로 이동) */
+/* 취소 (이전 페이지로 이동) */
 function cancelAdd() {
   router.back();
 }

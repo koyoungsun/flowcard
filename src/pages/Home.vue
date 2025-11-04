@@ -9,8 +9,13 @@
       <button @click="onCreateGroup" class="text-indigo-600 font-medium">+ 그룹 만들기</button>
     </div>
 
-    <!-- 그룹이 없는 경우 -->
-    <div v-if="groups && groups.length === 0">
+    <!-- 🔹 로딩 중일 때 -->
+    <div v-if="loading" class="text-center py-10 text-gray-400 text-sm animate-pulse data-loging">
+      <i class="bi bi-arrow-repeat mr-1 animate-spin"></i> 그룹 데이터를 불러오는 중...
+    </div>
+
+    <!-- 🔹 그룹이 없는 경우 -->
+    <div v-else-if="groups && groups.length === 0">
       <EmptyCard :groupIndex="0" :groupId="''" />
     </div>
 
@@ -30,7 +35,7 @@
 
         <!-- 리스트형 -->
         <div v-if="currentViewMode === 'list'" class="list">
-          <!-- ✅ 리스트가 비어 있을 때 -->
+          <!-- 리스트가 비어 있을 때 -->
           <div
             v-show="!linksByGroup[group.id] || linksByGroup[group.id].length === 0"
             class="empty-message list-no-data text-center text-gray-400 py-8"
@@ -40,7 +45,7 @@
             <p>링크를 등록해 보세요.</p>
           </div>
 
-          <!-- ✅ 리스트 내용 -->
+          <!-- 리스트 내용 -->
           <draggable
             v-show="linksByGroup[group.id] && linksByGroup[group.id].length > 0"
             v-model="linksByGroup[group.id]"
@@ -83,7 +88,7 @@
             <li><i></i>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
           </ol>
 
-          <!-- ✅ 항상 보이는 링크 추가 버튼 -->
+          <!-- 항상 보이는 링크 추가 버튼 -->
           <div class="text-center mt-4 btn-link-add">
             <button
               class="inline-flex items-center gap-1 px-4 py-2 border border-dashed border-gray-300 text-gray-500 rounded hover:bg-gray-100 transition"
@@ -96,46 +101,35 @@
 
         <!-- 카드형 -->
         <div v-else class="card-wrap mt-3">
-          <Swiper :slides-per-view="1.7" :space-between="8" centeredSlides>
-            <!-- ✅ 카드가 없을 때 -->
+          <Swiper :slides-per-view="2.5" :space-between="8"
+          :slides-offset-before="20"
+          :slides-offset-after="20">
+            <!-- 🔹 카드가 있을 때 -->
             <SwiperSlide
-              v-if="!linksByGroup[group.id] || linksByGroup[group.id].length === 0"
-              key="empty-card"
-            >
-              <div
-                class="bg-gray-100 border border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center p-6 text-gray-400"
-              >
-                <h3 class="text-sm font-medium"></h3>
-                <p>링크를 등록해 보세요.</p>
-              </div>
-            </SwiperSlide>
-
-            <!-- ✅ 카드가 있을 때 -->
-            <SwiperSlide
-              class="gradient-card"
               v-for="(card, index) in (linksByGroup[group.id] || [])"
               :key="`card-${index}`"
             >
               <div
                 class="card-inner flex flex-col items-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition"
               >
-                <img :src="getFavicon(card.url)" alt="favicon" class="w-8 h-8 mb-2 rounded thum-card" />
                 <Card :card="card" :groupId="group.id" :cardIndex="index" />
               </div>
             </SwiperSlide>
 
-            <!-- ✅ 카드 추가 버튼 -->
+            <!-- 🔹 링크가 없을 때도 항상 추가 버튼만 노출 -->
             <SwiperSlide key="add-card">
               <div
-                class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center p-6 text-gray-500 hover:bg-gray-100 cursor-pointer transition"
+                class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl flex flex-col justify-center items-center p-6 text-gray-500 hover:bg-gray-100 cursor-pointer transition addp-card"
                 @click="goToAddCard(group.id)"
               >
-                <span class="text-3xl mb-1">＋</span>
+                <i class="bi bi-link"></i>
                 <p class="text-sm font-medium">링크카드 추가</p>
               </div>
             </SwiperSlide>
           </Swiper>
         </div>
+
+
       </div>
     </div>
 
@@ -190,7 +184,7 @@ const router = useRouter();
 const toastRef = ref();
 onMounted(() => useAuthWatcher(toastRef));
 
-const { groups, fetchGroups, createGroup, renameGroup, deleteGroup } = useGroups(toastRef);
+const { groups, loading, fetchGroups, createGroup, renameGroup, deleteGroup } = useGroups(toastRef);
 const linksByGroup = reactive<Record<string, any[]>>({});
 const linkFetchers: Record<string, ReturnType<typeof useLinks>> = {};
 
@@ -221,6 +215,7 @@ async function onRenameGroup(group: any) {
   const newName = prompt("새 그룹명을 입력하세요", group.groupName);
   if (!newName?.trim()) return;
   await renameGroup(group.id, newName.trim());
+  closeBottomSheet();
 }
 
 function toggleView() {
@@ -245,6 +240,7 @@ async function onDeleteGroup(group: any) {
   if (confirm("정말 이 그룹을 삭제하시겠습니까?")) {
     await deleteGroup(group.id);
     delete linksByGroup[group.id];
+    closeBottomSheet();
   }
 }
 
@@ -258,7 +254,7 @@ function goToAddCard(groupId: string) {
   router.push({ name: "AddCard", params: { groupId } });
 }
 
-/* ✅ Firestore 실시간 링크 동기화 + 초기값 보장 */
+/* Firestore 실시간 링크 동기화 + 초기값 보장 */
 watch(
   () => groups.value.map((g) => g.id),
   async (ids) => {
@@ -300,7 +296,7 @@ function closeBottomSheet() {
 
 onMounted(async () => {
   await fetchGroups();
-  // ✅ 그룹 목록 초기화 시점에 linksByGroup 빈배열 세팅
+  // 그룹 목록 초기화 시점에 linksByGroup 빈배열 세팅
   groups.value.forEach((g) => {
     if (!linksByGroup[g.id]) linksByGroup[g.id] = [];
   });

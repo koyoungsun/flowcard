@@ -62,7 +62,7 @@ async function handleLogin() {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
     const user = userCredential.user;
 
-    // ✅ 이메일 인증 여부 확인
+    // 이메일 인증 여부 확인
     if (!user.emailVerified) {
       await signOut(auth); // 인증 안 됐으면 즉시 로그아웃
       errorMessage.value = "이메일 인증 후 로그인할 수 있습니다.";
@@ -70,10 +70,10 @@ async function handleLogin() {
       return;
     }
 
-    console.log("✅ 로그인 성공:", user.email);
+    console.log("로그인 성공:", user.email);
     router.push("/"); // 홈으로 이동
   } catch (err: any) {
-    console.error("🚫 로그인 실패:", err);
+    console.error(" 로그인 실패:", err);
     if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
       errorMessage.value = "이메일 또는 비밀번호가 올바르지 않습니다.";
     } else if (err.code === "auth/user-not-found") {

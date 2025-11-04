@@ -35,7 +35,7 @@
         ></textarea>
       </div>
 
-      <!-- ✅ 하단 버튼 -->
+      <!-- 하단 버튼 -->
       <div class="flex justify-between gap-3 pt-4 border-t mt-6 btn-combo">
         <button
           type="button"
@@ -85,7 +85,7 @@ const form = ref({
   summary: "",
 });
 
-/** ✅ 카드 불러오기 */
+/** 카드 불러오기 */
 onMounted(async () => {
   try {
     const waitForAuth = await new Promise((resolve) => {
@@ -118,12 +118,12 @@ onMounted(async () => {
       summary: data.summary || "",
     };
   } catch (err) {
-    console.error("🚫 카드 불러오기 실패:", err);
+    console.error(" 카드 불러오기 실패:", err);
     toastRef.value?.show("카드를 불러오는 중 오류가 발생했습니다.");
   }
 });
 
-/** ✅ 수정 저장 */
+/** 수정 저장 */
 async function handleSave() {
   const user = auth.currentUser;
   if (!user) {
@@ -152,12 +152,12 @@ async function handleSave() {
     toastRef.value?.show("카드가 수정되었습니다!");
     setTimeout(() => router.push("/"), 800);
   } catch (err: any) {
-    console.error("🚫 수정 실패:", err);
+    console.error(" 수정 실패:", err);
     toastRef.value?.show(`수정 실패: ${err.message}`);
   }
 }
 
-/** ✅ 삭제 */
+/** 삭제 */
 async function handleDelete() {
   if (!confirm("정말 이 카드를 삭제하시겠습니까?")) return;
 
@@ -173,12 +173,12 @@ async function handleDelete() {
     toastRef.value?.show("카드가 삭제되었습니다!");
     setTimeout(() => router.push("/"), 800);
   } catch (err: any) {
-    console.error("🚫 삭제 실패:", err);
+    console.error(" 삭제 실패:", err);
     toastRef.value?.show(`삭제 실패: ${err.message}`);
   }
 }
 
-/** ✅ 취소 (이전 페이지로 이동) */
+/** 취소 (이전 페이지로 이동) */
 function cancelEdit() {
   router.back();
 }
