@@ -1,31 +1,37 @@
 <template>
   <section class="login-wrap">
-    <nav class="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-white shadow-sm top-nav">
-      <a href="/" class="flex items-center gap-1 select-none">
-        <h1 class="text-lg font-bold tracking-wide">
-          <span class="text-lavender-700">LINK</span>
-          <strong class="text-gray-800">NEST</strong>
-        </h1>
-      </a>
+    <nav
+      class="flex items-center px-4 py-3 border-b border-gray-200 bg-white sticky top-0 z-10 top-nav"
+    >
+      <a href="/"><h1>LINK<strong>NEST</strong></h1></a>
     </nav>
+
     <div class="login">
-      <h1 class="">로그인</h1>
+      <h1>로그인</h1>
+
+      <!-- Google 로그인 -->
       <button class="btn-google" @click="loginWithGoogle">
         <i class="bi bi-google"></i> Google 로그인
       </button>
 
-      <p class="add-coment">또는 <span><i class="bi bi-envelope"></i> 이메일로 로그인</span></p>
+      <p class="add-coment">
+        또는 <span><i class="bi bi-envelope"></i> 이메일로 로그인</span>
+      </p>
+
+      <!-- 이메일 로그인 -->
       <form class="space-y-4" @submit.prevent="loginWithEmail">
         <div class="ins-f">
           <input v-model="email" type="email" placeholder="Insert email" class="ins-email" />
-      </div>
-      <div class="ins-f">
-        <input v-model="password" type="password" placeholder="password" class="ins-pass" />
-      </div>
-      <div>
-        <button type="submit" class="btn-login">로그인</button>
-    </div>
+        </div>
+        <div class="ins-f">
+          <input v-model="password" type="password" placeholder="password" class="ins-pass" />
+        </div>
+        <div>
+          <button type="submit" class="btn-login">로그인</button>
+        </div>
       </form>
+
+      <p v-if="errorMsg" class="text-red-500 text-sm mt-3 caution">{{ errorMsg }}</p>
 
       <p class="etc">
         계정이 없으신가요?
@@ -42,11 +48,14 @@ import { auth } from '@/firebase'
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  signOut
 } from 'firebase/auth'
 
 const email = ref('')
 const password = ref('')
+const errorMsg = ref('')
 const router = useRouter()
 
 // ✅ Google 로그인
@@ -54,7 +63,7 @@ async function loginWithGoogle() {
   const provider = new GoogleAuthProvider()
   try {
     const result = await signInWithPopup(auth, provider)
-    console.log('로그인 성공:', result.user)
+    console.log('Google 로그인 성공:', result.user)
     router.push('/')
   } catch (error) {
     console.error('Google 로그인 실패:', error)
@@ -62,15 +71,49 @@ async function loginWithGoogle() {
   }
 }
 
-// ✅ 이메일 로그인
+// ✅ 이메일 로그인 (이메일 인증 필수)
 async function loginWithEmail() {
+  errorMsg.value = ''
   try {
     const result = await signInWithEmailAndPassword(auth, email.value, password.value)
-    console.log('이메일 로그인 성공:', result.user)
+    const user = result.user
+
+    // 최신 상태 갱신 (여기 중요!)
+    await user.reload()
+
+    if (!user.emailVerified) {
+  try {
+    // 🔒 최근 로그인 이후 일정 시간(60초) 이상 경과 시에만 메일 재발송
+    const lastSignIn = user.metadata.lastSignInTime
+      ? new Date(user.metadata.lastSignInTime).getTime()
+      : 0
+    const now = Date.now()
+
+    if (now - lastSignIn > 60000) {
+      await sendEmailVerification(user)
+      console.log('인증 메일 발송됨')
+      } else {
+        console.log('최근에 이미 발송됨 → 재발송 생략')
+      }
+      } catch (err: any) {
+        if (err.code === 'auth/too-many-requests') {
+          errorMsg.value = '* 인증 메일 요청이 많습니다. 잠시 후 시도해주세요.'
+        } else {
+          console.error('메일 발송 실패:', err)
+        }
+      }
+
+      await signOut(auth)
+      errorMsg.value =
+        '* 이메일 인증 후 로그인할 수 있습니다. (인증메일 확인)'
+      return
+    }
+
+    console.log('이메일 로그인 성공:', user)
     router.push('/')
   } catch (error: any) {
     console.error('이메일 로그인 실패:', error)
-    alert(error.message || '로그인에 실패했습니다.')
+    errorMsg.value = error.message || '로그인에 실패했습니다.'
   }
 }
 </script>

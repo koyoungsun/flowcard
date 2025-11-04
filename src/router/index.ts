@@ -17,6 +17,7 @@ const routes = [
     path: "/",
     name: "Welcome",
     component: Welcome,
+    meta: { hideHeader: true }, // ✅ 헤더 숨김 (웰컴 페이지)
   },
 
   // 🔒 로그인 후 내부 페이지
@@ -58,16 +59,24 @@ const routes = [
     meta: { requiresAuth: true },
   },
 
-  // ✅ 로그인 / 회원가입
+  // ✅ 로그인 / 회원가입 / 이메일 인증 안내
   {
     path: "/login",
     name: "Login",
     component: Login,
+    meta: { hideHeader: true }, // ✅ 헤더 숨김
   },
   {
     path: "/register",
     name: "Register",
     component: Register,
+    meta: { hideHeader: true }, // ✅ 헤더 숨김
+  },
+  {
+    path: "/verify-email",
+    name: "VerifyEmail",
+    component: () => import("@/views/VerifyEmail.vue"),
+    meta: { hideHeader: true }, // ✅ 헤더 숨김
   },
 
   // ✅ 그룹 설정 페이지
@@ -83,7 +92,7 @@ const routes = [
     path: "/policy",
     name: "Policy",
     component: () => import("@/views/Policy.vue"),
-    meta: { public: true }, // 🔹 로그인 불필요하게 처리
+    meta: { public: true, authLayout: true, hideHeader: true },
   },
 
   // ✅ 존재하지 않는 경로 → 웰컴 리디렉션
@@ -137,7 +146,7 @@ router.beforeEach(async (to, from, next) => {
   else if (isLoggedIn && ["/", "/login", "/register"].includes(to.path)) {
     next("/home");
   }
-  // ✅ 약관 등 공개 페이지는 항상 허용
+  // ✅ 공개 페이지 (약관 등) 허용
   else if (isPublic) {
     next();
   }

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bcrypt-ts": "^7.1.0",
     "firebase": "^12.2.1",
     "swiper": "^9.4.1",
     "vue": "^3.5.18",

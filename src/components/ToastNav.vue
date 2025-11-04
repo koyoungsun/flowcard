@@ -113,19 +113,12 @@
         </p>
         <a
           href="mailto:srrtr4@gmail.com?subject=LinkNest%20피드백&body=안녕하세요%2C%20LUNEST%20팀에게%20전달할%20의견이나%20제안사항을%20작성해주세요.%0A%0A감사합니다!"
-          class="inline-block text-indigo-500 font-medium hover:underline mb-3"
+          class="inline-block text-indigo-500 font-medium hover:underline mb-3 btn-mail"
         >
           문의하기
         </a>
 
-        <!-- ✅ 약관 링크 추가 -->
-        <router-link
-          to="/policy"
-          class="block text-sm text-gray-600 hover:text-indigo-600 mb-3"
-          @click="$emit('close')"
-        >
-          이용약관 및 개인정보 처리방침
-        </router-link>
+        
 
         <!-- 로그아웃 -->
         <button
@@ -144,6 +137,14 @@
         <p class="company text-center text-xs text-gray-400">
           <strong>© LUNEST</strong> From Seeds to Systems.
         </p>
+        <!-- ✅ 약관 링크 추가 -->
+        <router-link
+          to="/policy"
+          class="block text-sm text-gray-600 hover:text-indigo-600 mb-3"
+          @click="$emit('close')"
+        >
+          이용약관 및 개인정보 처리방침
+        </router-link>
       </div>
     </aside>
   </transition>
