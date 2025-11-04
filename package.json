@@ -1,7 +1,10 @@
 {
-  "name": "link-wallet",
+  "name": "link-nest",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "LinkNest — 개인 링크 관리 서비스 (by LUNEST)",
+  "author": "Aiden / LUNEST",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

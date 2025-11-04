@@ -101,7 +101,7 @@
 
         <!-- 카드형 -->
         <div v-else class="card-wrap mt-3">
-          <Swiper :slides-per-view="2.5" :space-between="8"
+          <Swiper :slides-per-view="1.7" :space-between="8"
           :slides-offset-before="20"
           :slides-offset-after="20">
             <!-- 🔹 카드가 있을 때 -->

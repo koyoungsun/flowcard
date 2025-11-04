@@ -1,15 +1,25 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "composite": true,              // 🔹 project reference를 위한 필수 옵션
+    "noEmit": false,                // 🔹 결과물 생성 허용
+    "outDir": "dist",               // 🔹 빌드 출력 경로
+    "types": ["vite/client"],       // 🔹 Vite 환경 타입
+    "allowJs": true,                // 🔹 JS 포함 허용
+    "skipLibCheck": true,           // 🔹 타입 검사 속도 개선
+    "esModuleInterop": true,        // 🔹 CommonJS 호환
+    "moduleResolution": "node",     // 🔹 Node 해석 방식
+    "isolatedModules": true,        // 🔹 Vue SFC 지원
+    "resolveJsonModule": true,      // 🔹 JSON import 허용
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

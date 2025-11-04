@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const router = useRouter();
 
-// ✅ AddCard 페이지로 이동 (groupId 전달)
+// AddCard 페이지로 이동 (groupId 전달)
 function goToAddPage() {
   console.log("👉 이동할 groupId:", props.groupId);
   router.push({

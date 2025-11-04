@@ -85,7 +85,7 @@ const router = useRouter();
 const auth = getAuth();
 
 // 특정 경로에서 헤더 숨김
-const hideHeader = computed(() => route.path === "/policy");
+const hideHeader = computed(() => router.currentRoute.value.path === "/policy");
 
 const showNav = ref(false);
 const showInfoModal = ref(false);

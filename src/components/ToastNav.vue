@@ -22,11 +22,12 @@
       <div class="p-6 border-b border-gray-200 mt-8">
         <div class="flex items-center mb-4 profile">
             <!-- 프로필 이미지 영역 -->
-            <template v-if="user?.photoURL && user.photoURL.startsWith('http') && !user.photoURL.includes('cdn.lunest.app/avatars/default1.png')">
+            <template v-if="user?.photoURL">
               <img
                 :src="user.photoURL"
                 alt="Profile"
                 class="w-10 h-10 rounded-full mr-3 object-cover bg-gray-100"
+                @error="(e) => (e.target.src = '/default-avatar.png')"
               />
             </template>
 
