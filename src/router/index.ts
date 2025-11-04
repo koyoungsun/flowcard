@@ -16,7 +16,7 @@ export const isPageLoading = ref(false);
 
 /* 라우트 정의 */
 const routes = [
-  // 🔸 비로그인 기본 페이지 (소개 / 웰컴)
+  // 🔸 비로그인 기본 페이지
   {
     path: "/",
     name: "Welcome",
@@ -83,7 +83,7 @@ const routes = [
     meta: { hideHeader: true },
   },
 
-  // 그룹 설정 페이지
+  // 그룹 설정
   {
     path: "/group-settings",
     name: "GroupSettings",
@@ -91,7 +91,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
 
-  // 약관 및 개인정보 처리방침 페이지 (공개 접근)
+  // 약관 및 개인정보 처리방침
   {
     path: "/policy",
     name: "Policy",
@@ -99,10 +99,12 @@ const routes = [
     meta: { public: true, authLayout: true, hideHeader: true },
   },
 
-  // 존재하지 않는 경로 → 웰컴 리디렉션
+  // 404 페이지
   {
-    path: "/:pathMatch(.*)*",
-    redirect: "/",
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: () => import("@/views/NotFound.vue"),
+    meta: { public: true, hideHeader: true },
   },
 ];
 
@@ -116,7 +118,7 @@ const router = createRouter({
 let isAuthChecked = false;
 let currentUser: any = null;
 
-/* 🔐 인증 확인 함수 */
+/* 인증 확인 함수 */
 function getAuthState() {
   const auth = getAuth();
   return new Promise((resolve) => {
@@ -129,44 +131,32 @@ function getAuthState() {
   });
 }
 
-/* 전역 인증 + 로딩 가드 */
+/* 전역 가드 */
 router.beforeEach(async (to, from, next) => {
-  isPageLoading.value = true; // 🔵 페이지 전환 시작
+  isPageLoading.value = true;
 
   const auth = getAuth();
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const isPublic = to.matched.some((record) => record.meta.public);
+  const requiresAuth = to.matched.some((r) => r.meta.requiresAuth);
+  const isPublic = to.matched.some((r) => r.meta.public);
 
-  // Firebase 상태 미확인 시 대기
-  if (!isAuthChecked) {
-    await getAuthState();
-  }
+  if (!isAuthChecked) await getAuthState();
 
   const isLoggedIn = !!auth.currentUser;
 
-  //  로그인 필요 페이지 접근 시 → 웰컴으로 이동
   if (requiresAuth && !isLoggedIn) {
     next("/");
-  }
-  //  로그인 상태에서 로그인/회원가입/웰컴 진입 → 홈으로 리디렉션
-  else if (isLoggedIn && ["/", "/login", "/register"].includes(to.path)) {
+  } else if (isLoggedIn && ["/", "/login", "/register"].includes(to.path)) {
     next("/home");
-  }
-  // 공개 페이지 (약관 등) 허용
-  else if (isPublic) {
-    next();
-  }
-  // 정상 이동
-  else {
+  } else {
     next();
   }
 });
 
-/* 라우터 이동 후 로딩 해제 */
+/* 전환 후 로딩 해제 */
 router.afterEach(() => {
   setTimeout(() => {
-    isPageLoading.value = false; // 🔵 페이지 로딩 종료
-  }, 300); // 부드러운 전환 효과
+    isPageLoading.value = false;
+  }, 300);
 });
 
 export default router;
