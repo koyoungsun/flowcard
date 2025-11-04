@@ -21,21 +21,22 @@
       <!-- 상단 프로필 -->
       <div class="p-6 border-b border-gray-200 mt-8">
         <div class="flex items-center mb-4 profile">
-            <!-- 프로필 이미지 영역 -->
-            <template v-if="user?.photoURL">
-              <img
-                :src="user.photoURL"
-                alt="Profile"
-                class="w-10 h-10 rounded-full mr-3 object-cover bg-gray-100"
-                @error="(e) => (e.target.src = '/default-avatar.png')"
-              />
-            </template>
+          <!-- 프로필 이미지 영역 -->
+          <template v-if="user?.photoURL">
+            <img
+              :src="user.photoURL"
+              alt="Profile"
+              class="w-10 h-10 rounded-full mr-3 object-cover bg-gray-100"
+              @error="onImgError"
+            />
+          </template>
 
-            <template v-else>
-              <span class="w-10 h-10 mr-3 rounded-full bg-gray-100 flex items-center justify-center noimg">
-                <i class="bi bi-person text-gray-400 text-xl"></i>
-              </span>
-            </template>
+          <template v-else>
+            <span class="w-10 h-10 mr-3 rounded-full bg-gray-100 flex items-center justify-center noimg">
+              <i class="bi bi-person text-gray-400 text-xl"></i>
+            </span>
+          </template>
+
           <div>
             <p class="user-name font-semibold">
               {{ user?.displayName || "Guest" }}<span>님 환영합니다.</span>
@@ -145,7 +146,6 @@
         <p class="company text-center text-xs text-gray-400">
           <strong>© LUNEST</strong> From Seeds to Systems.
         </p>
-        <!-- 약관 링크 -->
         <router-link
           to="/policy"
           class="block text-sm text-gray-600 hover:text-indigo-600 mb-3"
@@ -169,6 +169,11 @@ defineProps<{
   groupCount?: number;
   linkCount?: number;
 }>();
+
+function onImgError(e: Event) {
+  const target = e.target as HTMLImageElement;
+  target.src = "/default-avatar.png";
+}
 
 /* 보기 모드 */
 const selectedView = ref(localStorage.getItem("defaultViewMode") || "card");
