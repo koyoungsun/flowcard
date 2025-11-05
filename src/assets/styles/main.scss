@@ -318,7 +318,7 @@ aside {position:fixed; top: 0;
 }
 
 .welcome-wrap {background: linear-gradient(135deg, #C7B8EA 0%, #A3E4D7 100%); padding:100px 16px 16px; box-sizing: border-box; height:100vh; 
-    .wrap{width:calc(100vw - 32px); background-color:#fff; position:relative; border-radius:16px; padding:16px; box-sizing:border-box; position:relative; border:1px solid #fff; box-shadow:0 0 20px #82769e; font-size:12px; text-align:center;
+    .wrap{width:calc(100%); background-color:#fff; position:relative; border-radius:16px; padding:16px; box-sizing:border-box; position:relative; border:1px solid #fff; box-shadow:0 0 20px #82769e; font-size:12px; text-align:center;
         h1{position:absolute; top:-40px; left:16px; font-size:40px;
             color:#fff;letter-spacing:-2px; font-weight:100;
             i{font-size:30px;}
@@ -329,8 +329,8 @@ aside {position:fixed; top: 0;
             strong{font-size:18px; color:#A192C4; display:block; margin:0 0 8px; text-decoration: underline;}
             span{font-size:16px; font-weight:700; letter-spacing:-1.2px; display:block; margin:4px 0 20px; color:#B6A7E2;}
         }
-        ol{list-style:none; margin:0 0 10% 24px;
-            li{ text-align: left; margin:4px 0; font-size:13px; color:#666; 
+        ol{list-style:none; margin:0 auto 10%;
+            li{ text-align:center; margin:4px 0; font-size:13px; color:#666; 
                 i{margin-right:4px;}
                 strong{ text-decoration:underline; color:#222;}
             }
@@ -353,27 +353,10 @@ aside {position:fixed; top: 0;
     font-weight: 600;
     letter-spacing: 0.3px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-    box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.4),
-      0 4px 12px rgba(163, 228, 215, 0.4);
     border: none;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s ease;
-  }
-  
-  /* 반짝이는 라이트 효과 */
-  .aqua-btn::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), transparent 60%);
-    transform: rotate(25deg);
-    transition: opacity 0.4s;
-    opacity: 0;
   }
   
   .wel-footer{position:fixed; bottom:24px; left:0; right:0;
