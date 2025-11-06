@@ -57,7 +57,7 @@
           >
             <template #item="{ element, index }">
               <div
-                class="list-detail drag-handle cursor-move bg-white p-3 rounded shadow-sm mb-2 flex items-center justify-between"
+                class="list-detail bg-white p-3 rounded shadow-sm mb-2 flex items-center justify-between"
               >
                 <div class="flex items-center gap-3 flex-1 posi">
                   <em class="thumnail">
@@ -76,7 +76,7 @@
                 </div>
                 <div class="flex gap-2 btn-box">
                   <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기 <em class="bi bi-arrow-right"></em></button>
-                  <i class="bi bi-grip-vertical"></i>
+                  <i class="bi bi-grip-vertical drag-handle cursor-move"></i>
                 </div>
               </div>
             </template>
