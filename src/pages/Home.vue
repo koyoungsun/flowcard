@@ -53,6 +53,7 @@
             animation="200"
             handle=".drag-handle"
             class="list-area mt-3"
+            :ghost-class="'drag-ghost'"
           >
             <template #item="{ element, index }">
               <div
