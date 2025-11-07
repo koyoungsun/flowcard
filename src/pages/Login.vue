@@ -10,7 +10,7 @@
       <h1>로그인</h1>
 
       <!-- Google 로그인 -->
-      <button class="btn-google" @click="loginWithGoogle">
+      <button class="btn-google-g" @click="loginWithGoogle">
         <i class="bi bi-google"></i> Google 로그인
       </button>
 
@@ -133,65 +133,4 @@ async function loginWithEmail() {
 </script>
 
 <style scoped>
-.login-wrap {
-  min-height: 100vh;
-  background: #f9fafb;
-}
-.login {
-  max-width: 360px;
-  margin: 60px auto;
-  background: white;
-  border-radius: 12px;
-  padding: 32px 24px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-}
-.login h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1.5rem;
-}
-.btn-google {
-  width: 100%;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 10px 0;
-  font-weight: 500;
-  color: #374151;
-  transition: all 0.2s;
-}
-.btn-google:hover {
-  background: #f3f4f6;
-}
-.add-coment {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin: 1.5rem 0 0.5rem;
-}
-.ins-f input {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 10px;
-  font-size: 0.9rem;
-}
-.btn-login {
-  width: 100%;
-  background: #4f46e5;
-  color: white;
-  padding: 10px 0;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-.btn-login:hover {
-  background: #4338ca;
-}
-.etc {
-  font-size: 0.85rem;
-  color: #6b7280;
-  text-align: center;
-  margin-top: 1.5rem;
-}
 </style>

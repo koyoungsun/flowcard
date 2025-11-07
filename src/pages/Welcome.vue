@@ -45,7 +45,7 @@
       <div class="flex gap-3 btn-bx">
         <button
           @click="handleLoginClick"
-          class="px-5 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 transition aqua-btn"
+          class="px-5 py-2 bg-indigo-500 text-white rounded-md shadow-sm hover:bg-indigo-600 transition aqua-btn btn-login-w"
         >
           로그인
         </button>
