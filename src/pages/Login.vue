@@ -58,20 +58,31 @@ const password = ref('')
 const errorMsg = ref('')
 const router = useRouter()
 
-// Google 로그인
+// ✅ Google 로그인
 async function loginWithGoogle() {
   const provider = new GoogleAuthProvider()
+  const ua = navigator.userAgent.toLowerCase()
+  const currentUrl = window.location.href
+
+  // 🔹 카카오톡, 인스타그램, 네이버 인앱 브라우저 감지
+  if (ua.includes('kakao') || ua.includes('instagram') || ua.includes('naver')) {
+    alert('인앱 브라우저에서는 로그인이 차단되어 외부 브라우저로 이동합니다.')
+    // 카카오톡 외부 브라우저 호출
+    window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(currentUrl)}`
+    return
+  }
+
   try {
     const result = await signInWithPopup(auth, provider)
-    console.log('Google 로그인 성공:', result.user)
+    console.log('✅ Google 로그인 성공:', result.user)
     router.push('/')
-  } catch (error) {
-    console.error('Google 로그인 실패:', error)
-    alert('로그인에 실패했습니다.')
+  } catch (error: any) {
+    console.error('❌ Google 로그인 실패:', error)
+    alert('로그인에 실패했습니다. 외부 브라우저(Safari 또는 Chrome)에서 다시 시도해주세요.')
   }
 }
 
-// 이메일 로그인 (이메일 인증 필수)
+// ✅ 이메일 로그인 (이메일 인증 필수)
 async function loginWithEmail() {
   errorMsg.value = ''
   try {
@@ -84,7 +95,6 @@ async function loginWithEmail() {
     // 이메일 인증 확인
     if (!user.emailVerified) {
       try {
-        // 🔒 최근 로그인 이후 일정 시간(60초) 이상 경과 시에만 메일 재발송
         const lastSignIn = user.metadata.lastSignInTime
           ? new Date(user.metadata.lastSignInTime).getTime()
           : 0
@@ -104,10 +114,7 @@ async function loginWithEmail() {
         }
       }
 
-      // 인증 미완료 안내 페이지로 이동
       router.push('/verify-email')
-
-      // 약간의 지연 후 로그아웃 (라우팅 안정화용)
       setTimeout(async () => {
         await signOut(auth)
         console.log('🚪 비인증 유저 로그아웃 완료')
@@ -116,8 +123,7 @@ async function loginWithEmail() {
       return
     }
 
-    // 인증된 사용자 → 홈으로 이동
-    console.log('이메일 로그인 성공:', user)
+    console.log('✅ 이메일 로그인 성공:', user)
     router.push('/')
   } catch (error: any) {
     console.error('이메일 로그인 실패:', error)
@@ -125,3 +131,67 @@ async function loginWithEmail() {
   }
 }
 </script>
+
+<style scoped>
+.login-wrap {
+  min-height: 100vh;
+  background: #f9fafb;
+}
+.login {
+  max-width: 360px;
+  margin: 60px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+.login h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+.btn-google {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+}
+.btn-google:hover {
+  background: #f3f4f6;
+}
+.add-coment {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 1.5rem 0 0.5rem;
+}
+.ins-f input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.9rem;
+}
+.btn-login {
+  width: 100%;
+  background: #4f46e5;
+  color: white;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.btn-login:hover {
+  background: #4338ca;
+}
+.etc {
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+</style>
