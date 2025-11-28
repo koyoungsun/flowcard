@@ -58,7 +58,7 @@
      =============================== */
   
   body {
-    background-color:#232121;
+    background-color: var(--color-bg);
     color: var(--color-text);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -88,9 +88,9 @@ body {
 #app{position: relative; overflow: hidden;}
 .dimd{position:fixed; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.4); top:0; left:0; right:0; bottom:0;}
          
-.top-nav{height:80px;background: linear-gradient(135deg, #3a342e 0%, #202524 100%); text-align:center; position:relative; border-bottom:8px solid #ffb20b;
-    a{text-decoration:none; height:88px; display:block;
-        h1{color:#fcd022; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px; font-size:30px;
+.top-nav{height:80px;background: linear-gradient(135deg, #C7B8EA 0%, #A3E4D7 100%); text-align:center; position:relative; 
+    a{text-decoration:none;
+        h1{color:#fff; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px;
             strong{font-weight:500; color:#fff;}
         }
     }
@@ -98,10 +98,10 @@ body {
         strong{font-weight:500; color:#fff;}
     }
     .top-info{position:absolute; top:22px; left:16px; width:40px; height:40px; border:0; background:none;
-        i{font-size:20px; color:#fff; display:block;}
+        i{font-size:24px; color:#fff; display:block;}
     }
     .btn-back{position:absolute; top:22px; left:16px; width:40px; height:40px; border:0; background:none;
-        i{font-size:20px; color:#fff; display:block;}
+        i{font-size:24px; color:#fff; display:block;}
     }
     .top-navi{position:absolute; top:22px; right:16px; width:40px; height:40px; border:0; background:none;
         i{font-size:30px; color:#fff; display:block;}
@@ -110,19 +110,18 @@ body {
 }
 
 .card-wrap{padding:0; 
-    .swiper-slide{height:140px; margin:10px 0; border-radius:4px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.4); position:relative;
-        border-bottom:1px solid rgb(155, 129, 80); border-top:1px solid #fff; border-left:1px solid #fff; background-color:#f90; border-right:1px solid #f90; opacity:.3;
+    .swiper-slide{height:100px; margin:10px 0; border-radius:4px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.4); position:relative;
     }
     .swiper-slide-prev{
     }
-    .swiper-slide-active{background: linear-gradient(120deg, #e79b17 0%, #542506 100%); opacity:1;
+    .swiper-slide-active{background: linear-gradient(120deg, #C7B8EA 0%, #A3E4D7 100%);
         .card-inner{}
     }
     .thum-card{width:32px; height:32px; border-radius:50%; position:absolute; right:16px; top:16px;}
     .tit{font-size:16px; color:#222; font-weight:500;}
-    p.summary{margin:10px 0 8px; color:#eaeaea; font-size: 12px; letter-spacing:-.7px;}
+    p.summary{margin:5px 0 8px; color:#666;}
     
-    .ico-bi{position:absolute; right:-4px; top:-14px; width:32px; height:32px; border-radius:50%; border:1px solid rgba(242, 187, 47, 0.4); background-color:#fff;}
+    .ico-bi{position:absolute; top:0; right:0; width:35px; height:35px; border-radius:8px; border:1px solid rgba(255, 255, 255, 0.4); background-color:#fff;}
 }
   .card-inner {
     position: relative;
@@ -139,22 +138,20 @@ body {
     image-rendering: pixelated;
   }  
 .card-detail{
-    h3.tit{font-size:15px; font-weight:700; margin-top:10px; max-width:calc(100% - 30px);
+    h3.tit{font-size:16px; font-weight:700;
         em{font-style:normal; font-weight:500; color:#fff; font-size:11px; position:relative; left:-7px; top:-12px;}
     }
     .link-url{font-size:13px;}
     .summary{font-size:13px;}
+    .tag{font-size:11px; color:#2272ed; margin:2px 0;}
     .btn-box{
-        button{border:none; background:#f90; text-decoration:underline; font-size:11px; font-weight:500; margin:0 4px 0 0; color:#fff; display:inline-block; padding: 3px 5px; text-decoration:none; border-radius:4px;
-            &:first-child{background:rgb(62, 41, 25);}
-            &:last-child{background-color:#333;}
-        }
+        button{border:none; background:none; text-decoration:underline; font-size:13px; font-weight:700; margin:0 4px 0 0; color:#2272ed;}
     }
 }
 .addp-card{background-color:
-    #171316; height:100%; border-radius:4px; text-align:center; color:#fff;
-    i{font-size:25px; margin:0 auto 8px; padding:20px 0 0; display:block;}
-    p{font-size:14px; margin-top:-5px; font-weight:700; letter-spacing:-.7px;}
+    #ebaeda; height:100%; border-radius:4px; text-align:center; color:#fff;
+    i{font-size:50px;}
+    p{font-size:16px; margin-top:-5px; font-weight:700; letter-spacing:-.7px;}
 }
 .card-detail {
     backface-visibility: hidden;
@@ -172,21 +169,21 @@ aside {position:fixed; top: 0;
     transition: transform 0.3s ease;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     .btn-close{position:absolute; top:16px; right:16px; width:40px; height:40px; font-size:30px; line-height:40px; font-weight:100; color:#fff; background:none; border:0;}
-    .profile{padding: 56px 16px 24px; text-align:center; background: linear-gradient(135deg, #25180b 20%, #432b05 80%);
+    .profile{padding: 56px 16px 24px; text-align:center; background: linear-gradient(135deg, #C7B8EA 20%, #F6E5C9 80%);
         img{width:80px; height:80px; border-radius:50%; border:1px solid #fff; display:block; margin:0 auto; background-color:#666;}
-        .user-name{padding:16px 0 0; font-weight:700; color:#ede9e2;
-            span{font-weight:400; color:#ba8a39;}
+        .user-name{padding:16px 0 0; font-weight:700; color:#b67307;
+            span{font-weight:400; color:#4a2e58;}
         }
         p{line-height:160%; font-size:14px; color:#999;}
         .noimg{border:1px solid #fff; width:80px; height:80px; display:block; margin:0 auto; border-radius:50%; background-color:#eee; color:#fff; font-size:50px; line-height:80px;}
     }
-    .status-view{text-align:center; padding:24px 16px; font-size:16px; border-bottom:8px solid #47300b;
+    .status-view{text-align:center; padding:24px 16px; font-size:16px; border-bottom:8px solid #F6E5C9;
         h3{line-height:160%; font-weight:700; font-size:15px; color:#c5afbe; border:1px solid #c5afbe; border-radius:16px; padding:4px 0; margin-bottom:16px;}
         i{display:inline-block; width:1px; height:15px; background-color:#eee; margin:0 16px; position:relative; top:2px;}
         span{font-size:14px;}
         strong{margin:0 4px; color:#f90;}
     }
-    .setting{ padding: 24px 16px; border-bottom:8px solid #47300b;
+    .setting{ padding: 24px 16px; border-bottom:8px solid #F6E5C9;
         .mt-4{display:flex; justify-content:space-between; height:40px; line-height:40px; border-top:1px solid #eaeaea;
             h4{font-size:14px; font-weight:700; letter-spacing:-.7px;}
             label{font-size:13px; margin-left:8px;
@@ -199,11 +196,11 @@ aside {position:fixed; top: 0;
     .service{ text-align:center; padding:24px 16px; font-size:14px;
         p{letter-spacing:-.7px;}
         a{ display:block; font-weight:500; letter-spacing:-.7px; margin:8px 0 0; color:#2272ed}
-        button{ clear:both; display:block; margin:16px auto; width:100%; height:48px; line-height:48px; text-align:center; font-weight:700; font-size:16px; background: linear-gradient(90deg, #2d1a04, #7c4d0c, #251702); border:0; border-radius:4px; color:#fff; letter-spacing:-.7px;}
+        button{ clear:both; display:block; margin:16px auto; width:100%; height:48px; line-height:48px; text-align:center; font-weight:700; font-size:16px; background: linear-gradient(90deg, #A3E4D7, #C7B8EA, #F6E5C9); border:0; border-radius:4px; color:#fff; letter-spacing:-.7px;}
     }
     .footer{ text-align:center; 
-        .item{font-size:14px; letter-spacing:-.7px; color:#704916;}
-        .company{color:#e0b680; margin:4px 16px 0; font-size:11px;
+        .item{font-size:14px; letter-spacing:-.7px; color:#C7B8EA;}
+        .company{color:#C7B8EA; margin:4px 16px 0; font-size:11px;
             strong{margin-right:4px;}
         }
         a{font-size:11px; margin:20px 0; display:block; letter-spacing: -.7px;}
@@ -230,63 +227,63 @@ aside {position:fixed; top: 0;
     opacity: 0;
   }
 
-  .modal-pop{background-color:#fff; position:fixed; top:10%; left:0; right:0; margin:0 16px 0; border-radius:8px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.08); padding:16px; text-align:center; z-index:10;
+  .modal-pop{background-color:#fff; position:fixed; top:10%; left:0; right:0; margin:0 16px 0; border-radius:8px; box-shadow:2px 2px 5px rgba(0, 0, 0, 0.08); padding:16px; text-align:center;
     .btn-close{background:none; font-size:24px; position:absolute; top:0; right:0; border:0; color:#aeaeae;}
     .cont{position:relative; padding:16px;
         em{width:180px; height:180px; background:url('../../img/img-info.png') 0 0 no-repeat; background-size:180px; margin:30px auto 20px; display:block;}
-        h2{font-size:24px; letter-spacing:-2px; color:#e59b13;}
-        h3{font-size:16px; font-weight:400; letter-spacing:-.7px; margin:16px 0; color:#412a16; line-height:1.2em;}
+        h2{font-size:24px; letter-spacing:-1px; color:#9E83D9;}
+        h3{font-size:16px; font-weight:400; letter-spacing:-.7px; margin:16px 0; color:#5CCFBA; line-height:1.2em;}
         p{font-size:13px; letter-spacing:-.7px; margin:4px 0; line-height:1.4em; color:#999;}
     }
 }
 
-.now-posi{margin:24px 16px 8px; display:flex; border-bottom:1px solid #a39eae; justify-content:space-between;
-    strong{font-size:18px; color:#fff; letter-spacing:-.7px; font-weight:700;}
-    span{font-size:14px; margin-left:4px; font-weight:500; color:#f8f07e;}
-    button{ letter-spacing:-.7px; color:#f6c34d; border:0; background: none; font-weight:700;}
+.now-posi{margin:24px 16px 8px; display:flex; border-bottom:1px solid #B99FEA; justify-content:space-between;
+    strong{font-size:18px; color:#6E5F8C; letter-spacing:-.7px; font-weight:700;}
+    span{font-size:14px; margin-left:4px; font-weight:500; color:#16a34a;}
+    button{ letter-spacing:-.7px; color:#B99FEA; border:0; background: none;}
 }
 
 .group-header-tit{padding:16px 4px 8px; font-size:15px; font-weight:500; letter-spacing:-.4px; color:#666; display:flex; justify-content:space-between; margin:0 16px; border-radius:8px;
-    h3{color:rgb(248, 184, 81);
+    h3{color:rgb(117, 36, 92);
         strong{font-weight:700; font-size:16px;}
         span{color:#f90; font-weight:500; font-size:12px; margin-left:4px; position:relative; top:-1px;}
     }
-    button{background:none; padding:4px; color:#c8bebe;border:0;}
+    button{background:none; padding:4px; color:#999;border:0;}
 }
-ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff; border-radius:8px;
-    h6{font-size:14px; font-weight:500; padding:10px 0 2px; color:#1b0707;
-        i{font-size:11px; position: relative; top:-1px;}
-    }
-    li{ font-size:12px; letter-spacing:-.4px; line-height:160%; margin:4px 0; color:#615555; padding:0 0 0 8px;
-        i{width:3px; height:3px; background-color:#999;  display:inline-block; border-radius:50%; margin:0 4px 0 -8px; position:relative; top:-3px}
-    }
-}
+
 .list{margin:0 16px 24px;
+    ol.info{list-style:none; padding:8px 0;
+        h6{font-size:14px; font-weight:500; padding:10px 0 2px; color:#999;
+            i{font-size:11px; position: relative; top:-1px;}
+        }
+        li{ font-size:12px; letter-spacing:-.4px; line-height:160%; margin:4px 0; color:#999; padding:0 0 0 8px;
+            i{width:3px; height:3px; background-color:#999;  display:inline-block; border-radius:50%; margin:0 4px 0 -8px; position:relative; top:-2px}
+        }
+    }
     .list-area{
-        .list-detail{background: linear-gradient(135deg, #0e0f0f 0%, #2c1801 100%); 
-            border-radius:8px; position: relative; padding:16px 63px 16px 35px; margin-bottom:2px; border-bottom:2px solid rgb(114, 85, 11); border-right:1px solid rgb(114, 85, 11); border-top:1px solid #ffd453; margin-bottom:8px; border-left:1px solid #9b7131;
-            em.thumnail{width:32px; height:32px; display:block; position:absolute; top:50%; right:16px; margin-top:-17px; background-color:#fff; border-radius:50%; border:1px solid #cdaa6f; opacity: .4;
+        .list-detail{background: linear-gradient(135deg, #CFF4EC 0%, #8FD9C8 100%); 
+            border-radius:8px; position: relative; padding:16px 100px 16px 63px; margin-bottom:2px; border-bottom:1px solid rgb(53, 189, 199);
+            em.thumnail{width:32px; height:32px; display:block; position:absolute; top:20px; left:16px; border-radius:50%; border:2px solid #fff;
                 img{width:32px; height:32px; border-radius:50%;}
             }
             .user{
-                h3{font-size:14px; letter-spacing:-.7px; margin:4px 0 2px; color:#ffc106; font-weight:500;}
-                p{font-size:12px; color:#aeaeae; margin:2px 0 0; letter-spacing:-.4px;}
+                h3{font-size:16px; letter-spacing:-.7px; margin:4px 0 2px;}
+                p{font-size:13px; color:#666; margin:2px 0 0; letter-spacing:-.4px;}
                 .btn-combo{ margin:12px 0 0;
                     button{background-color:#62aa99; color:#fff; border:0; font-size:11px;padding: 3px 6px; border-radius:2px; position:relative; top:-3px; margin-left:4px;
                         &:first-child{background-color: #334155; color:#fff;}
-                        &:last-child{background-color:#f90; font-weight:700; color:rgb(46, 32, 12);}
                     }
                 }
             }
             .btn-box{z-index: 1;
-                button{width:70px; margin-left:2px; font-size:12px; padding:2px 0; border:0; font-weight:700; border-radius:4px; background: rgba(255, 255, 255, 0.2); position:absolute; top:0px; left:5px; color:#fff;}
-                i{font-size:25px; color:#3c2a07; position:absolute; left:7px; top:50%; margin-top:-12.5px;}
+                button{width:70px; margin-left:2px; font-size:12px; padding:10px 0; border:0; font-weight:700; border-radius:4px; background: rgba(255, 255, 255, 0.2); position:absolute; top:35px; right:35px;}
+                i{font-size:25px; color:#fff; position:absolute; right:7px; top:37px;}
             }
         }
     }
 }
 .btn-link-add{margin:8px 0 0;
-    button{width:100%; height:50px; line-height:50px; text-align:center; border:0; border-radius:4px; font-weight:700; letter-spacing:-.4px; color:#fff; background:linear-gradient(135deg, #f29130 0%, #58280a 100%);}
+    button{width:100%; height:50px; line-height:50px; text-align:center; border:0; border-radius:4px; font-weight:700; letter-spacing:-.4px;;}
 }
 .drag-ghost {
     pointer-events: none;
@@ -307,10 +304,10 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
     }
     ul{list-style:none; padding:8px 0 24px; overflow:hidden;
         li{width: calc(50% - 4px); float:left;
-            button{width:100%; height:50px; line-height:50px; background:#51463a; font-size:14px; border:0; letter-spacing: -.7px; font-weight:700; color:#fff; border-radius:4px;  
+            button{width:100%; height:50px; line-height:50px; background:#C7B8EA; font-size:14px; border:0; letter-spacing: -.7px; font-weight:700; color:#fff; border-radius:4px;  
             }
             &:last-child{float:right; 
-                button{background:#c07d09;}
+                button{background:#A3E4D7;}
             }
         }
     }
@@ -324,20 +321,20 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
     p{font-size:13px; font-weight:400; color:#999;}
 }
 
-.welcome-wrap {background: linear-gradient(135deg, #2d1907 0%, #7a5104 100%); padding:100px 16px 16px; box-sizing: border-box; height:100vh; 
-    .wrap{width:calc(100%); background-color:#fff; position:relative; border-radius:12px; padding:16px; border-bottom:6px solid rgb(63, 40, 7); box-sizing:border-box; position:relative; box-shadow:0 0 20px #82769e; font-size:12px; text-align:center; border-top:6px solid rgb(181, 155, 26); border-left:6px solid #f90; border-right:6px solid rgb(120, 57, 11);
+.welcome-wrap {background: linear-gradient(135deg, #C7B8EA 0%, #A3E4D7 100%); padding:100px 16px 16px; box-sizing: border-box; height:100vh; 
+    .wrap{width:calc(100%); background-color:#fff; position:relative; border-radius:16px; padding:16px; box-sizing:border-box; position:relative; border:1px solid #fff; box-shadow:0 0 20px #82769e; font-size:12px; text-align:center;
         h1{position:absolute; top:-40px; left:16px; font-size:40px;
             color:#fff;letter-spacing:-2px; font-weight:100;
             i{font-size:30px;}
             span{font-weight:500;}
         }
         em.ico-ig{display:block; width:140px; height:140px; background:url('../../img/img-linknest.png') 0 0 no-repeat; background-size:140px; margin:40px auto 10px;}
-        h3{ letter-spacing:-.7px; line-height:1.7em; font-weight:400; color:#44403b; padding:50px 0 0;
-            strong{font-size:30px; color:#412209; display:block; margin:0 0 16px; letter-spacing:-2px;}
-            span{font-size:16px; font-weight:700; letter-spacing:-1.5px; display:block; margin:8px 0 24px; color:#e48806; font-size:20px;}
+        h3{ letter-spacing:-.7px; line-height:1.4em; font-weight:400; color:#C7B8EA;
+            strong{font-size:18px; color:#A192C4; display:block; margin:0 0 8px; text-decoration: underline;}
+            span{font-size:16px; font-weight:700; letter-spacing:-1.2px; display:block; margin:4px 0 20px; color:#B6A7E2;}
         }
-        ol{list-style:none; margin:30px auto 10%; display:block;
-            li{ text-align:left; margin:4px 0; font-size:13px; color:#666; 
+        ol{list-style:none; margin:0 auto 10%;
+            li{ text-align:center; margin:4px 0; font-size:13px; color:#666; 
                 i{margin-right:4px;}
                 strong{ text-decoration:underline; color:#222;}
             }
@@ -355,7 +352,7 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
     display: inline-block;
     padding: 12px 28px;
     border-radius: 9999px;
-    background: linear-gradient(135deg, #170f03, #d88e03);
+    background: linear-gradient(135deg, #a3e4d7, #c7b8ea);
     color: #ffffff;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -374,22 +371,22 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
 
 //링크카드추가
 .linkcard-add-wrap{padding:24px 16px; font-size:14px;
-    h2{font-size:20px; letter-spacing:-.7px; text-align:center; margin:0 0 4px; color:#ffa200; font-weight:300;
+    h2{font-size:20px; letter-spacing:-.7px; text-align:center; margin:0 0 4px; color:#b96ab1; font-weight:300;
         strong{font-weight:700;}
         
     }
     .input-form{
-        label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:rgb(201, 176, 137);}
-        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px;}
+        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#222; border:1px solid #eee; border-radius:4px;
             &::placeholder{color:#999;}
         }
-        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#222; border:1px solid #eee; border-radius:4px;
             &::placeholder{color:#999;}
         }
     }
     .btn-combo{width:100%; height:50px; margin:16px 0 0;
-        button{width:calc(50% - 4px); height:50px; line-height:50px; float:left; font-size:14px; font-weight:700; border:0; border-radius:4px; color:#999;
-            &:last-child{float:right; background:#ce9210; color:#fff;}
+        button{width:calc(50% - 4px); height:50px; line-height:50px; float:left; font-size:16px; font-weight:700; border:0; border-radius:4px; color:#999;
+            &:last-child{float:right; background:#C7B8EA; color:#fff;}
         }
     }
 }
@@ -418,46 +415,46 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
 //로그인영역
 .login-wrap{
     .login{padding:24px 32px; box-sizing: border-box; overflow:hidden;
-        h1{text-align:center; font-size:20px; color:#dba41a; letter-spacing:-.7px; font-weight:700;}
+        h1{text-align:center; font-size:20px; color:#b96ab1; letter-spacing:-.7px; font-weight:700;}
         .btn-google-g{ width:100%; height:50px; line-height:50px; text-align:center; margin:24px 0 8px; border-radius:4px; border:0; background-color:rgb(179, 68, 68); color:#fff; font-weight:300; font-size:16px;
             i{color:#fff;}
         }
-        .add-coment{ text-align:center; margin:8px 0; font-size:14px; color:#d8c69c;
+        .add-coment{ text-align:center; margin:8px 0; font-size:14px; color:#666;
             span{display:block; font-weight:700; font-size:16px; padding:4px 0 8px;}
         }
-        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#222; border:1px solid #eee; border-radius:4px;
             &::placeholder{color:#999;}
         }
-        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px;background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#222; border:1px solid #eee; border-radius:4px;
             &::placeholder{color:#999;}
         }
         .btn-login{width:100%; height:50px; line-height:50px; text-align:center; border-radius:4px; border:0; background: linear-gradient(90deg, #A3E4D7, #C7B8EA, #F6E5C9); font-size:16px; font-weight:700; color:#fff; letter-spacing:-.7px;}
-        .etc{margin:16px 0; text-align:center; font-size:14px; color:#a89f9f; letter-spacing:-.7px;
-            a{display:block; margin:8px 0 16px; font-weight:700; font-size:16px; color:#e1a43b;}
+        .etc{margin:16px 0; text-align:center; font-size:14px; color:#666; letter-spacing:-.7px;
+            a{display:block; margin:8px 0 16px; font-weight:700; font-size:16px; color:#60a78f;}
         }
     }
 }
 //회원가입
 .join-wrap{
     .join{padding:24px 32px; box-sizing: border-box; overflow:hidden; letter-spacing:-.7px;
-        h1{text-align:center; font-size:20px; color:#ffc012; letter-spacing:-.7px; font-weight:700;}
-        p.cmt{font-size:14px; margin:24px 0 8px; color:#eee; text-align:center;}
+        h1{text-align:center; font-size:20px; color:#b96ab1; letter-spacing:-.7px; font-weight:700;}
+        p.cmt{font-size:14px; margin:24px 0 8px; text-align:center;}
         .input-form{
-            label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:#bdae93;}
-            input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; background: linear-gradient(135deg, #3a342e 0%, #202524 100%); border:0; border-bottom:1px solid #ebae36; border-radius:4px; border-right:1px solid #aaa;
+            label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px;}
+            input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#222; border:1px solid #eee; border-radius:4px;
                 &::placeholder{color:#999;}
             }
         }
         .privacy{font-size:13px; margin:24px 0 16px; color:#666; font-weight:500;
             input{position:relative; top:1px;}
-            a{font-weight:700; color:#af5328; margin-left:4px;}
+            a{font-weight:700; color:#2272ed; margin-left:4px;}
         }
 
         .profile-img{
             label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px;}
             input{border:1px solid #f00;}
         }
-        .btn-join-ok{width:100%; height:50px; line-height:50px; text-align:center; font-size:16px; font-weight:700; border:0;background-color: #8b5e16; color:#fff; border-radius:4px;
+        .btn-join-ok{width:100%; height:50px; line-height:50px; text-align:center; font-size:16px; font-weight:700; border:0;background-color: #2272ed; color:#fff; border-radius:4px;
             &:disabled{opacity:.4;}
         }
     }
@@ -465,11 +462,11 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background-color:#fff;
 }
 
 //약관동의
-.policy-wrap{padding:32px; font-size:13px; letter-spacing:-.7px; color:#958383;
-    h1{font-size:18px; color:#e1a50f; text-align:center; text-decoration:underline;}
-    h2{padding:24px 0 8px; font-size:16px; color:#d6d2c4;}
+.policy-wrap{padding:32px; font-size:13px; letter-spacing:-.7px; color:#666;
+    h1{font-size:18px; color:#222; text-align:center; text-decoration:underline;}
+    h2{padding:24px 0 8px; font-size:16px; color:#333;}
     p{line-height:160%; margin:4px 0;
-        strong{color:#986420;}
+        strong{color:#334155;}
     }
 }
 

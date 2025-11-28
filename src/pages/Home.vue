@@ -8,7 +8,13 @@
       </h2>
       <button @click="onCreateGroup" class="text-indigo-600 font-medium">+ 그룹 만들기</button>
     </div>
-
+    <!-- 안내 -->
+    <ol class="info mt-4">
+      <h6><i class="bi bi-bell-fill"></i> Notice</h6>
+      <li><i></i><strong>그룹 만들기</strong>버튼을 통해 그룹을 추가할 수 있습니다. </li>
+      <li><i></i>카드형 항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
+      <li><i></i>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
+    </ol>
     <!-- 🔹 로딩 중일 때 -->
     <div v-if="loading" class="text-center py-10 text-gray-400 text-sm animate-pulse data-loging">
       <i class="bi bi-arrow-repeat mr-1 animate-spin"></i> 그룹 데이터를 불러오는 중...
@@ -71,23 +77,18 @@
                     <div class="btn-combo">
                       <button class="text-pink-500 text-sm hover:text-pink-600 btn-3" @click="goToEditCard(group.id, element.id)">편집</button>
                       <button class="text-gray-500 text-sm btn-2" @click="copyLink(element.url)">복사</button>
+                      <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기</button>
                     </div>
                   </div>
                 </div>
                 <div class="flex gap-2 btn-box">
-                  <button class="text-indigo-500 text-sm btn-1" @click="openLink(element.url)">바로가기 <em class="bi bi-arrow-right"></em></button>
                   <i class="bi bi-grip-vertical drag-handle cursor-move"></i>
                 </div>
               </div>
             </template>
           </draggable>
 
-          <!-- 안내 -->
-          <ol class="info mt-4">
-            <h6><i class="bi bi-bell-fill"></i> Notice</h6>
-            <li><i></i>항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
-            <li><i></i>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
-          </ol>
+          
 
           <!-- 항상 보이는 링크 추가 버튼 -->
           <div class="text-center mt-4 btn-link-add">
@@ -137,7 +138,7 @@
     <!-- 보기 전환 버튼 -->
     <div class="text-center py-6 btn-toggle">
       <button @click="toggleView" class="bg-indigo-500 text-white px-4 py-2 rounded">
-        {{ currentViewMode === 'card' ? '리스트 보기' : '카드 보기' }}
+        {{ currentViewMode === 'card' ? 'LIST' : 'CARD' }}
       </button>
     </div>
 

@@ -7,20 +7,17 @@
       <h1 class="text-3xl font-bold text-indigo-600 mb-2 tracking-wide">
         <i class="bi bi-arrow-90deg-right"></i> LINK <span class="text-gray-800">NEST</span>
       </h1>
-      <em class="ico-ig"></em>
+      
 
       <!-- 서비스 요약 문구 -->
       <h3 class="text-gray-600 mb-10 text-base leading-relaxed max-w-md">
-        <strong>
-          <i class="bi bi-balloon-fill"></i>흩어진 링크를 한곳에 모아보세요.
-          <i class="bi bi-balloon-fill"></i>
-        </strong>
-        나만의 링크 그룹을 만들고,<br />
-        한 번의 클릭으로 바로 실행하는<br />
-        버튼 한번으로 복사해서 전달까지!<br />
-        <span class="font-semibold text-indigo-500">스마트 링크 보관함!!</span>
+        <strong>내링크들을 한곳에!</strong>
+        내 로그인에 항상 저장<br />
+        그룹에서 바로 찾아 이동하고<br />
+        버튼 한번으로 복사, 전달까지!<br />
+        <span class="font-semibold text-indigo-500">내 전용 북마커</span>
       </h3>
-
+      <em class="ico-ig"></em>
       <!-- 기능 포인트 -->
       <div class="mb-12 space-y-3 text-sm text-gray-700 leading-relaxed">
         <ol>
@@ -36,10 +33,6 @@
         </ol>
       </div>
 
-      <!-- 하단 문구 -->
-      <p class="mt-10 text-sm text-gray-400 tit-point">
-        지금 나만의 링크 공간을 만들어보세요.
-      </p>
 
       <!-- 버튼 그룹 -->
       <div class="flex gap-3 btn-bx">
