@@ -187,10 +187,10 @@ aside {position:fixed; top: 0;
         .noimg{border:1px solid #fff; width:80px; height:80px; display:block; margin:0 auto; border-radius:50%; background-color:#eee; color:#fff; font-size:50px; line-height:80px;}
     }
     .status-view{text-align:center; padding:24px 16px; font-size:16px; border-bottom:8px solid #47300b;
-        h3{line-height:160%; font-weight:700; font-size:15px; color:#c5afbe; border:1px solid #c5afbe; border-radius:16px; padding:4px 0; margin-bottom:16px;}
+        h3{line-height:160%; font-weight:700; font-size:15px; color:#fff; border:1px solid #7a4308; background-color:#906910; border-radius:16px; padding:4px 0; margin-bottom:16px;}
         i{display:inline-block; width:1px; height:15px; background-color:#eee; margin:0 16px; position:relative; top:2px;}
         span{font-size:14px;}
-        strong{margin:0 4px; color:#f90;}
+        strong{margin:0 4px; color:rgb(164, 101, 29);}
     }
     .setting{ padding: 24px 16px; border-bottom:8px solid #47300b;
         .mt-4{display:flex; justify-content:space-between; height:40px; line-height:40px; border-top:1px solid #eaeaea;
@@ -205,14 +205,14 @@ aside {position:fixed; top: 0;
     .service{ text-align:center; padding:24px 16px; font-size:14px;
         p{letter-spacing:-.7px;}
         a{ display:block; font-weight:500; letter-spacing:-.7px; margin:8px 0 0; color:#2272ed}
-        button{ clear:both; display:block; margin:16px auto; width:100%; height:48px; line-height:48px; text-align:center; font-weight:700; font-size:16px; background: linear-gradient(90deg, #2d1a04, #7c4d0c, #251702); border:0; border-radius:4px; color:#fff; letter-spacing:-.7px;}
+        button{ clear:both; display:block; margin:16px auto; width:100%; height:48px; line-height:48px; text-align:center; font-weight:700; font-size:16px; background: linear-gradient(90deg, #2d1a04, #7c4d0c, #251702); border:0; border-radius:4px; color:#fff; letter-spacing:-.7px; border-top:2px solid rgb(202, 165, 109); border-bottom:2px solid rgb(110, 79, 34);}
     }
     .footer{ text-align:center; 
         .item{font-size:14px; letter-spacing:-.7px; color:#704916;}
         .company{color:#e0b680; margin:4px 16px 0; font-size:11px;
             strong{margin-right:4px;}
         }
-        a{font-size:11px; margin:20px 0; display:block; letter-spacing: -.7px;}
+        a{font-size:11px; margin:20px 0;font-weight:700; color:#f90; display:block; letter-spacing: -.7px;}
     }
   }
   
@@ -391,10 +391,10 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
     .input-form{
         label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:rgb(201, 176, 137);}
-        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
-        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
     }
@@ -411,10 +411,10 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
     .input-form{
         label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:#e5cfac;}
-        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #ffe554; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
-        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
     }
@@ -436,10 +436,10 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
         .add-coment{ text-align:center; margin:8px 0; font-size:14px; color:#d8c69c;
             span{display:block; font-weight:700; font-size:16px; padding:4px 0 8px;}
         }
-        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #f3bb21; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff;border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
-        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#fff; border-bottom:1px solid #f3bb21; border-radius:4px;background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#fff; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff; border-radius:4px;background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
         .btn-login{width:100%; height:50px; line-height:50px; text-align:center; border-radius:4px; border:0; background: linear-gradient(90deg, #A3E4D7, #C7B8EA, #F6E5C9); font-size:16px; font-weight:700; color:#fff; letter-spacing:-.7px; border-top:1px solid #fff; border-bottom:2px solid #999; }
@@ -452,23 +452,25 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
 .join-wrap{
     .join{padding:24px 32px; box-sizing: border-box; overflow:hidden; letter-spacing:-.7px;
         h1{text-align:center; font-size:20px; color:#ffc012; letter-spacing:-.7px; font-weight:700;}
-        p.cmt{font-size:14px; margin:24px 0 8px; color:#eee; text-align:center;}
+        p.cmt{font-size:13px; letter-spacing: -.7px; margin:8px 0 8px; color:#eee; text-align:center;}
         .input-form{
-            label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:#bdae93;}
-            input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; background: linear-gradient(135deg, #3a342e 0%, #202524 100%); border:0; border-bottom:1px solid #ebae36; border-radius:4px; border-right:1px solid #aaa;
+            label{display:block; font-size:13px; font-weight:700; margin:24px 0 8px; color:#bdae93;
+                i{margin-right:4px;}
+            }
+            input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; background: linear-gradient(135deg, #3a342e 0%, #202524 100%); border:0; border-bottom:1px solid #dcb712; border-left:1px solid rgb(132, 113, 85); border-top:1px solid #fff;border-radius:4px; border-right:1px solid #aaa;
                 &::placeholder{color:#999;}
             }
         }
-        .privacy{font-size:13px; margin:24px 0 16px; color:#666; font-weight:500;
+        .privacy{font-size:13px; margin:24px 0 16px; color:#a39a9a; font-weight:500;
             input{position:relative; top:1px;}
-            a{font-weight:700; color:#af5328; margin-left:4px;}
+            a{font-weight:700; color:#b48671; margin-left:4px;}
         }
 
         .profile-img{
             label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px;}
             input{border:1px solid #f00;}
         }
-        .btn-join-ok{width:100%; height:50px; line-height:50px; text-align:center; font-size:16px; font-weight:700; border:0;background-color: #8b5e16; color:#fff; border-radius:4px;
+        .btn-join-ok{width:100%; height:50px; line-height:50px; text-align:center; font-size:16px; font-weight:700; border:0; background-color: #8b5e16; color:#fff; border-radius:4px; border-top:1px solid #fff; border-bottom:2px solid rgb(136, 107, 93);
             &:disabled{opacity:.4;}
         }
     }
