@@ -535,6 +535,17 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
     .welcome-wrap .wrap{max-width:500px; margin:0 auto;}
     .login-wrap .login{max-width:500px; margin:0 auto;}
-    .now-posi{max-width:500px; margin:50px auto 20px;}
-    .join-wrap .join, .group-header-tit, .list{max-width:500px; margin:0 auto;}
+    .now-posi{margin:100px 0 20px; border-bottom:0;
+        h2 strong{font-size:35px;}
+        h2 span{font-size:20px;}
+        button{font-size:16px; background-color:#f90; color:#fff; padding:0 10px; border-radius:8px;;}
+    }
+    .join-wrap .join{max-width:500px; margin:0 auto;}
+    ol.info{margin:20px 0 20px; }
+    .group-header-tit{clear:both; width:100%; margin:0 16px;}
+    .grouping{
+        .list-detail{width:calc(50% - 4px); height:130px; float:left; box-sizing:border-box; margin:0;
+            &:nth-child(2n){float:right;}
+        }
+    }
   }

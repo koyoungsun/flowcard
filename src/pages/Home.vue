@@ -28,7 +28,7 @@
 
     <!-- 그룹 목록 -->
     <div class="group-wrap" v-else>
-      <div v-for="group in groups" :key="group.id" class="mb-8">
+      <div v-for="group in groups" :key="group.id" class="mb-8 grouping">
         <!-- 그룹 헤더 -->
         <div class="group-header-tit flex justify-between items-center">
           <h3 class="text-lg font-semibold">
