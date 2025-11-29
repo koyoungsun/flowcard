@@ -281,7 +281,7 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
                 h3{font-size:14px; letter-spacing:-.7px; margin:4px 0 2px; color:#ffc106; font-weight:500;}
                 p{font-size:12px; color:#aeaeae; margin:2px 0 0; letter-spacing:-.4px;}
                 .btn-combo{ margin:12px 0 0;
-                    button{background-color:#62aa99; color:#fff; border:0; font-size:11px;padding: 3px 6px; border-radius:2px; position:relative; top:-3px; margin-left:4px;
+                    button{background-color:#62aa99; color:#fff; border:0; font-size:11px;padding: 3px 6px; border-radius:2px; position:relative; top:-3px; margin-left:4px; border-top:1px solid #c6bcbc; border-bottom: 1px soldi #f90;
                         &:first-child{background-color: #334155; color:#fff;}
                         &:last-child{background-color:#f90; font-weight:700; color:rgb(46, 32, 12);}
                     }
@@ -295,7 +295,7 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
 }
 .btn-link-add{margin:8px 0 0;
-    button{width:100%; height:50px; line-height:50px; text-align:center; border:0; border-radius:4px; font-weight:700; letter-spacing:-.4px; color:#fff; background:linear-gradient(135deg, #f29130 0%, #58280a 100%);}
+    button{width:100%; height:50px; line-height:50px; text-align:center; border:0; border-radius:4px; font-weight:700; letter-spacing:-.4px; color:#fff; background:linear-gradient(135deg, #f29130 0%, #58280a 100%); border-top:1px solid #ffffff; border-bottom:2px solid rgb(124, 119, 110);}
 }
 .drag-ghost {
     pointer-events: none;
@@ -316,7 +316,7 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
     ul{list-style:none; padding:8px 0 24px; overflow:hidden;
         li{width: calc(50% - 4px); float:left;
-            button{width:100%; height:50px; line-height:50px; background:#51463a; font-size:14px; border:0; letter-spacing: -.7px; font-weight:700; color:#fff; border-radius:4px;  
+            button{width:100%; height:50px; line-height:50px; background:#51463a; font-size:14px; border:0; letter-spacing: -.7px; font-weight:700; color:#fff; border-radius:4px; border-top:1px solid rgb(194, 179, 156); border-bottom:2px solid rgb(46, 36, 22);
             }
             &:last-child{float:right; 
                 button{background:#c07d09;}
@@ -430,19 +430,19 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
 .login-wrap{
     .login{padding:24px 32px; box-sizing: border-box; overflow:hidden;
         h1{text-align:center; font-size:20px; color:#dba41a; letter-spacing:-.7px; font-weight:700;}
-        .btn-google-g{ width:100%; height:50px; line-height:50px; text-align:center; margin:24px 0 8px; border-radius:4px; border:0; background-color:rgb(179, 68, 68); color:#fff; font-weight:300; font-size:16px;
+        .btn-google-g{ width:100%; height:50px; line-height:50px; text-align:center; margin:24px 0 8px; border-radius:4px; border:0; background-color:rgb(179, 68, 68); color:#fff; font-weight:300; font-size:16px; border-top:1px solid #edcbcb; border-bottom:2px solid rgb(127, 119, 116);
             i{color:#fff;}
         }
         .add-coment{ text-align:center; margin:8px 0; font-size:14px; color:#d8c69c;
             span{display:block; font-weight:700; font-size:16px; padding:4px 0 8px;}
         }
-        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-email{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #f3bb21; border-radius:4px; background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
-        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px;background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        .ins-pass{width:calc(100% - 4px); height:40px; text-align: center; padding:0; margin:8px 0 16px; font-size:14px; color:#fff; border-bottom:1px solid #f3bb21; border-radius:4px;background:linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
-        .btn-login{width:100%; height:50px; line-height:50px; text-align:center; border-radius:4px; border:0; background: linear-gradient(90deg, #A3E4D7, #C7B8EA, #F6E5C9); font-size:16px; font-weight:700; color:#fff; letter-spacing:-.7px;}
+        .btn-login{width:100%; height:50px; line-height:50px; text-align:center; border-radius:4px; border:0; background: linear-gradient(90deg, #A3E4D7, #C7B8EA, #F6E5C9); font-size:16px; font-weight:700; color:#fff; letter-spacing:-.7px; border-top:1px solid #fff; border-bottom:2px solid #999; }
         .etc{margin:16px 0; text-align:center; font-size:14px; color:#a89f9f; letter-spacing:-.7px;
             a{display:block; margin:8px 0 16px; font-weight:700; font-size:16px; color:#e1a43b;}
         }
