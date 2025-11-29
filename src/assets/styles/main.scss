@@ -88,14 +88,18 @@ body {
 #app{position: relative; overflow: hidden;}
 .dimd{position:fixed; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.4); top:0; left:0; right:0; bottom:0;}
          
-.top-nav{height:80px; background:#ffb20b; text-align:center; position:relative; border-bottom:2px solid #fff;
+.top-nav{height:80px; background:linear-gradient(135deg, #dc9a0a 0%, #ffd903 100%);; text-align:center; position:relative; border-bottom:2px solid #fff;
     a{text-decoration:none; height:88px; display:block;
-        h1{color:#3a342e; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px; font-size:30px;
-            strong{font-weight:500; color:#3a342e;}
+        h1{background: linear-gradient(90deg, #070707, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px; font-size:30px;
+            strong{font-weight:500;}
         }
     }
-    h1{color:#fff; padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px;
-        strong{font-weight:500; color:#fff;}
+    h1{ padding:20px 0 4px; font-weight:100; letter-spacing:-1.5px;
+        strong{font-weight:500; background: linear-gradient(90deg, #070707, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;}
     }
     .top-info{position:absolute; top:22px; left:16px; width:40px; height:40px; border:0; background:none;
         i{font-size:20px; color:#3a342e; display:block;}
@@ -250,7 +254,9 @@ aside {position:fixed; top: 0;
 
 .group-header-tit{padding:16px 4px 8px; font-size:15px; font-weight:500; letter-spacing:-.4px; color:#666; display:flex; justify-content:space-between; margin:0 16px; border-radius:8px;
     h3{color:rgb(248, 184, 81);
-        strong{font-weight:700; font-size:16px;}
+        strong{font-weight:700; font-size:16px; background: linear-gradient(90deg, #ffb404, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;}
         span{color:#f90; font-weight:500; font-size:12px; margin-left:4px; position:relative; top:-1px;}
     }
     button{background:none; padding:4px; color:#c8bebe;border:0;}
@@ -335,10 +341,10 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
             span{font-weight:500;}
         }
         em.ico-ig{display:block; width:140px; height:140px; background:url('../../img/img-linknest.png') 0 0 no-repeat; background-size:140px; margin:40px auto 10px;}
-        h3{ letter-spacing:-.7px; line-height:1.7em; font-weight:400; color:#44403b; padding:50px 0 0;
-            strong{font-size:25px; display:block; margin:0 0 16px; letter-spacing:-2px; background: linear-gradient(90deg, hsl(32, 93%, 37%), #A78BFA);
+        h3{ letter-spacing:-.7px; line-height:1.7em; font-weight:400; color:#44403b;
+            strong{font-size:25px; display:block; margin:0 0 16px; letter-spacing:-2px; background: linear-gradient(90deg, hsl(32, 93%, 37%), #2b0662);
                 -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;}
+                -webkit-text-fill-color: transparent; padding:50px 0 0;}
             span{font-size:16px; font-weight:700; letter-spacing:-1.5px; display:block; margin:8px 0 24px; color:#e48806; font-size:20px;}
         }
         ol{list-style:none; margin:30px auto 10%; display:block;
@@ -405,7 +411,7 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
     }
     .input-form{
         label{display:block; font-size:13px; font-weight:700; margin:16px 0 4px; color:#e5cfac;}
-        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
+        input{width:100%; height:40px; text-align: center; padding:0; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #ffe554; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
             &::placeholder{color:#999;}
         }
         textarea{width:calc(100% - 20px); min-height:100px; line-height:40px; text-align: left; padding:10px; margin:0; font-size:14px; color:#fff; border-bottom:1px solid #eee; border-radius:4px; background: linear-gradient(135deg, #3a342e 0%, #202524 100%);
