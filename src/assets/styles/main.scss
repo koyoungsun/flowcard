@@ -336,7 +336,9 @@ ol.info{list-style:none; padding:8px 16px; margin:0 16px; background:rgba(255, 2
         }
         em.ico-ig{display:block; width:140px; height:140px; background:url('../../img/img-linknest.png') 0 0 no-repeat; background-size:140px; margin:40px auto 10px;}
         h3{ letter-spacing:-.7px; line-height:1.7em; font-weight:400; color:#44403b; padding:50px 0 0;
-            strong{font-size:30px; color:#412209; display:block; margin:0 0 16px; letter-spacing:-2px;}
+            strong{font-size:25px; display:block; margin:0 0 16px; letter-spacing:-2px; background: linear-gradient(90deg, hsl(32, 93%, 37%), #A78BFA);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;}
             span{font-size:16px; font-weight:700; letter-spacing:-1.5px; display:block; margin:8px 0 24px; color:#e48806; font-size:20px;}
         }
         ol{list-style:none; margin:30px auto 10%; display:block;

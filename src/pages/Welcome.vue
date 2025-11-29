@@ -12,9 +12,9 @@
       <!-- 서비스 요약 문구 -->
       <h3 class="text-gray-600 mb-10 text-base leading-relaxed max-w-md">
         <strong>내 링크들을 한곳에!</strong>
-        내 로그인에 항상 저장<br />
+        브라우저 상단 북마크를 내아이디에 저장해서<br />
         그룹에서 바로 찾아 이동하고<br />
-        버튼 한번으로 복사, 전달까지!<br />
+        버튼 한번으로 복사, 전달, 이동까지!<br />
         <span class="font-semibold text-indigo-500">내 전용 북마커</span>
       </h3>
       <em class="ico-ig"></em>
