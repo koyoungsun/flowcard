@@ -11,7 +11,7 @@
 
       <!-- 서비스 요약 문구 -->
       <h3 class="text-gray-600 mb-10 text-base leading-relaxed max-w-md">
-        <strong>내링크들을 한곳에!</strong>
+        <strong>내 링크들을 한곳에!</strong>
         내 로그인에 항상 저장<br />
         그룹에서 바로 찾아 이동하고<br />
         버튼 한번으로 복사, 전달까지!<br />

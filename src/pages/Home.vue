@@ -11,9 +11,10 @@
     <!-- 안내 -->
     <ol class="info mt-4">
       <h6><i class="bi bi-bell-fill"></i> Notice</h6>
-      <li><i></i><strong>그룹 만들기</strong>버튼을 통해 그룹을 추가할 수 있습니다. </li>
-      <li><i></i>카드형 항목들은 드래그를 통해 순서를 조정할 수 있습니다.</li>
-      <li><i></i>복사하기 버튼 클릭 시 링크가 복사됩니다.</li>
+      <li><i></i>상단  오른쪽 <strong>그룹 만들기</strong>버튼을 통해 그룹을 추가할 수 있습니다. </li>
+      <li><i></i>리스트 항목은 왼쪽 이미지로 <strong>드래그</strong>로 순서 조증이 가능합니다.</li>
+      <li><i></i>카드형 항목은 왼쪽으로  <strong>스와이프</strong> 가능합니다.</li>
+      <li><i></i><strong>복사하기</strong> 버튼 클릭 시 링크가 복사됩니다.</li>
     </ol>
     <!-- 🔹 로딩 중일 때 -->
     <div v-if="loading" class="text-center py-10 text-gray-400 text-sm animate-pulse data-loging">
